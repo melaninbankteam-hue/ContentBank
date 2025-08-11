@@ -25,6 +25,46 @@ const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
   // Get content pillars from current month data
   const contentPillars = currentData.contentPillars || [];
 
+  // Compile all ideas from all months for the master list
+  const getAllIdeas = () => {
+    const allIdeas = [];
+    Object.entries(monthlyData).forEach(([key, data]) => {
+      if (data.brainstormIdeas) {
+        data.brainstormIdeas.forEach((idea, index) => {
+          if (typeof idea === 'string') {
+            // Convert old format to new format
+            allIdeas.push({
+              id: `${key}-${index}`,
+              text: idea,
+              pillar: "",
+              category: "",
+              monthKey: key,
+              createdDate: new Date().toISOString()
+            });
+          } else {
+            // New format with tags
+            allIdeas.push({
+              ...idea,
+              id: idea.id || `${key}-${index}`,
+              monthKey: key
+            });
+          }
+        });
+      }
+    });
+    return allIdeas;
+  };
+
+  // Filter ideas based on search and filters
+  const filterIdeas = (ideas) => {
+    return ideas.filter(idea => {
+      const matchesSearch = idea.text.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesPillar = !selectedPillar || idea.pillar === selectedPillar;
+      const matchesCategory = !selectedCategory || idea.category === selectedCategory;
+      return matchesSearch && matchesPillar && matchesCategory;
+    });
+  };
+
   const updateField = (field, value) => {
     setMonthlyData(prev => ({
       ...prev,
@@ -37,7 +77,14 @@ const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
 
   const addIdea = () => {
     if (newIdea.trim()) {
-      const updatedIdeas = [...brainstormIdeas, newIdea.trim()];
+      const newIdeaObj = {
+        id: `${monthKey}-${Date.now()}`,
+        text: newIdea.trim(),
+        pillar: "",
+        category: "",
+        createdDate: new Date().toISOString()
+      };
+      const updatedIdeas = [...brainstormIdeas, newIdeaObj];
       updateField('brainstormIdeas', updatedIdeas);
       setNewIdea("");
       setIsAddingIdea(false);
@@ -49,9 +96,22 @@ const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
     updateField('brainstormIdeas', updatedIdeas);
   };
 
-  const editIdea = (index, newValue) => {
+  const updateIdea = (index, field, value) => {
     const updatedIdeas = [...brainstormIdeas];
-    updatedIdeas[index] = newValue;
+    if (typeof updatedIdeas[index] === 'string') {
+      // Convert to object format
+      updatedIdeas[index] = {
+        id: `${monthKey}-${index}`,
+        text: updatedIdeas[index],
+        pillar: "",
+        category: "",
+        createdDate: new Date().toISOString()
+      };
+    }
+    updatedIdeas[index] = {
+      ...updatedIdeas[index],
+      [field]: value
+    };
     updateField('brainstormIdeas', updatedIdeas);
   };
 
