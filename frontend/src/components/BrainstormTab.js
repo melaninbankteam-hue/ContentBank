@@ -4,8 +4,9 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Badge } from "./ui/badge";
-import { Plus, X, Lightbulb, Eye, PenTool, Link, Trash2 } from "lucide-react";
-import { mockBrainstormIdeas } from "../data/mock";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { Plus, X, Lightbulb, Eye, PenTool, Link, Trash2, Search, Filter, Calendar, Tag } from "lucide-react";
+import { mockBrainstormIdeas, contentCategories } from "../data/mock";
 
 const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
   const [newIdea, setNewIdea] = useState("");
