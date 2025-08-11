@@ -130,11 +130,11 @@ class PostCreate(BaseModel):
     notes: Optional[str] = ""
 
 class PostUpdate(BaseModel):
-    type: Optional[str]
-    category: Optional[str]
-    pillar: Optional[str]
-    topic: Optional[str]
-    caption: Optional[str]
-    image_url: Optional[str]
-    audio_link: Optional[str]
-    notes: Optional[str]
+    type: Optional[str] = None
+    category: Optional[str] = None
+    pillar: Optional[str] = None
+    topic: Optional[str] = None
+    caption: Optional[str] = None
+    image_url: Optional[str] = None
+    audio_link: Optional[str] = None
+    notes: Optional[str] = None
