@@ -96,9 +96,9 @@ class ContentIdeaCreate(BaseModel):
     category: Optional[str] = ""
 
 class ContentIdeaUpdate(BaseModel):
-    text: Optional[str]
-    pillar: Optional[str]
-    category: Optional[str]
+    text: Optional[str] = None
+    pillar: Optional[str] = None
+    category: Optional[str] = None
 
 # Posts Model
 class Post(BaseModel):
