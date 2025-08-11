@@ -28,7 +28,8 @@ export const contentCategories = [
 export const contentTypes = [
   "Post",
   "Story", 
-  "Reel"
+  "Reel",
+  "Carousel"
 ];
 
 export const mockPosts = {
