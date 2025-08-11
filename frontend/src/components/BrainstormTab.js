@@ -11,12 +11,19 @@ import { mockBrainstormIdeas, contentCategories } from "../data/mock";
 const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
   const [newIdea, setNewIdea] = useState("");
   const [isAddingIdea, setIsAddingIdea] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedPillar, setSelectedPillar] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [showAllIdeas, setShowAllIdeas] = useState(false);
 
   const currentData = monthlyData[monthKey] || {};
   const brainstormIdeas = currentData.brainstormIdeas || [...mockBrainstormIdeas];
   const visualConcepts = currentData.visualConcepts || "Color palette inspiration, Behind-the-scenes office setup, Student success celebration graphics, Course module preview designs, Motivational quote backgrounds";
   const captionDrafts = currentData.captionDrafts || "Ready to turn your expertise into income? 🚀 Swipe for 5 game-changing steps → \n\nPOV: You just launched your first digital course ✨ Comment your niche below! \n\nMYTH: You need thousands of followers to make money online REALITY: I made $10K with just 500 engaged followers 💰";
   const resourcesLinks = currentData.resourcesLinks || "Canva templates: canva.com/templates\nUnsplash photos: unsplash.com\nTrending audio: instagram.com/reels/audio\nHashtag research: hashtagify.me\nAnalytics tool: later.com";
+
+  // Get content pillars from current month data
+  const contentPillars = currentData.contentPillars || [];
 
   const updateField = (field, value) => {
     setMonthlyData(prev => ({
