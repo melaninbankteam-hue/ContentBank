@@ -393,6 +393,7 @@ const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
           </div>
         </CardContent>
       </Card>
+      )}
     </div>
   );
 };
