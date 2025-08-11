@@ -32,7 +32,7 @@ const InstagramPreview = ({ monthlyData, currentMonth }) => {
 
   // Fill empty spots with placeholder posts
   const gridPosts = [...posts];
-  while (gridPosts.length < 9) {
+  while (gridPosts.length < 30) {
     gridPosts.push(null);
   }
 
