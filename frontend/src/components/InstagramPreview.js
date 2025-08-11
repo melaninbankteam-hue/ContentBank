@@ -173,7 +173,7 @@ const InstagramPreview = ({ monthlyData, currentMonth }) => {
             </li>
             <li className="flex items-start gap-2">
               <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
-              <span>Plan your grid in rows of 3 for visual cohesion</span>
+              <span>Plan your grid in rows of 10 for comprehensive content preview</span>
             </li>
             <li className="flex items-start gap-2">
               <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
