@@ -39,7 +39,6 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
         topic: "",
         caption: "",
         audioLink: "",
-        format: "",
         notes: "",
         image: null
       });
