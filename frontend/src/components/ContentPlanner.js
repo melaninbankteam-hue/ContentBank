@@ -46,28 +46,55 @@ const ContentPlanner = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fffaf1] to-[#bb9477]/10">
-      {/* Header */}
-      <div className="bg-[#472816] text-[#fffaf1] py-8 px-6 shadow-lg">
-        <div className="max-w-6xl mx-auto">
-          <h1 className="text-4xl font-bold mb-2">The Melanin Bank</h1>
-          <p className="text-[#bb9477] text-lg">Content Planner</p>
+      {/* Header with Background Image */}
+      <div className="relative bg-[#472816] text-[#fffaf1] py-16 px-6 shadow-lg overflow-hidden">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
+          style={{
+            backgroundImage: "url('https://customer-assets.emergentagent.com/job_insta-content-hub-1/artifacts/2g8c6i4z_Melanin%20bank%20event%20flyers%20%284%29.jpg')"
+          }}
+        ></div>
+        
+        {/* Content overlay */}
+        <div className="relative z-10 max-w-6xl mx-auto">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h1 className="text-5xl font-bold mb-3">The Melanin Bank</h1>
+              <p className="text-[#bb9477] text-xl">Content Planner</p>
+              <p className="text-[#fffaf1]/80 text-lg mt-2 max-w-2xl">
+                Empowering digital entrepreneurs to create, plan, and track their Instagram content with purpose and strategy.
+              </p>
+            </div>
+            
+            {/* Personality Image */}
+            <div className="hidden md:block">
+              <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#bb9477]/30 shadow-xl">
+                <img 
+                  src="https://customer-assets.emergentagent.com/job_insta-content-hub-1/artifacts/2g8c6i4z_Melanin%20bank%20event%20flyers%20%284%29.jpg"
+                  alt="The Melanin Bank"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          </div>
           
           {/* Month Navigation */}
-          <div className="flex items-center justify-between mt-6 bg-[#3f2d1d]/50 rounded-lg px-4 py-3">
+          <div className="flex items-center justify-between bg-[#3f2d1d]/50 backdrop-blur-sm rounded-lg px-6 py-4">
             <Button 
               variant="ghost" 
               onClick={() => navigateMonth('prev')}
-              className="text-[#fffaf1] hover:bg-[#bb9477]/20"
+              className="text-[#fffaf1] hover:bg-[#bb9477]/20 transition-colors"
             >
-              ← Previous
+              ← Previous Month
             </Button>
             <h2 className="text-2xl font-semibold">{formatMonthYear(currentMonth)}</h2>
             <Button 
               variant="ghost" 
               onClick={() => navigateMonth('next')}
-              className="text-[#fffaf1] hover:bg-[#bb9477]/20"
+              className="text-[#fffaf1] hover:bg-[#bb9477]/20 transition-colors"
             >
-              Next →
+              Next Month →
             </Button>
           </div>
         </div>
