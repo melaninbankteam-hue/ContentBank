@@ -117,75 +117,217 @@ const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
 
   return (
     <div className="space-y-6">
-      {/* Content Ideas Section */}
-      <Card className="border-[#bb9477]/30 shadow-lg bg-white/90 backdrop-blur-sm">
-        <CardHeader className="bg-gradient-to-r from-[#472816] to-[#3f2d1d] text-[#fffaf1] rounded-t-lg">
-          <CardTitle className="flex items-center gap-2">
-            <Lightbulb className="w-5 h-5" />
-            Content Ideas Bank
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="p-6">
-          <div className="space-y-4">
-            {/* Ideas List */}
-            <div className="space-y-3">
-              {brainstormIdeas.map((idea, index) => (
-                <div key={index} className="group flex items-center justify-between p-3 bg-[#bb9477]/5 rounded-lg border border-[#bb9477]/20 hover:bg-[#bb9477]/10 transition-colors">
-                  <input
-                    className="flex-1 bg-transparent text-[#3f2d1d] font-medium outline-none border-none"
-                    value={idea}
-                    onChange={(e) => editIdea(index, e.target.value)}
-                    onBlur={() => updateField('brainstormIdeas', brainstormIdeas)}
-                  />
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => removeIdea(index)}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity text-red-500 hover:text-red-700 ml-2"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </div>
-              ))}
+      {/* Content Ideas Master List */}
+      {showAllIdeas ? (
+        <Card className="border-[#bb9477]/30 shadow-lg bg-white/90 backdrop-blur-sm">
+          <CardHeader className="bg-gradient-to-r from-[#472816] to-[#3f2d1d] text-[#fffaf1] rounded-t-lg">
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center gap-2">
+                <Search className="w-5 h-5" />
+                Master Content Ideas Library
+              </CardTitle>
+              <Button 
+                variant="secondary" 
+                size="sm" 
+                onClick={() => setShowAllIdeas(false)}
+                className="bg-[#bb9477] text-[#3f2d1d] hover:bg-[#fffaf1]"
+              >
+                Back to Current Month
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="p-6">
+            {/* Search and Filters */}
+            <div className="flex gap-4 mb-6">
+              <div className="flex-1">
+                <Input
+                  placeholder="Search all content ideas..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="border-[#bb9477]/50 focus:border-[#472816]"
+                />
+              </div>
+              <Select value={selectedPillar} onValueChange={setSelectedPillar}>
+                <SelectTrigger className="w-48 border-[#bb9477]/50 focus:border-[#472816]">
+                  <SelectValue placeholder="Filter by pillar" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">All Pillars</SelectItem>
+                  {contentPillars.map(pillar => (
+                    <SelectItem key={pillar} value={pillar}>{pillar}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                <SelectTrigger className="w-48 border-[#bb9477]/50 focus:border-[#472816]">
+                  <SelectValue placeholder="Filter by category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">All Categories</SelectItem>
+                  {contentCategories.map(category => (
+                    <SelectItem key={category} value={category}>{category}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
-            {/* Add New Idea */}
-            {isAddingIdea ? (
-              <div className="flex gap-2">
-                <Input
-                  value={newIdea}
-                  onChange={(e) => setNewIdea(e.target.value)}
-                  placeholder="Enter your content idea..."
-                  className="flex-1 border-[#bb9477]/50 focus:border-[#472816]"
-                  onKeyPress={(e) => e.key === 'Enter' && addIdea()}
-                />
+            {/* All Ideas List */}
+            <div className="space-y-3 max-h-96 overflow-y-auto">
+              {filterIdeas(getAllIdeas()).map((idea, index) => (
+                <div key={idea.id} className="p-4 bg-[#bb9477]/5 rounded-lg border border-[#bb9477]/20">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex-1">
+                      <p className="text-[#3f2d1d] font-medium">{idea.text}</p>
+                      <div className="flex gap-2 mt-2">
+                        {idea.pillar && (
+                          <Badge variant="outline" className="bg-[#472816]/10 text-[#472816] border-[#472816]/30 text-xs">
+                            {idea.pillar}
+                          </Badge>
+                        )}
+                        {idea.category && (
+                          <Badge variant="outline" className="bg-[#bb9477]/10 text-[#3f2d1d] border-[#bb9477] text-xs">
+                            {idea.category}
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="ml-3 border-[#bb9477] text-[#3f2d1d] hover:bg-[#bb9477]/10"
+                    >
+                      <Calendar className="w-4 h-4 mr-1" />
+                      Use in Calendar
+                    </Button>
+                  </div>
+                </div>
+              ))}
+              {filterIdeas(getAllIdeas()).length === 0 && (
+                <div className="text-center text-[#3f2d1d]/60 py-8">
+                  <Search className="w-12 h-12 mx-auto mb-3 text-[#bb9477]/50" />
+                  <p>No ideas found matching your search criteria.</p>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      ) : (
+        <>
+          {/* Current Month Content Ideas */}
+          <Card className="border-[#bb9477]/30 shadow-lg bg-white/90 backdrop-blur-sm">
+            <CardHeader className="bg-gradient-to-r from-[#472816] to-[#3f2d1d] text-[#fffaf1] rounded-t-lg">
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2">
+                  <Lightbulb className="w-5 h-5" />
+                  Content Ideas Bank
+                </CardTitle>
                 <Button 
-                  onClick={addIdea} 
-                  className="bg-[#bb9477] hover:bg-[#472816] text-white"
+                  variant="secondary" 
+                  size="sm" 
+                  onClick={() => setShowAllIdeas(true)}
+                  className="bg-[#bb9477] text-[#3f2d1d] hover:bg-[#fffaf1]"
                 >
-                  Add
-                </Button>
-                <Button 
-                  variant="outline" 
-                  onClick={() => {setIsAddingIdea(false); setNewIdea("");}}
-                  className="border-[#bb9477] text-[#3f2d1d]"
-                >
-                  Cancel
+                  <Search className="w-4 h-4 mr-2" />
+                  View All Ideas
                 </Button>
               </div>
-            ) : (
-              <Button 
-                variant="outline" 
-                onClick={() => setIsAddingIdea(true)}
-                className="w-full border-[#bb9477] text-[#3f2d1d] hover:bg-[#bb9477]/10"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Add New Idea
-              </Button>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="space-y-4">
+                {/* Ideas List */}
+                <div className="space-y-3">
+                  {brainstormIdeas.map((idea, index) => {
+                    const ideaObj = typeof idea === 'string' ? { text: idea, pillar: '', category: '' } : idea;
+                    return (
+                      <div key={index} className="group p-3 bg-[#bb9477]/5 rounded-lg border border-[#bb9477]/20 hover:bg-[#bb9477]/10 transition-colors">
+                        <div className="flex items-start justify-between mb-2">
+                          <input
+                            className="flex-1 bg-transparent text-[#3f2d1d] font-medium outline-none border-none"
+                            value={ideaObj.text}
+                            onChange={(e) => updateIdea(index, 'text', e.target.value)}
+                            placeholder="Enter content idea..."
+                          />
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => removeIdea(index)}
+                            className="opacity-0 group-hover:opacity-100 transition-opacity text-red-500 hover:text-red-700 ml-2"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                        <div className="flex gap-2">
+                          <Select 
+                            value={ideaObj.pillar || ""} 
+                            onValueChange={(value) => updateIdea(index, 'pillar', value)}
+                          >
+                            <SelectTrigger className="w-40 h-8 text-xs border-[#bb9477]/30">
+                              <SelectValue placeholder="Add pillar" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {contentPillars.map(pillar => (
+                                <SelectItem key={pillar} value={pillar}>{pillar}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <Select 
+                            value={ideaObj.category || ""} 
+                            onValueChange={(value) => updateIdea(index, 'category', value)}
+                          >
+                            <SelectTrigger className="w-32 h-8 text-xs border-[#bb9477]/30">
+                              <SelectValue placeholder="Category" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {contentCategories.map(category => (
+                                <SelectItem key={category} value={category}>{category}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Add New Idea */}
+                {isAddingIdea ? (
+                  <div className="flex gap-2">
+                    <Input
+                      value={newIdea}
+                      onChange={(e) => setNewIdea(e.target.value)}
+                      placeholder="Enter your content idea..."
+                      className="flex-1 border-[#bb9477]/50 focus:border-[#472816]"
+                      onKeyPress={(e) => e.key === 'Enter' && addIdea()}
+                    />
+                    <Button 
+                      onClick={addIdea} 
+                      className="bg-[#bb9477] hover:bg-[#472816] text-white"
+                    >
+                      Add
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      onClick={() => {setIsAddingIdea(false); setNewIdea("");}}
+                      className="border-[#bb9477] text-[#3f2d1d]"
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                ) : (
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setIsAddingIdea(true)}
+                    className="w-full border-[#bb9477] text-[#3f2d1d] hover:bg-[#bb9477]/10"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add New Idea
+                  </Button>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </>
+      )}
 
       {/* Creative Resources Grid */}
       <div className="grid md:grid-cols-3 gap-6">
