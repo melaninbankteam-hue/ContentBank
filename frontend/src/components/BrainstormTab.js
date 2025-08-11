@@ -125,7 +125,7 @@ const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
                   <SelectValue placeholder="Filter by pillar" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Pillars</SelectItem>
+                  <SelectItem value="all-pillars">All Pillars</SelectItem>
                   {contentPillars.map(pillar => (
                     <SelectItem key={pillar} value={pillar}>{pillar}</SelectItem>
                   ))}
@@ -136,7 +136,7 @@ const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
                   <SelectValue placeholder="Filter by category" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Categories</SelectItem>
+                  <SelectItem value="all-categories">All Categories</SelectItem>
                   {contentCategories.map(category => (
                     <SelectItem key={category} value={category}>{category}</SelectItem>
                   ))}
