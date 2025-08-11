@@ -87,7 +87,7 @@ const InstagramPreview = ({ monthlyData, currentMonth }) => {
             <a href="#" className="text-sm text-blue-900 font-medium">{mockUser.website}</a>
           </div>
 
-          {/* Posts Grid */}
+          {/* Posts Grid - 10 rows x 3 columns = 30 posts */}
           <div className="border-t border-gray-200 pt-4">
             <div className="grid grid-cols-3 gap-1">
               {gridPosts.map((post, index) => (
