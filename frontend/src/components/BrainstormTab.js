@@ -5,7 +5,7 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Badge } from "./ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
-import { Plus, X, Lightbulb, Eye, PenTool, Link, Trash2, Search, Filter, Calendar, Tag } from "lucide-react";
+import { Plus, X, Lightbulb, Eye, PenTool, Link, Trash2, Search, Calendar } from "lucide-react";
 import { mockBrainstormIdeas, contentCategories } from "../data/mock";
 
 const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
@@ -31,24 +31,17 @@ const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
     Object.entries(monthlyData).forEach(([key, data]) => {
       if (data.brainstormIdeas) {
         data.brainstormIdeas.forEach((idea, index) => {
-          if (typeof idea === 'string') {
-            // Convert old format to new format
-            allIdeas.push({
-              id: `${key}-${index}`,
-              text: idea,
-              pillar: "",
-              category: "",
-              monthKey: key,
-              createdDate: new Date().toISOString()
-            });
-          } else {
-            // New format with tags
-            allIdeas.push({
-              ...idea,
-              id: idea.id || `${key}-${index}`,
-              monthKey: key
-            });
-          }
+          const ideaText = typeof idea === 'string' ? idea : idea.text || idea;
+          const ideaPillar = typeof idea === 'object' ? idea.pillar || "" : "";
+          const ideaCategory = typeof idea === 'object' ? idea.category || "" : "";
+          
+          allIdeas.push({
+            id: `${key}-${index}`,
+            text: ideaText,
+            pillar: ideaPillar,
+            category: ideaCategory,
+            monthKey: key
+          });
         });
       }
     });
@@ -77,14 +70,7 @@ const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
 
   const addIdea = () => {
     if (newIdea.trim()) {
-      const newIdeaObj = {
-        id: `${monthKey}-${Date.now()}`,
-        text: newIdea.trim(),
-        pillar: "",
-        category: "",
-        createdDate: new Date().toISOString()
-      };
-      const updatedIdeas = [...brainstormIdeas, newIdeaObj];
+      const updatedIdeas = [...brainstormIdeas, newIdea.trim()];
       updateField('brainstormIdeas', updatedIdeas);
       setNewIdea("");
       setIsAddingIdea(false);
@@ -96,22 +82,9 @@ const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
     updateField('brainstormIdeas', updatedIdeas);
   };
 
-  const updateIdea = (index, field, value) => {
+  const editIdea = (index, newValue) => {
     const updatedIdeas = [...brainstormIdeas];
-    if (typeof updatedIdeas[index] === 'string') {
-      // Convert to object format
-      updatedIdeas[index] = {
-        id: `${monthKey}-${index}`,
-        text: updatedIdeas[index],
-        pillar: "",
-        category: "",
-        createdDate: new Date().toISOString()
-      };
-    }
-    updatedIdeas[index] = {
-      ...updatedIdeas[index],
-      [field]: value
-    };
+    updatedIdeas[index] = newValue;
     updateField('brainstormIdeas', updatedIdeas);
   };
 
@@ -173,7 +146,7 @@ const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
 
             {/* All Ideas List */}
             <div className="space-y-3 max-h-96 overflow-y-auto">
-              {filterIdeas(getAllIdeas()).map((idea, index) => (
+              {filterIdeas(getAllIdeas()).map((idea) => (
                 <div key={idea.id} className="p-4 bg-[#bb9477]/5 rounded-lg border border-[#bb9477]/20">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
@@ -237,53 +210,23 @@ const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
                 {/* Ideas List */}
                 <div className="space-y-3">
                   {brainstormIdeas.map((idea, index) => {
-                    const ideaObj = typeof idea === 'string' ? { text: idea, pillar: '', category: '' } : idea;
+                    const ideaText = typeof idea === 'string' ? idea : idea.text || idea;
                     return (
-                      <div key={index} className="group p-3 bg-[#bb9477]/5 rounded-lg border border-[#bb9477]/20 hover:bg-[#bb9477]/10 transition-colors">
-                        <div className="flex items-start justify-between mb-2">
-                          <input
-                            className="flex-1 bg-transparent text-[#3f2d1d] font-medium outline-none border-none"
-                            value={ideaObj.text}
-                            onChange={(e) => updateIdea(index, 'text', e.target.value)}
-                            placeholder="Enter content idea..."
-                          />
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => removeIdea(index)}
-                            className="opacity-0 group-hover:opacity-100 transition-opacity text-red-500 hover:text-red-700 ml-2"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-                        <div className="flex gap-2">
-                          <Select 
-                            value={ideaObj.pillar || ""} 
-                            onValueChange={(value) => updateIdea(index, 'pillar', value)}
-                          >
-                            <SelectTrigger className="w-40 h-8 text-xs border-[#bb9477]/30">
-                              <SelectValue placeholder="Add pillar" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {contentPillars.map(pillar => (
-                                <SelectItem key={pillar} value={pillar}>{pillar}</SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <Select 
-                            value={ideaObj.category || ""} 
-                            onValueChange={(value) => updateIdea(index, 'category', value)}
-                          >
-                            <SelectTrigger className="w-32 h-8 text-xs border-[#bb9477]/30">
-                              <SelectValue placeholder="Category" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {contentCategories.map(category => (
-                                <SelectItem key={category} value={category}>{category}</SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
+                      <div key={index} className="group flex items-center justify-between p-3 bg-[#bb9477]/5 rounded-lg border border-[#bb9477]/20 hover:bg-[#bb9477]/10 transition-colors">
+                        <input
+                          className="flex-1 bg-transparent text-[#3f2d1d] font-medium outline-none border-none"
+                          value={ideaText}
+                          onChange={(e) => editIdea(index, e.target.value)}
+                          placeholder="Enter content idea..."
+                        />
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => removeIdea(index)}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity text-red-500 hover:text-red-700 ml-2"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
                       </div>
                     );
                   })}
@@ -328,6 +271,133 @@ const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
           </Card>
         </>
       )}
+
+      {/* Creative Resources Grid */}
+      <div className="grid md:grid-cols-3 gap-6">
+        {/* Visual Concepts */}
+        <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
+          <CardHeader className="bg-[#bb9477] text-[#3f2d1d] rounded-t-lg">
+            <CardTitle className="flex items-center gap-2 text-base">
+              <Eye className="w-4 h-4" />
+              Visual Concepts
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4">
+            <Textarea
+              value={visualConcepts}
+              onChange={(e) => updateField('visualConcepts', e.target.value)}
+              placeholder="Visual inspiration, color schemes, photo ideas..."
+              className="min-h-40 border-[#bb9477]/50 focus:border-[#472816] resize-none text-sm"
+            />
+          </CardContent>
+        </Card>
+
+        {/* Caption Drafts */}
+        <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
+          <CardHeader className="bg-[#bb9477] text-[#3f2d1d] rounded-t-lg">
+            <CardTitle className="flex items-center gap-2 text-base">
+              <PenTool className="w-4 h-4" />
+              Caption Drafts
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4">
+            <Textarea
+              value={captionDrafts}
+              onChange={(e) => updateField('captionDrafts', e.target.value)}
+              placeholder="Draft captions, hooks, call-to-actions..."
+              className="min-h-40 border-[#bb9477]/50 focus:border-[#472816] resize-none text-sm"
+            />
+          </CardContent>
+        </Card>
+
+        {/* Resources & Links */}
+        <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
+          <CardHeader className="bg-[#bb9477] text-[#3f2d1d] rounded-t-lg">
+            <CardTitle className="flex items-center gap-2 text-base">
+              <Link className="w-4 h-4" />
+              Resources & Links
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4">
+            <Textarea
+              value={resourcesLinks}
+              onChange={(e) => updateField('resourcesLinks', e.target.value)}
+              placeholder="Useful links, tools, references..."
+              className="min-h-40 border-[#bb9477]/50 focus:border-[#472816] resize-none text-sm"
+            />
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Brainstorming Prompts */}
+      <Card className="border-[#bb9477]/30 shadow-lg bg-gradient-to-br from-[#fffaf1] to-[#bb9477]/5">
+        <CardHeader className="bg-gradient-to-r from-[#3f2d1d] to-[#472816] text-[#fffaf1] rounded-t-lg">
+          <CardTitle className="flex items-center gap-2">
+            <Lightbulb className="w-5 h-5" />
+            Content Brainstorming Prompts
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-6">
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              <h4 className="font-semibold text-[#472816] text-sm">Educational Content Ideas</h4>
+              <ul className="space-y-2 text-sm text-[#3f2d1d]">
+                <li className="flex items-start gap-2">
+                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
+                  <span>"5 mistakes I made when starting my course business"</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
+                  <span>"The exact process I use to validate course ideas"</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
+                  <span>"Why most people fail at online courses (and how to avoid it)"</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
+                  <span>"Behind the scenes: My course creation process"</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="space-y-4">
+              <h4 className="font-semibold text-[#472816] text-sm">Engagement Content Ideas</h4>
+              <ul className="space-y-2 text-sm text-[#3f2d1d]">
+                <li className="flex items-start gap-2">
+                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
+                  <span>"This or That: Course platforms edition"</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
+                  <span>"Tell me your biggest business challenge in the comments"</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
+                  <span>"Rate my morning routine from 1-10"</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
+                  <span>"What questions do you have about digital courses?"</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="mt-6 p-4 bg-[#bb9477]/10 rounded-lg border border-[#bb9477]/20">
+            <h4 className="font-semibold text-[#472816] mb-2 text-sm">💡 Pro Tip</h4>
+            <p className="text-sm text-[#3f2d1d]">
+              Keep a running list of content ideas as they come to you. The best content often comes from real conversations 
+              with your audience, common questions you receive, or challenges you've personally overcome.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default BrainstormTab;
 
       {/* Creative Resources Grid */}
       <div className="grid md:grid-cols-3 gap-6">
