@@ -138,11 +138,11 @@ async def create_or_update_monthly_data(
     data: MonthlyDataCreate,
     current_user: dict = Depends(get_current_user)
 ):
-    monthly_data = MonthlyData(
-        user_id=current_user["user_id"],
-        month_key=month_key,
-        **data.dict()
-    )
+    data_dict = data.dict()
+    data_dict["user_id"] = current_user["user_id"]
+    data_dict["month_key"] = month_key
+    
+    monthly_data = MonthlyData(**data_dict)
     
     data_id = await upsert_monthly_data(
         current_user["user_id"],
