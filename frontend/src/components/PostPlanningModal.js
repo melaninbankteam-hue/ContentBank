@@ -243,26 +243,14 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium text-[#3f2d1d] mb-2 block">Audio Link (for Reels)</label>
-                <Input
-                  value={formData.audioLink}
-                  onChange={(e) => handleInputChange('audioLink', e.target.value)}
-                  placeholder="Audio/music link..."
-                  className="border-[#bb9477]/50 focus:border-[#472816]"
-                />
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-[#3f2d1d] mb-2 block">Format</label>
-                <Input
-                  value={formData.format}
-                  onChange={(e) => handleInputChange('format', e.target.value)}
-                  placeholder="Square, Portrait, etc."
-                  className="border-[#bb9477]/50 focus:border-[#472816]"
-                />
-              </div>
+            <div>
+              <label className="text-sm font-medium text-[#3f2d1d] mb-2 block">Audio Link (for Reels)</label>
+              <Input
+                value={formData.audioLink}
+                onChange={(e) => handleInputChange('audioLink', e.target.value)}
+                placeholder="Audio/music link..."
+                className="border-[#bb9477]/50 focus:border-[#472816]"
+              />
             </div>
 
             <div>
