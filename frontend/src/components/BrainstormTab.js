@@ -52,8 +52,8 @@ const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
   const filterIdeas = (ideas) => {
     return ideas.filter(idea => {
       const matchesSearch = idea.text.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesPillar = !selectedPillar || idea.pillar === selectedPillar;
-      const matchesCategory = !selectedCategory || idea.category === selectedCategory;
+      const matchesPillar = !selectedPillar || selectedPillar === "all-pillars" || idea.pillar === selectedPillar;
+      const matchesCategory = !selectedCategory || selectedCategory === "all-categories" || idea.category === selectedCategory;
       return matchesSearch && matchesPillar && matchesCategory;
     });
   };
