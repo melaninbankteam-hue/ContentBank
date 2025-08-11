@@ -151,7 +151,7 @@ const InstagramPreview = ({ monthlyData, currentMonth }) => {
               <div className="text-[#3f2d1d]/60">Reels</div>
             </div>
             <div className="text-center">
-              <div className="font-semibold text-[#472816]">{9 - posts.length}</div>
+              <div className="font-semibold text-[#472816]">{30 - posts.length}</div>
               <div className="text-[#3f2d1d]/60">Empty Spots</div>
             </div>
           </div>
