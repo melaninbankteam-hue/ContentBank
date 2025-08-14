@@ -117,6 +117,10 @@ const ContentPlanner = () => {
               <Target className="w-4 h-4 mr-2" />
               Overview
             </TabsTrigger>
+            <TabsTrigger value="brainstorm" className="data-[state=active]:bg-[#bb9477] data-[state=active]:text-[#3f2d1d] text-[#fffaf1]">
+              <Lightbulb className="w-4 h-4 mr-2" />
+              Brainstorm
+            </TabsTrigger>
             <TabsTrigger value="calendar" className="data-[state=active]:bg-[#bb9477] data-[state=active]:text-[#3f2d1d] text-[#fffaf1]">
               <Calendar className="w-4 h-4 mr-2" />
               Calendar
@@ -129,10 +133,6 @@ const ContentPlanner = () => {
               <Instagram className="w-4 h-4 mr-2" />
               Preview
             </TabsTrigger>
-            <TabsTrigger value="brainstorm" className="data-[state=active]:bg-[#bb9477] data-[state=active]:text-[#3f2d1d] text-[#fffaf1]">
-              <Lightbulb className="w-4 h-4 mr-2" />
-              Brainstorm
-            </TabsTrigger>
             <TabsTrigger value="analytics" className="data-[state=active]:bg-[#bb9477] data-[state=active]:text-[#3f2d1d] text-[#fffaf1]">
               <BarChart3 className="w-4 h-4 mr-2" />
               Analytics
@@ -141,6 +141,14 @@ const ContentPlanner = () => {
 
           <TabsContent value="overview">
             <MonthlyOverview 
+              monthKey={currentMonthKey}
+              monthlyData={monthlyData}
+              setMonthlyData={setMonthlyData}
+            />
+          </TabsContent>
+
+          <TabsContent value="brainstorm">
+            <BrainstormTab 
               monthKey={currentMonthKey}
               monthlyData={monthlyData}
               setMonthlyData={setMonthlyData}
@@ -165,14 +173,6 @@ const ContentPlanner = () => {
             <InstagramPreview 
               monthlyData={monthlyData}
               currentMonth={currentMonth}
-            />
-          </TabsContent>
-
-          <TabsContent value="brainstorm">
-            <BrainstormTab 
-              monthKey={currentMonthKey}
-              monthlyData={monthlyData}
-              setMonthlyData={setMonthlyData}
             />
           </TabsContent>
 
