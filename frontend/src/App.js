@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ContentPlanner from "./components/ContentPlanner";
+import { Toaster } from "./components/ui/sonner";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
           <Route path="/" element={<ContentPlanner />} />
         </Routes>
       </BrowserRouter>
+      <Toaster />
     </div>
   );
 }
