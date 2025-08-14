@@ -113,6 +113,48 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
     setFormData(prev => ({ ...prev, topic: idea }));
   };
 
+  // Download image function
+  const downloadImage = (imageUrl, filename) => {
+    if (!imageUrl) return;
+    
+    // Create a temporary anchor element
+    const link = document.createElement('a');
+    link.href = imageUrl;
+    link.download = filename || 'content-image.jpg';
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    toast({
+      title: "Download Started",
+      description: "Your image download has begun.",
+    });
+  };
+
+  // Copy caption function
+  const copyCaption = (caption) => {
+    navigator.clipboard.writeText(caption).then(() => {
+      toast({
+        title: "Caption Copied!",
+        description: "The caption has been copied to your clipboard.",
+      });
+    }).catch(() => {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = caption;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      
+      toast({
+        title: "Caption Copied!",
+        description: "The caption has been copied to your clipboard.",
+      });
+    });
+  };
+
   if (!selectedDate) return null;
 
   return (
