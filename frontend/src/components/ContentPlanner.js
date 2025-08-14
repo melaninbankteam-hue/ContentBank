@@ -60,19 +60,28 @@ const ContentPlanner = () => {
         <div className="relative z-10 max-w-6xl mx-auto">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-5xl font-bold mb-3">The Melanin Bank</h1>
-              <p className="text-[#bb9477] text-xl">Content Planner</p>
+              <h1 className="text-5xl font-bold mb-3">Content Strategy Planner</h1>
               <p className="text-[#fffaf1]/80 text-lg mt-2 max-w-2xl">
-                Empowering digital entrepreneurs to create, plan, and track their Instagram content with purpose and strategy.
+                Empowering business owners and entrepreneurs to plan, create and execute their social media strategy with more ease and clarity.
               </p>
             </div>
             
-            {/* Personality Image */}
-            <div className="hidden md:block">
+            {/* Logo and Personality Image */}
+            <div className="hidden md:flex items-start gap-4">
+              {/* Melanin Bank Logo */}
+              <div className="flex-shrink-0">
+                <img 
+                  src="https://customer-assets.emergentagent.com/job_insta-content-hub-1/artifacts/dof2dns5_Melanin%20bank%20sublogo.png"
+                  alt="Melanin Bank"
+                  className="w-16 h-16 object-contain filter brightness-0 invert"
+                />
+              </div>
+              
+              {/* Personality Image */}
               <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#bb9477]/30 shadow-xl">
                 <img 
                   src="https://customer-assets.emergentagent.com/job_insta-content-hub-1/artifacts/2g8c6i4z_Melanin%20bank%20event%20flyers%20%284%29.jpg"
-                  alt="The Melanin Bank"
+                  alt="Content Strategy"
                   className="w-full h-full object-cover"
                 />
               </div>
