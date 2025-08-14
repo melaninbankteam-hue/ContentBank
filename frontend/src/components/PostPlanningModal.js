@@ -361,9 +361,20 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
                       )}
                       
                       {post.caption && (
-                        <p className="text-sm text-[#3f2d1d]/70 mb-2 line-clamp-2">
-                          <strong>Caption:</strong> {post.caption}
-                        </p>
+                        <div className="relative mt-2">
+                          <p className="text-sm text-[#3f2d1d]/70 mb-2 line-clamp-2">
+                            <strong>Caption:</strong> {post.caption}
+                          </p>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => copyCaption(post.caption)}
+                            className="text-xs border-[#bb9477] text-[#3f2d1d] hover:bg-[#bb9477]/10"
+                          >
+                            <Copy className="w-3 h-3 mr-1" />
+                            Copy Caption
+                          </Button>
+                        </div>
                       )}
                       
                       {post.image && (
