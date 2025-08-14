@@ -367,7 +367,17 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
                       )}
                       
                       {post.image && (
-                        <img src={post.image} alt="Post preview" className="w-full h-24 object-cover rounded mt-2" />
+                        <div className="relative">
+                          <img src={post.image} alt="Post preview" className="w-full h-24 object-cover rounded mt-2" />
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => downloadImage(post.image, `${post.topic.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_image`)}
+                            className="absolute top-1 right-1 bg-white/80 hover:bg-white text-[#3f2d1d] border-[#bb9477]"
+                          >
+                            <Download className="w-3 h-3" />
+                          </Button>
+                        </div>
                       )}
                       
                       {post.notes && (
