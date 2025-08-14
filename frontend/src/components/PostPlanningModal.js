@@ -11,6 +11,7 @@ import { contentCategories, contentTypes, mockBrainstormIdeas } from "../data/mo
 import { useToast } from "../hooks/use-toast";
 
 const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthlyData, setMonthlyData }) => {
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     type: "",
     category: "",
