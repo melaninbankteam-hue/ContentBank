@@ -334,62 +334,28 @@ const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
         <CardHeader className="bg-gradient-to-r from-[#3f2d1d] to-[#472816] text-[#fffaf1] rounded-t-lg">
           <CardTitle className="flex items-center gap-2">
             <Lightbulb className="w-5 h-5" />
-            Content Brainstorming Prompts
+            AI Content Prompt Generator
           </CardTitle>
         </CardHeader>
         <CardContent className="p-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <h4 className="font-semibold text-[#472816] text-sm">Educational Content Ideas</h4>
-              <ul className="space-y-2 text-sm text-[#3f2d1d]">
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
-                  <span>"5 mistakes I made when starting my course business"</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
-                  <span>"The exact process I use to validate course ideas"</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
-                  <span>"Why most people fail at online courses (and how to avoid it)"</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
-                  <span>"Behind the scenes: My course creation process"</span>
-                </li>
-              </ul>
+          <div className="space-y-4">
+            <div>
+              <h4 className="font-semibold text-[#472816] text-sm mb-3">Copy this prompt and customize it for your AI tool:</h4>
+              <div className="bg-[#bb9477]/10 rounded-lg border border-[#bb9477]/20 p-4">
+                <Textarea
+                  value={currentData.aiPrompt || "I am a (insert title) who helps (insert target audience) (insert transformation you provide). Can you create strong hooks addressing 10 most common pain points and goals? For each pain point and goal, create 8 hooks using the format below. Make it very specific and use third grade English.\n\nQuick Tip - Stop doing ____ and try this one easy trick to _____.\nTutorial - The X Simple Steps to Get (specific result).\nMistake - Stop doing X and do this instead: _____.\nSigns - X Signs You Might Have (Problem 1) and (Problem 2).\nScience-Backed - This Method to _____ is Proven by Science.\nSuccess Story - How My Client Got (specific result) in X Weeks.\nTool - The One Tool That Changed _____ Completely.\nExpert Opinion - Experts Say You Should _____ to Get Better."}
+                  onChange={(e) => updateField('aiPrompt', e.target.value)}
+                  placeholder="Customize your AI content prompt here..."
+                  className="min-h-48 border-[#bb9477]/50 focus:border-[#472816] resize-none text-sm bg-white"
+                />
+              </div>
+              <div className="mt-3 p-3 bg-blue-50 border-l-4 border-blue-400 rounded">
+                <h4 className="font-semibold text-blue-900 mb-1 text-sm">💡 How to Use</h4>
+                <p className="text-sm text-blue-700">
+                  Copy the prompt above, customize the placeholders with your specific details, then paste it into ChatGPT, Claude, or your preferred AI tool to generate content ideas.
+                </p>
+              </div>
             </div>
-
-            <div className="space-y-4">
-              <h4 className="font-semibold text-[#472816] text-sm">Engagement Content Ideas</h4>
-              <ul className="space-y-2 text-sm text-[#3f2d1d]">
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
-                  <span>"This or That: Course platforms edition"</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
-                  <span>"Tell me your biggest business challenge in the comments"</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
-                  <span>"Rate my morning routine from 1-10"</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
-                  <span>"What questions do you have about digital courses?"</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="mt-6 p-4 bg-[#bb9477]/10 rounded-lg border border-[#bb9477]/20">
-            <h4 className="font-semibold text-[#472816] mb-2 text-sm">💡 Pro Tip</h4>
-            <p className="text-sm text-[#3f2d1d]">
-              Keep a running list of content ideas as they come to you. The best content often comes from real conversations 
-              with your audience, common questions you receive, or challenges you've personally overcome.
-            </p>
           </div>
         </CardContent>
       </Card>
