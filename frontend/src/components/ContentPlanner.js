@@ -107,16 +107,34 @@ const ContentPlanner = () => {
                   <div className="flex items-center gap-2 mb-2">
                     <User className="w-4 h-4" />
                     <span>{user?.name}</span>
+                    {user?.role === 'admin' && (
+                      <Badge variant="outline" className="bg-[#bb9477]/20 text-[#fffaf1] border-[#bb9477]">
+                        Admin
+                      </Badge>
+                    )}
                   </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={logout}
-                    className="border-[#bb9477] text-[#fffaf1] hover:bg-[#bb9477]/20"
-                  >
-                    <LogOut className="w-3 h-3 mr-1" />
-                    Logout
-                  </Button>
+                  <div className="flex gap-2">
+                    {user?.role === 'admin' && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setShowAdminPanel(true)}
+                        className="border-[#bb9477] text-[#fffaf1] hover:bg-[#bb9477]/20"
+                      >
+                        <Shield className="w-3 h-3 mr-1" />
+                        Admin Panel
+                      </Button>
+                    )}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={logout}
+                      className="border-[#bb9477] text-[#fffaf1] hover:bg-[#bb9477]/20"
+                    >
+                      <LogOut className="w-3 h-3 mr-1" />
+                      Logout
+                    </Button>
+                  </div>
                 </div>
                 
                 {/* Personality Image */}
