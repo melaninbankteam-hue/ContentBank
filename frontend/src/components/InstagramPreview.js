@@ -38,148 +38,91 @@ const InstagramPreview = ({ monthlyData, currentMonth }) => {
 
   return (
     <div className="space-y-6">
-      <Card className="border-[#bb9477]/30 shadow-lg bg-white max-w-md mx-auto">
-        {/* Instagram Header */}
-        <div className="bg-white border-b border-gray-200 px-4 py-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-tr from-yellow-400 to-pink-600 rounded-full p-0.5">
-                <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
-                  <div className="w-6 h-6 bg-[#bb9477] rounded-full"></div>
-                </div>
-              </div>
-              <span className="font-semibold text-gray-900 text-sm">{mockUser.username}</span>
-            </div>
-            <MoreHorizontal className="w-5 h-5 text-gray-900" />
-          </div>
-        </div>
-
-        {/* Profile Section */}
-        <CardContent className="p-4">
-          <div className="flex items-start gap-4 mb-4">
-            <div className="w-20 h-20 bg-gradient-to-tr from-yellow-400 to-pink-600 rounded-full p-1">
-              <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
-                <div className="w-16 h-16 bg-[#bb9477] rounded-full"></div>
-              </div>
-            </div>
-            
-            <div className="flex-1 min-w-0">
-              <div className="grid grid-cols-3 gap-4 text-center mb-3">
-                <div>
-                  <div className="font-semibold text-gray-900">{posts.length}</div>
-                  <div className="text-xs text-gray-500">posts</div>
-                </div>
-                <div>
-                  <div className="font-semibold text-gray-900">{mockUser.followers}</div>
-                  <div className="text-xs text-gray-500">followers</div>
-                </div>
-                <div>
-                  <div className="font-semibold text-gray-900">{mockUser.following}</div>
-                  <div className="text-xs text-gray-500">following</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="mb-4">
-            <h3 className="font-semibold text-gray-900 text-sm">{mockUser.displayName}</h3>
-            <p className="text-sm text-gray-900 mt-1">{mockUser.bio}</p>
-            <a href="#" className="text-sm text-blue-900 font-medium">{mockUser.website}</a>
-          </div>
-
+      <Card className="border-[#bb9477]/30 shadow-lg bg-white max-w-4xl mx-auto">
+        <CardHeader className="bg-gradient-to-r from-[#472816] to-[#3f2d1d] text-[#fffaf1] rounded-t-lg">
+          <CardTitle className="text-center text-2xl">
+            Instagram Feed Preview - {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+          </CardTitle>
+        </CardHeader>
+        
+        <CardContent className="p-8">
           {/* Posts Grid - 10 rows x 3 columns = 30 posts */}
-          <div className="border-t border-gray-200 pt-4">
-            <div className="grid grid-cols-3 gap-1">
-              {gridPosts.map((post, index) => (
-                <div key={index} className="aspect-square relative">
-                  {post ? (
-                    <div className="group relative w-full h-full">
-                      <img 
-                        src={post.image} 
-                        alt={post.topic}
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-opacity duration-200 flex items-center justify-center">
-                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center gap-4 text-white">
+          <div className="grid grid-cols-3 gap-2">
+            {gridPosts.map((post, index) => (
+              <div key={index} className="aspect-square relative">
+                {post ? (
+                  <div className="group relative w-full h-full">
+                    <img 
+                      src={post.image} 
+                      alt={post.topic}
+                      className="w-full h-full object-cover rounded"
+                    />
+                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity duration-200 flex items-center justify-center rounded">
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-white text-center p-2">
+                        <div className="text-xs font-semibold mb-1">{post.type}</div>
+                        <div className="text-xs">{post.topic.length > 30 ? `${post.topic.substring(0, 30)}...` : post.topic}</div>
+                        <div className="flex items-center justify-center gap-4 mt-2">
                           <div className="flex items-center gap-1">
-                            <Heart className="w-5 h-5 fill-white" />
-                            <span className="text-sm font-semibold">125</span>
+                            <Heart className="w-4 h-4 fill-white" />
+                            <span className="text-xs">125</span>
                           </div>
                           <div className="flex items-center gap-1">
-                            <MessageCircle className="w-5 h-5 fill-white" />
-                            <span className="text-sm font-semibold">12</span>
+                            <MessageCircle className="w-4 h-4 fill-white" />
+                            <span className="text-xs">12</span>
                           </div>
                         </div>
                       </div>
-                      {post.type === 'Reel' && (
-                        <div className="absolute top-2 right-2">
-                          <Badge variant="secondary" className="bg-black/60 text-white text-xs">
-                            Reel
-                          </Badge>
-                        </div>
-                      )}
                     </div>
-                  ) : (
-                    <div className="w-full h-full bg-gray-100 border border-gray-200 flex items-center justify-center">
-                      <div className="text-gray-400 text-xs text-center p-2">
-                        Upload content to preview
+                    {post.type === 'Reel' && (
+                      <div className="absolute top-2 right-2">
+                        <Badge variant="secondary" className="bg-black/70 text-white text-xs">
+                          Reel
+                        </Badge>
                       </div>
+                    )}
+                    {post.type === 'Carousel' && (
+                      <div className="absolute top-2 right-2">
+                        <Badge variant="secondary" className="bg-black/70 text-white text-xs">
+                          📷
+                        </Badge>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="w-full h-full bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center rounded">
+                    <div className="text-gray-400 text-xs text-center p-2">
+                      <Upload className="w-6 h-6 mx-auto mb-1 opacity-50" />
+                      <div>Upload content</div>
                     </div>
-                  )}
-                </div>
-              ))}
-            </div>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </CardContent>
       </Card>
 
-      {/* Preview Info */}
-      <Card className="border-[#bb9477]/30 shadow-lg bg-gradient-to-br from-[#fffaf1] to-[#bb9477]/5 max-w-md mx-auto">
-        <CardContent className="p-6 text-center">
-          <h3 className="font-semibold text-[#472816] mb-2">Instagram Feed Preview</h3>
-          <p className="text-sm text-[#3f2d1d]/70 mb-4">
-            This shows how your scheduled posts will appear in your Instagram grid. 
-            Only posts with uploaded images are displayed.
-          </p>
-          <div className="flex justify-center gap-6 text-sm">
-            <div className="text-center">
-              <div className="font-semibold text-[#472816]">{posts.length}</div>
-              <div className="text-[#3f2d1d]/60">Scheduled Posts</div>
-            </div>
-            <div className="text-center">
-              <div className="font-semibold text-[#472816]">{posts.filter(p => p.type === 'Reel').length}</div>
-              <div className="text-[#3f2d1d]/60">Reels</div>
-            </div>
-            <div className="text-center">
-              <div className="font-semibold text-[#472816]">{30 - posts.length}</div>
-              <div className="text-[#3f2d1d]/60">Empty Spots</div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Posting Tips */}
-      <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm max-w-md mx-auto">
+      {/* Preview Statistics */}
+      <Card className="border-[#bb9477]/30 shadow-lg bg-gradient-to-br from-[#fffaf1] to-[#bb9477]/5 max-w-4xl mx-auto">
         <CardContent className="p-6">
-          <h4 className="font-semibold text-[#472816] mb-3">Grid Optimization Tips</h4>
-          <ul className="space-y-2 text-sm text-[#3f2d1d]">
-            <li className="flex items-start gap-2">
-              <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
-              <span>Maintain consistent color palette and style</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
-              <span>Mix content types: photos, graphics, behind-the-scenes</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
-              <span>Plan your grid in rows of 10 for comprehensive content preview</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
-              <span>Include faces and people for higher engagement</span>
-            </li>
-          </ul>
+          <div className="flex justify-center gap-8 text-center">
+            <div>
+              <div className="text-2xl font-bold text-[#472816]">{posts.length}</div>
+              <div className="text-[#3f2d1d]/60 text-sm">Scheduled Posts</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-[#472816]">{posts.filter(p => p.type === 'Reel').length}</div>
+              <div className="text-[#3f2d1d]/60 text-sm">Reels</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-[#472816]">{posts.filter(p => p.type === 'Carousel').length}</div>
+              <div className="text-[#3f2d1d]/60 text-sm">Carousels</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-[#472816]">{30 - posts.length}</div>
+              <div className="text-[#3f2d1d]/60 text-sm">Available Spots</div>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>
