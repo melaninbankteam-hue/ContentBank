@@ -190,45 +190,45 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
           </CardTitle>
         </CardHeader>
         <CardContent className="p-6">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="text-center p-4 bg-white/60 rounded-lg">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+            <div className="text-center p-3 md:p-4 bg-white/60 rounded-lg">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <Users className="w-4 h-4 text-[#472816]" />
-                <span className={`text-lg font-bold ${getGrowthColor(analytics.growthPercentage?.followers)}`}>
+                <Users className="w-3 h-3 md:w-4 md:h-4 text-[#472816]" />
+                <span className={`text-base md:text-lg font-bold ${getGrowthColor(analytics.growthPercentage?.followers)}`}>
                   {analytics.growthPercentage?.followers > 0 ? '+' : ''}{analytics.growthPercentage?.followers}%
                 </span>
               </div>
-              <div className="text-sm text-[#3f2d1d]/70">Followers Growth</div>
+              <div className="text-xs md:text-sm text-[#3f2d1d]/70">Followers Growth</div>
             </div>
 
-            <div className="text-center p-4 bg-white/60 rounded-lg">
+            <div className="text-center p-3 md:p-4 bg-white/60 rounded-lg">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <Eye className="w-4 h-4 text-[#472816]" />
-                <span className={`text-lg font-bold ${getGrowthColor(analytics.growthPercentage?.views)}`}>
+                <Eye className="w-3 h-3 md:w-4 md:h-4 text-[#472816]" />
+                <span className={`text-base md:text-lg font-bold ${getGrowthColor(analytics.growthPercentage?.views)}`}>
                   {analytics.growthPercentage?.views > 0 ? '+' : ''}{analytics.growthPercentage?.views}%
                 </span>
               </div>
-              <div className="text-sm text-[#3f2d1d]/70">Views Growth</div>
+              <div className="text-xs md:text-sm text-[#3f2d1d]/70">Views Growth</div>
             </div>
 
-            <div className="text-center p-4 bg-white/60 rounded-lg">
+            <div className="text-center p-3 md:p-4 bg-white/60 rounded-lg">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <BarChart3 className="w-4 h-4 text-[#472816]" />
-                <span className={`text-lg font-bold ${getGrowthColor(analytics.growthPercentage?.reach)}`}>
+                <BarChart3 className="w-3 h-3 md:w-4 md:h-4 text-[#472816]" />
+                <span className={`text-base md:text-lg font-bold ${getGrowthColor(analytics.growthPercentage?.reach)}`}>
                   {analytics.growthPercentage?.reach > 0 ? '+' : ''}{analytics.growthPercentage?.reach}%
                 </span>
               </div>
-              <div className="text-sm text-[#3f2d1d]/70">Reach Growth</div>
+              <div className="text-xs md:text-sm text-[#3f2d1d]/70">Reach Growth</div>
             </div>
 
-            <div className="text-center p-4 bg-white/60 rounded-lg">
+            <div className="text-center p-3 md:p-4 bg-white/60 rounded-lg">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <TrendingUp className="w-4 h-4 text-[#472816]" />
-                <span className={`text-lg font-bold ${getGrowthColor(analytics.growthPercentage?.interactions)}`}>
+                <TrendingUp className="w-3 h-3 md:w-4 md:h-4 text-[#472816]" />
+                <span className={`text-base md:text-lg font-bold ${getGrowthColor(analytics.growthPercentage?.interactions)}`}>
                   {analytics.growthPercentage?.interactions > 0 ? '+' : ''}{analytics.growthPercentage?.interactions}%
                 </span>
               </div>
-              <div className="text-sm text-[#3f2d1d]/70">Engagement Growth</div>
+              <div className="text-xs md:text-sm text-[#3f2d1d]/70">Engagement Growth</div>
             </div>
           </div>
         </CardContent>
