@@ -5,13 +5,14 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Badge } from "./ui/badge";
-import { Calendar, BarChart3, Lightbulb, Instagram, Target, Plus, LogOut, User } from "lucide-react";
+import { Calendar, BarChart3, Lightbulb, Instagram, Target, Plus, LogOut, User, Shield } from "lucide-react";
 import MonthlyOverview from "./MonthlyOverview";
 import ContentCalendar from "./ContentCalendar";
 import ContentTracker from "./ContentTracker";
 import InstagramPreview from "./InstagramPreview";
 import BrainstormTab from "./BrainstormTab";
 import AnalyticsTab from "./AnalyticsTab";
+import AdminPanel from "./AdminPanel";
 import { useAuth } from "./LoginForm";
 
 const ContentPlanner = () => {
