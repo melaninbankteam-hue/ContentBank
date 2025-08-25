@@ -19,16 +19,18 @@ const ContentPlanner = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [activeTab, setActiveTab] = useState("overview");
 
-  // Load data from localStorage
+  // Load data from localStorage with user-specific key
   const [monthlyData, setMonthlyData] = useState(() => {
-    const saved = localStorage.getItem('melaninbank-monthly');
+    const saved = localStorage.getItem(`csp-monthly-${user?.id}`);
     return saved ? JSON.parse(saved) : {};
   });
 
-  // Save to localStorage whenever data changes
+  // Save to localStorage with user-specific key whenever data changes
   useEffect(() => {
-    localStorage.setItem('melaninbank-monthly', JSON.stringify(monthlyData));
-  }, [monthlyData]);
+    if (user?.id) {
+      localStorage.setItem(`csp-monthly-${user.id}`, JSON.stringify(monthlyData));
+    }
+  }, [monthlyData, user?.id]);
 
   const currentMonthKey = `${currentMonth.getFullYear()}-${currentMonth.getMonth()}`;
 
