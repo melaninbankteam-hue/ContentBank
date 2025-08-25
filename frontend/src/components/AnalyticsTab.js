@@ -263,6 +263,7 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
             />
           </CardContent>
         </Card>
+      </div>
     </div>
   );
 };
