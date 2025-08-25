@@ -161,16 +161,16 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-[#fffaf1] border-[#bb9477]">
-        <DialogHeader className="bg-[#472816] text-[#fffaf1] -mx-6 -mt-6 px-6 py-4 mb-6">
-          <DialogTitle className="text-2xl">
+      <DialogContent className="max-w-full md:max-w-4xl max-h-[90vh] overflow-y-auto bg-[#fffaf1] border-[#bb9477] m-0 md:m-6">
+        <DialogHeader className="bg-[#472816] text-[#fffaf1] -mx-6 -mt-6 px-4 md:px-6 py-4 mb-6">
+          <DialogTitle className="text-lg md:text-2xl">
             Plan Content - {currentMonth.toLocaleDateString('en-US', { month: 'long' })} {selectedDate}, {currentMonth.getFullYear()}
           </DialogTitle>
         </DialogHeader>
 
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 px-4 md:px-0">
           {/* Content Planning Form */}
-          <div className="space-y-6">
+          <div className="space-y-4 md:space-y-6">
             <h3 className="text-lg font-semibold text-[#472816]">Add New Post</h3>
             
             <div className="grid grid-cols-2 gap-4">
