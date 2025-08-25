@@ -15,6 +15,7 @@ import AnalyticsTab from "./AnalyticsTab";
 import { useAuth } from "./LoginForm";
 
 const ContentPlanner = () => {
+  const { user, logout } = useAuth();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [activeTab, setActiveTab] = useState("overview");
 
