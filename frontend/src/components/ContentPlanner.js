@@ -70,7 +70,7 @@ const ContentPlanner = () => {
               </p>
             </div>
             
-            {/* Logo and Personality Image */}
+            {/* Logo, User Info and Personality Image */}
             <div className="hidden md:flex items-start gap-4">
               {/* Melanin Bank Logo */}
               <div className="flex-shrink-0">
@@ -79,6 +79,23 @@ const ContentPlanner = () => {
                   alt="Melanin Bank"
                   className="w-16 h-16 object-contain filter brightness-0 invert"
                 />
+              </div>
+              
+              {/* User Info */}
+              <div className="text-right text-sm">
+                <div className="flex items-center gap-2 mb-2">
+                  <User className="w-4 h-4" />
+                  <span>{user?.name}</span>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={logout}
+                  className="border-[#bb9477] text-[#fffaf1] hover:bg-[#bb9477]/20"
+                >
+                  <LogOut className="w-3 h-3 mr-1" />
+                  Logout
+                </Button>
               </div>
               
               {/* Personality Image */}
