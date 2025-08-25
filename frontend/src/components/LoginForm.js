@@ -27,47 +27,84 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     setIsLoading(true);
     
-    // Simple demo login - replace with actual API call
-    if (email && password) {
-      const userData = {
-        id: 'demo-user-1',
-        email: email,
-        name: email.split('@')[0],
-        createdAt: new Date().toISOString()
+    // Check if user exists and is approved
+    const allUsers = JSON.parse(localStorage.getItem('csp-all-users') || '[]');
+    const existingUser = allUsers.find(u => u.email === email);
+    
+    if (existingUser) {
+      if (existingUser.status === 'suspended') {
+        setIsLoading(false);
+        return { success: false, error: "Your account has been suspended. Please contact support." };
+      }
+      
+      if (existingUser.status === 'active') {
+        // Update last active
+        existingUser.lastActive = new Date().toISOString();
+        localStorage.setItem('csp-all-users', JSON.stringify(allUsers));
+        
+        setUser(existingUser);
+        localStorage.setItem('csp-user', JSON.stringify(existingUser));
+        localStorage.setItem('csp-auth-token', 'demo-token-' + Date.now());
+        setIsLoading(false);
+        return { success: true };
+      }
+    }
+    
+    // Check if it's the admin login
+    if (email === 'admin@melaninbank.com' && password) {
+      const adminUser = {
+        id: 'admin-1',
+        email: 'admin@melaninbank.com',
+        name: 'Admin User',
+        role: 'admin',
+        status: 'active',
+        createdAt: new Date().toISOString(),
+        lastActive: new Date().toISOString()
       };
       
-      setUser(userData);
-      localStorage.setItem('csp-user', JSON.stringify(userData));
-      localStorage.setItem('csp-auth-token', 'demo-token-' + Date.now());
+      setUser(adminUser);
+      localStorage.setItem('csp-user', JSON.stringify(adminUser));
+      localStorage.setItem('csp-auth-token', 'admin-token-' + Date.now());
       setIsLoading(false);
       return { success: true };
     }
     
     setIsLoading(false);
-    return { success: false, error: "Invalid credentials" };
+    return { success: false, error: "Invalid credentials or account not approved" };
   };
 
   const register = async (name, email, password) => {
     setIsLoading(true);
     
-    // Simple demo registration - replace with actual API call
-    if (name && email && password) {
-      const userData = {
-        id: 'demo-user-' + Date.now(),
-        email: email,
-        name: name,
-        createdAt: new Date().toISOString()
-      };
-      
-      setUser(userData);
-      localStorage.setItem('csp-user', JSON.stringify(userData));
-      localStorage.setItem('csp-auth-token', 'demo-token-' + Date.now());
+    // Check if user already exists
+    const allUsers = JSON.parse(localStorage.getItem('csp-all-users') || '[]');
+    const pendingUsers = JSON.parse(localStorage.getItem('csp-pending-users') || '[]');
+    
+    const userExists = allUsers.find(u => u.email === email);
+    const pendingExists = pendingUsers.find(u => u.email === email);
+    
+    if (userExists || pendingExists) {
       setIsLoading(false);
-      return { success: true };
+      return { success: false, error: "An account with this email already exists or is pending approval" };
     }
     
+    // Add to pending users
+    const newPendingUser = {
+      id: 'pending-' + Date.now(),
+      email: email,
+      name: name,
+      requestedAt: new Date().toISOString(),
+      message: "New user registration request"
+    };
+    
+    const updatedPending = [...pendingUsers, newPendingUser];
+    localStorage.setItem('csp-pending-users', JSON.stringify(updatedPending));
+    
     setIsLoading(false);
-    return { success: false, error: "Please fill all fields" };
+    return { 
+      success: true, 
+      message: "Registration submitted! Your account is pending admin approval. You'll receive access once approved." 
+    };
   };
 
   const logout = () => {
