@@ -283,8 +283,11 @@ const LoginForm = () => {
           </Tabs>
           
           <div className="mt-6 text-center">
+            <p className="text-xs text-[#3f2d1d]/60 mb-2">
+              New registrations require admin approval
+            </p>
             <p className="text-xs text-[#3f2d1d]/60">
-              Demo Mode: Use any email and password to access the app
+              Admin login: admin@melaninbank.com
             </p>
           </div>
         </CardContent>
