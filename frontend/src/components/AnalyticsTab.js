@@ -263,64 +263,6 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
             />
           </CardContent>
         </Card>
-      </div>
-
-      {/* Analytics Tips */}
-      <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
-        <CardHeader className="bg-gradient-to-r from-[#3f2d1d] to-[#472816] text-[#fffaf1] rounded-t-lg">
-          <CardTitle className="flex items-center gap-2">
-            <BarChart3 className="w-5 h-5" />
-            Analytics Insights & Tips
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="p-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <h4 className="font-semibold text-[#472816] mb-3">Key Metrics to Track</h4>
-              <ul className="space-y-2 text-sm text-[#3f2d1d]">
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
-                  <span><strong>Engagement Rate:</strong> Aim for 3-5% for healthy growth</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
-                  <span><strong>Reach vs. Impressions:</strong> Higher reach means new audience discovery</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
-                  <span><strong>Profile Visits:</strong> Indicates content is driving curiosity</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
-                  <span><strong>Website Clicks:</strong> Direct measure of traffic conversion</span>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-semibold text-[#472816] mb-3">Growth Strategies</h4>
-              <ul className="space-y-2 text-sm text-[#3f2d1d]">
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
-                  <span>Post consistently at your audience's most active times</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
-                  <span>Use trending audio and hashtags to increase discoverability</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
-                  <span>Engage authentically with comments within the first hour</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 bg-[#bb9477] rounded-full mt-2 flex-shrink-0"></div>
-                  <span>Collaborate with accounts in your niche for mutual growth</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 };
