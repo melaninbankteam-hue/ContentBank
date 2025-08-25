@@ -130,87 +130,87 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
       </Card>
 
       {/* Planning Sections */}
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
           <CardHeader className="bg-[#bb9477] text-[#3f2d1d] rounded-t-lg">
-            <CardTitle>Monthly Goals</CardTitle>
+            <CardTitle className="text-base md:text-lg">Monthly Goals</CardTitle>
           </CardHeader>
-          <CardContent className="p-6">
+          <CardContent className="p-4 md:p-6">
             <Textarea
               value={currentData.goals}
               onChange={(e) => updateField('goals', e.target.value)}
               placeholder="What are your main goals for this month?"
-              className="min-h-32 border-[#bb9477]/50 focus:border-[#472816] resize-none"
+              className="min-h-24 md:min-h-32 border-[#bb9477]/50 focus:border-[#472816] resize-none text-sm"
             />
           </CardContent>
         </Card>
 
         <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
           <CardHeader className="bg-[#bb9477] text-[#3f2d1d] rounded-t-lg">
-            <CardTitle>Key Themes</CardTitle>
+            <CardTitle className="text-base md:text-lg">Key Themes</CardTitle>
           </CardHeader>
-          <CardContent className="p-6">
+          <CardContent className="p-4 md:p-6">
             <Textarea
               value={currentData.themes}
               onChange={(e) => updateField('themes', e.target.value)}
               placeholder="What themes will you focus on?"
-              className="min-h-32 border-[#bb9477]/50 focus:border-[#472816] resize-none"
+              className="min-h-24 md:min-h-32 border-[#bb9477]/50 focus:border-[#472816] resize-none text-sm"
             />
           </CardContent>
         </Card>
 
         <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
           <CardHeader className="bg-[#bb9477] text-[#3f2d1d] rounded-t-lg">
-            <CardTitle>Success Metrics</CardTitle>
+            <CardTitle className="text-base md:text-lg">Success Metrics</CardTitle>
           </CardHeader>
-          <CardContent className="p-6">
+          <CardContent className="p-4 md:p-6">
             <Textarea
               value={currentData.metrics}
               onChange={(e) => updateField('metrics', e.target.value)}
               placeholder="How will you measure success?"
-              className="min-h-32 border-[#bb9477]/50 focus:border-[#472816] resize-none"
+              className="min-h-24 md:min-h-32 border-[#bb9477]/50 focus:border-[#472816] resize-none text-sm"
             />
           </CardContent>
         </Card>
 
         <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
           <CardHeader className="bg-[#bb9477] text-[#3f2d1d] rounded-t-lg">
-            <CardTitle>Special Events</CardTitle>
+            <CardTitle className="text-base md:text-lg">Special Events</CardTitle>
           </CardHeader>
-          <CardContent className="p-6">
+          <CardContent className="p-4 md:p-6">
             <Textarea
               value={currentData.events}
               onChange={(e) => updateField('events', e.target.value)}
               placeholder="Any special events, launches, or promotions?"
-              className="min-h-32 border-[#bb9477]/50 focus:border-[#472816] resize-none"
+              className="min-h-24 md:min-h-32 border-[#bb9477]/50 focus:border-[#472816] resize-none text-sm"
             />
           </CardContent>
         </Card>
 
         <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
           <CardHeader className="bg-[#bb9477] text-[#3f2d1d] rounded-t-lg">
-            <CardTitle>Revenue Goals</CardTitle>
+            <CardTitle className="text-base md:text-lg">Revenue Goals</CardTitle>
           </CardHeader>
-          <CardContent className="p-6">
+          <CardContent className="p-4 md:p-6">
             <Textarea
               value={currentData.revenueGoals}
               onChange={(e) => updateField('revenueGoals', e.target.value)}
               placeholder="What are your revenue targets?"
-              className="min-h-32 border-[#bb9477]/50 focus:border-[#472816] resize-none"
+              className="min-h-24 md:min-h-32 border-[#bb9477]/50 focus:border-[#472816] resize-none text-sm"
             />
           </CardContent>
         </Card>
 
         <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
           <CardHeader className="bg-[#bb9477] text-[#3f2d1d] rounded-t-lg">
-            <CardTitle>Additional Notes</CardTitle>
+            <CardTitle className="text-base md:text-lg">Additional Notes</CardTitle>
           </CardHeader>
-          <CardContent className="p-6">
+          <CardContent className="p-4 md:p-6">
             <Textarea
               value={currentData.notes}
               onChange={(e) => updateField('notes', e.target.value)}
               placeholder="Any other thoughts or reminders?"
-              className="min-h-32 border-[#bb9477]/50 focus:border-[#472816] resize-none"
+              className="min-h-24 md:min-h-32 border-[#bb9477]/50 focus:border-[#472816] resize-none text-sm"
             />
           </CardContent>
         </Card>
