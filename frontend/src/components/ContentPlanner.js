@@ -226,6 +226,7 @@ const ContentPlanner = () => {
             <InstagramPreview 
               monthlyData={monthlyData}
               currentMonth={currentMonth}
+              setMonthlyData={setMonthlyData}
             />
           </TabsContent>
 
