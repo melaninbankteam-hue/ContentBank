@@ -160,34 +160,37 @@ const ContentPlanner = () => {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-6 py-8">
+      <div className="max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-6 bg-[#3f2d1d] mb-8">
-            <TabsTrigger value="overview" className="data-[state=active]:bg-[#bb9477] data-[state=active]:text-[#3f2d1d] text-[#fffaf1]">
-              <Target className="w-4 h-4 mr-2" />
-              Overview
-            </TabsTrigger>
-            <TabsTrigger value="brainstorm" className="data-[state=active]:bg-[#bb9477] data-[state=active]:text-[#3f2d1d] text-[#fffaf1]">
-              <Lightbulb className="w-4 h-4 mr-2" />
-              Brainstorm
-            </TabsTrigger>
-            <TabsTrigger value="calendar" className="data-[state=active]:bg-[#bb9477] data-[state=active]:text-[#3f2d1d] text-[#fffaf1]">
-              <Calendar className="w-4 h-4 mr-2" />
-              Calendar
-            </TabsTrigger>
-            <TabsTrigger value="tracker" className="data-[state=active]:bg-[#bb9477] data-[state=active]:text-[#3f2d1d] text-[#fffaf1]">
-              <BarChart3 className="w-4 h-4 mr-2" />
-              Tracker
-            </TabsTrigger>
-            <TabsTrigger value="preview" className="data-[state=active]:bg-[#bb9477] data-[state=active]:text-[#3f2d1d] text-[#fffaf1]">
-              <Instagram className="w-4 h-4 mr-2" />
-              Preview
-            </TabsTrigger>
-            <TabsTrigger value="analytics" className="data-[state=active]:bg-[#bb9477] data-[state=active]:text-[#3f2d1d] text-[#fffaf1]">
-              <BarChart3 className="w-4 h-4 mr-2" />
-              Analytics
-            </TabsTrigger>
-          </TabsList>
+          {/* Mobile Tab Navigation - Scrollable */}
+          <div className="mb-6 md:mb-8 overflow-x-auto">
+            <TabsList className="flex md:grid md:grid-cols-6 bg-[#3f2d1d] min-w-max md:min-w-0 w-full">
+              <TabsTrigger value="overview" className="data-[state=active]:bg-[#bb9477] data-[state=active]:text-[#3f2d1d] text-[#fffaf1] whitespace-nowrap px-3 md:px-4">
+                <Target className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
+                <span className="text-xs md:text-sm">Overview</span>
+              </TabsTrigger>
+              <TabsTrigger value="brainstorm" className="data-[state=active]:bg-[#bb9477] data-[state=active]:text-[#3f2d1d] text-[#fffaf1] whitespace-nowrap px-3 md:px-4">
+                <Lightbulb className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
+                <span className="text-xs md:text-sm">Brainstorm</span>
+              </TabsTrigger>
+              <TabsTrigger value="calendar" className="data-[state=active]:bg-[#bb9477] data-[state=active]:text-[#3f2d1d] text-[#fffaf1] whitespace-nowrap px-3 md:px-4">
+                <Calendar className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
+                <span className="text-xs md:text-sm">Calendar</span>
+              </TabsTrigger>
+              <TabsTrigger value="tracker" className="data-[state=active]:bg-[#bb9477] data-[state=active]:text-[#3f2d1d] text-[#fffaf1] whitespace-nowrap px-3 md:px-4">
+                <BarChart3 className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
+                <span className="text-xs md:text-sm">Tracker</span>
+              </TabsTrigger>
+              <TabsTrigger value="preview" className="data-[state=active]:bg-[#bb9477] data-[state=active]:text-[#3f2d1d] text-[#fffaf1] whitespace-nowrap px-3 md:px-4">
+                <Instagram className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
+                <span className="text-xs md:text-sm">Preview</span>
+              </TabsTrigger>
+              <TabsTrigger value="analytics" className="data-[state=active]:bg-[#bb9477] data-[state=active]:text-[#3f2d1d] text-[#fffaf1] whitespace-nowrap px-3 md:px-4">
+                <BarChart3 className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
+                <span className="text-xs md:text-sm">Analytics</span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
           <TabsContent value="overview">
             <MonthlyOverview 
