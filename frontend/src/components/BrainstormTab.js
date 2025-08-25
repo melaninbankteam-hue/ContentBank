@@ -273,21 +273,21 @@ const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
       )}
 
       {/* Creative Resources Grid */}
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
         {/* Visual Concepts */}
         <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
           <CardHeader className="bg-[#bb9477] text-[#3f2d1d] rounded-t-lg">
-            <CardTitle className="flex items-center gap-2 text-base">
-              <Eye className="w-4 h-4" />
+            <CardTitle className="flex items-center gap-2 text-sm md:text-base">
+              <Eye className="w-3 h-3 md:w-4 md:h-4" />
               Visual Concepts
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-4">
+          <CardContent className="p-3 md:p-4">
             <Textarea
               value={visualConcepts}
               onChange={(e) => updateField('visualConcepts', e.target.value)}
               placeholder="Visual inspiration, color schemes, photo ideas..."
-              className="min-h-40 border-[#bb9477]/50 focus:border-[#472816] resize-none text-sm"
+              className="min-h-32 md:min-h-40 border-[#bb9477]/50 focus:border-[#472816] resize-none text-xs md:text-sm"
             />
           </CardContent>
         </Card>
@@ -295,17 +295,17 @@ const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
         {/* Caption Drafts */}
         <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
           <CardHeader className="bg-[#bb9477] text-[#3f2d1d] rounded-t-lg">
-            <CardTitle className="flex items-center gap-2 text-base">
-              <PenTool className="w-4 h-4" />
+            <CardTitle className="flex items-center gap-2 text-sm md:text-base">
+              <PenTool className="w-3 h-3 md:w-4 md:h-4" />
               Caption Drafts
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-4">
+          <CardContent className="p-3 md:p-4">
             <Textarea
               value={captionDrafts}
               onChange={(e) => updateField('captionDrafts', e.target.value)}
               placeholder="Draft captions, hooks, call-to-actions..."
-              className="min-h-40 border-[#bb9477]/50 focus:border-[#472816] resize-none text-sm"
+              className="min-h-32 md:min-h-40 border-[#bb9477]/50 focus:border-[#472816] resize-none text-xs md:text-sm"
             />
           </CardContent>
         </Card>
@@ -313,17 +313,17 @@ const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
         {/* Resources & Links */}
         <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
           <CardHeader className="bg-[#bb9477] text-[#3f2d1d] rounded-t-lg">
-            <CardTitle className="flex items-center gap-2 text-base">
-              <Link className="w-4 h-4" />
+            <CardTitle className="flex items-center gap-2 text-sm md:text-base">
+              <Link className="w-3 h-3 md:w-4 md:h-4" />
               Resources & Links
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-4">
+          <CardContent className="p-3 md:p-4">
             <Textarea
               value={resourcesLinks}
               onChange={(e) => updateField('resourcesLinks', e.target.value)}
               placeholder="Useful links, tools, references..."
-              className="min-h-40 border-[#bb9477]/50 focus:border-[#472816] resize-none text-sm"
+              className="min-h-32 md:min-h-40 border-[#bb9477]/50 focus:border-[#472816] resize-none text-xs md:text-sm"
             />
           </CardContent>
         </Card>
