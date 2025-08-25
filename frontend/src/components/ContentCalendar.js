@@ -104,18 +104,19 @@ const ContentCalendar = ({ currentMonth, monthlyData, setMonthlyData }) => {
             {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-6">
+        <CardContent className="p-3 md:p-6">
           {/* Calendar Header */}
-          <div className="grid grid-cols-7 gap-4 mb-4">
+          <div className="grid grid-cols-7 gap-1 md:gap-4 mb-4">
             {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-              <div key={day} className="text-center font-semibold text-[#472816] py-2">
-                {day}
+              <div key={day} className="text-center font-semibold text-[#472816] py-2 text-xs md:text-sm">
+                <span className="hidden sm:inline">{day}</span>
+                <span className="sm:hidden">{day.charAt(0)}</span>
               </div>
             ))}
           </div>
 
           {/* Calendar Grid */}
-          <div className="grid grid-cols-7 gap-4">
+          <div className="grid grid-cols-7 gap-1 md:gap-4">
             {renderCalendar()}
           </div>
         </CardContent>
