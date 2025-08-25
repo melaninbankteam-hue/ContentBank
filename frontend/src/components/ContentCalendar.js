@@ -56,36 +56,36 @@ const ContentCalendar = ({ currentMonth, monthlyData, setMonthlyData }) => {
       days.push(
         <div
           key={day}
-          className={`h-32 border border-[#bb9477]/20 rounded-lg p-2 cursor-pointer transition-all hover:bg-[#bb9477]/5 hover:shadow-md ${
+          className={`h-20 md:h-32 border border-[#bb9477]/20 rounded-lg p-1 md:p-2 cursor-pointer transition-all hover:bg-[#bb9477]/5 hover:shadow-md ${
             hasContent ? 'bg-[#bb9477]/10' : 'bg-white'
           }`}
           onClick={() => handleDateClick(day)}
         >
-          <div className="flex justify-between items-start mb-2">
-            <span className={`text-sm font-medium ${
+          <div className="flex justify-between items-start mb-1 md:mb-2">
+            <span className={`text-xs md:text-sm font-medium ${
               hasContent ? 'text-[#472816]' : 'text-[#3f2d1d]/70'
             }`}>
               {day}
             </span>
             {hasContent && (
-              <Badge variant="secondary" className="bg-[#472816] text-[#fffaf1] text-xs">
+              <Badge variant="secondary" className="bg-[#472816] text-[#fffaf1] text-xs scale-75 md:scale-100">
                 {posts.length}
               </Badge>
             )}
           </div>
           
           <div className="space-y-1">
-            {posts.slice(0, 2).map((post, index) => (
+            {posts.slice(0, 1).map((post, index) => (
               <div
                 key={index}
-                className="text-xs bg-[#bb9477]/20 rounded px-2 py-1 truncate text-[#3f2d1d]"
+                className="text-xs bg-[#bb9477]/20 rounded px-1 py-1 truncate text-[#3f2d1d] leading-tight"
               >
-                {post.type}: {post.topic}
+                <span className="hidden md:inline">{post.type}: </span>{post.topic}
               </div>
             ))}
-            {posts.length > 2 && (
+            {posts.length > 1 && (
               <div className="text-xs text-[#472816] font-medium">
-                +{posts.length - 2} more
+                +{posts.length - 1}
               </div>
             )}
           </div>
