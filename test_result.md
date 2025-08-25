@@ -195,11 +195,17 @@ metadata:
   test_sequence: 1
 
 test_plan:
-  current_focus: []
+  current_focus:
+    - "Admin Panel System"
+    - "User Registration & Approval Flow"
+    - "Auto-Populated Instagram Preview"
+    - "Drag & Drop Grid Rearrangement"
+    - "Enhanced Post Planning"
+    - "Mobile Optimization"
   stuck_tasks: []
-  test_all: true
-  test_priority: "completed"
+  test_all: false
+  test_priority: "high_first"
 
 agent_communication:
-    - agent: "testing"
-    - message: "COMPREHENSIVE TESTING COMPLETED SUCCESSFULLY! All major features of the Content Strategy Planner application are working correctly. Fixed critical CardHeader import issue in InstagramPreview component. All requirements from the review request have been verified and are functional."
+    - agent: "main"
+    - message: "Advanced features implemented and ready for comprehensive testing. Focus on admin panel functionality, user approval workflow, Instagram preview auto-population, drag & drop with calendar sync, enhanced post planning features, and mobile responsiveness."
