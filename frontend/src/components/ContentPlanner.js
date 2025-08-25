@@ -50,8 +50,8 @@ const ContentPlanner = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fffaf1] to-[#bb9477]/10">
-      {/* Header with Background Image */}
-      <div className="relative bg-[#472816] text-[#fffaf1] py-16 px-6 shadow-lg overflow-hidden">
+      {/* Header with Background Image - Mobile Optimized */}
+      <div className="relative bg-[#472816] text-[#fffaf1] py-8 md:py-16 px-4 md:px-6 shadow-lg overflow-hidden">
         {/* Background Image */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
@@ -62,28 +62,19 @@ const ContentPlanner = () => {
         
         {/* Content overlay */}
         <div className="relative z-10 max-w-6xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="text-5xl font-bold mb-3">Content Strategy Planner</h1>
-              <p className="text-[#fffaf1]/80 text-lg mt-2 max-w-2xl">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-6 md:mb-8">
+            <div className="text-center md:text-left">
+              <h1 className="text-3xl md:text-5xl font-bold mb-3">Content Strategy Planner</h1>
+              <p className="text-[#fffaf1]/80 text-sm md:text-lg mt-2 max-w-2xl">
                 Empowering business owners and entrepreneurs to plan, create and execute their social media strategy with more ease and clarity.
               </p>
             </div>
             
             {/* Logo, User Info and Personality Image */}
-            <div className="hidden md:flex items-start gap-4">
-              {/* Melanin Bank Logo */}
-              <div className="flex-shrink-0">
-                <img 
-                  src="https://customer-assets.emergentagent.com/job_insta-content-hub-1/artifacts/dof2dns5_Melanin%20bank%20sublogo.png"
-                  alt="Melanin Bank"
-                  className="w-16 h-16 object-contain filter brightness-0 invert"
-                />
-              </div>
-              
-              {/* User Info */}
-              <div className="text-right text-sm">
-                <div className="flex items-center gap-2 mb-2">
+            <div className="flex flex-col md:flex-row items-center gap-4">
+              {/* Mobile User Info */}
+              <div className="flex md:hidden items-center gap-4 text-sm">
+                <div className="flex items-center gap-2">
                   <User className="w-4 h-4" />
                   <span>{user?.name}</span>
                 </div>
@@ -97,34 +88,72 @@ const ContentPlanner = () => {
                   Logout
                 </Button>
               </div>
-              
-              {/* Personality Image */}
-              <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#bb9477]/30 shadow-xl">
+
+              {/* Desktop Layout */}
+              <div className="hidden md:flex items-start gap-4">
+                {/* Melanin Bank Logo */}
+                <div className="flex-shrink-0">
+                  <img 
+                    src="https://customer-assets.emergentagent.com/job_insta-content-hub-1/artifacts/dof2dns5_Melanin%20bank%20sublogo.png"
+                    alt="Melanin Bank"
+                    className="w-16 h-16 object-contain filter brightness-0 invert"
+                  />
+                </div>
+                
+                {/* User Info */}
+                <div className="text-right text-sm">
+                  <div className="flex items-center gap-2 mb-2">
+                    <User className="w-4 h-4" />
+                    <span>{user?.name}</span>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={logout}
+                    className="border-[#bb9477] text-[#fffaf1] hover:bg-[#bb9477]/20"
+                  >
+                    <LogOut className="w-3 h-3 mr-1" />
+                    Logout
+                  </Button>
+                </div>
+                
+                {/* Personality Image */}
+                <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-[#bb9477]/30 shadow-xl">
+                  <img 
+                    src="https://customer-assets.emergentagent.com/job_insta-content-hub-1/artifacts/2g8c6i4z_Melanin%20bank%20event%20flyers%20%284%29.jpg"
+                    alt="Content Strategy"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+
+              {/* Mobile Logo */}
+              <div className="flex md:hidden">
                 <img 
-                  src="https://customer-assets.emergentagent.com/job_insta-content-hub-1/artifacts/2g8c6i4z_Melanin%20bank%20event%20flyers%20%284%29.jpg"
-                  alt="Content Strategy"
-                  className="w-full h-full object-cover"
+                  src="https://customer-assets.emergentagent.com/job_insta-content-hub-1/artifacts/dof2dns5_Melanin%20bank%20sublogo.png"
+                  alt="Melanin Bank"
+                  className="w-12 h-12 object-contain filter brightness-0 invert"
                 />
               </div>
             </div>
           </div>
           
           {/* Month Navigation */}
-          <div className="flex items-center justify-between bg-[#3f2d1d]/50 backdrop-blur-sm rounded-lg px-6 py-4">
+          <div className="flex items-center justify-between bg-[#3f2d1d]/50 backdrop-blur-sm rounded-lg px-4 md:px-6 py-3 md:py-4">
             <Button 
               variant="ghost" 
               onClick={() => navigateMonth('prev')}
-              className="text-[#fffaf1] hover:bg-[#bb9477]/20 transition-colors"
+              className="text-[#fffaf1] hover:bg-[#bb9477]/20 transition-colors text-sm md:text-base"
             >
-              ← Previous Month
+              ← <span className="hidden sm:inline">Previous Month</span><span className="sm:hidden">Prev</span>
             </Button>
-            <h2 className="text-2xl font-semibold">{formatMonthYear(currentMonth)}</h2>
+            <h2 className="text-lg md:text-2xl font-semibold text-center">{formatMonthYear(currentMonth)}</h2>
             <Button 
               variant="ghost" 
               onClick={() => navigateMonth('next')}
-              className="text-[#fffaf1] hover:bg-[#bb9477]/20 transition-colors"
+              className="text-[#fffaf1] hover:bg-[#bb9477]/20 transition-colors text-sm md:text-base"
             >
-              Next Month →
+              <span className="hidden sm:inline">Next Month</span><span className="sm:hidden">Next</span> →
             </Button>
           </div>
         </div>
