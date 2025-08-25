@@ -229,19 +229,21 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
 
             <div>
               <label className="text-sm font-medium text-[#3f2d1d] mb-2 block">Brainstorm Ideas</label>
-              <div className="flex flex-wrap gap-2">
-                {brainstormIdeas.slice(0, 5).map((idea, index) => (
-                  <Button
-                    key={index}
-                    variant="outline"
-                    size="sm"
-                    onClick={() => selectBrainstormIdea(idea)}
-                    className="text-xs border-[#bb9477] text-[#3f2d1d] hover:bg-[#bb9477]/10"
-                  >
-                    {idea.length > 30 ? `${idea.substring(0, 30)}...` : idea}
-                  </Button>
-                ))}
-              </div>
+              <Select value="" onValueChange={selectBrainstormIdea}>
+                <SelectTrigger className="border-[#bb9477]/50 focus:border-[#472816]">
+                  <SelectValue placeholder="Choose from your brainstorm ideas" />
+                </SelectTrigger>
+                <SelectContent className="max-h-48">
+                  {brainstormIdeas.map((idea, index) => {
+                    const ideaText = typeof idea === 'string' ? idea : idea.text || idea;
+                    return (
+                      <SelectItem key={index} value={ideaText}>
+                        {ideaText.length > 60 ? `${ideaText.substring(0, 60)}...` : ideaText}
+                      </SelectItem>
+                    );
+                  })}
+                </SelectContent>
+              </Select>
             </div>
 
             <div>
