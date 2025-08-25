@@ -144,12 +144,12 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
   return (
     <div className="space-y-6">
       {/* Metrics Grid */}
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
         {metricCards.map((metric, index) => (
           <Card key={index} className="border-[#bb9477]/30 shadow-lg overflow-hidden">
-            <div className={`bg-gradient-to-br ${metric.color} text-[#fffaf1] p-4`}>
+            <div className={`bg-gradient-to-br ${metric.color} text-[#fffaf1] p-3 md:p-4`}>
               <div className="flex items-center justify-between mb-2">
-                {metric.icon}
+                <div className="w-4 h-4 md:w-5 md:h-5">{metric.icon}</div>
                 {metric.showGrowth !== false && (
                   <div className="flex items-center gap-1">
                     {getGrowthIcon(metric.growth)}
@@ -157,7 +157,7 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
                       type="number"
                       value={metric.growth}
                       onChange={(e) => updateGrowthPercentage(metric.growthField, parseFloat(e.target.value) || 0)}
-                      className="w-16 h-6 text-xs bg-white/20 border-white/30 text-white placeholder-white/70"
+                      className="w-12 md:w-16 h-5 md:h-6 text-xs bg-white/20 border-white/30 text-white placeholder-white/70"
                       placeholder="0"
                       step="0.1"
                     />
@@ -165,15 +165,15 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
                   </div>
                 )}
               </div>
-              <div className="text-2xl font-bold">{formatNumber(metric.value)}</div>
-              <div className="text-sm text-[#fffaf1]/80">{metric.title}</div>
+              <div className="text-xl md:text-2xl font-bold">{formatNumber(metric.value)}</div>
+              <div className="text-xs md:text-sm text-[#fffaf1]/80">{metric.title}</div>
             </div>
-            <CardContent className="p-4">
+            <CardContent className="p-3 md:p-4">
               <Input
                 type="number"
                 value={metric.value}
                 onChange={(e) => updateField(metric.field, parseInt(e.target.value) || 0)}
-                className="border-[#bb9477]/50 focus:border-[#472816]"
+                className="border-[#bb9477]/50 focus:border-[#472816] text-sm"
                 placeholder={`Enter ${metric.title.toLowerCase()}`}
               />
             </CardContent>
