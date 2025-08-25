@@ -1,7 +1,7 @@
 import React from "react";
-import { Card, CardContent } from "./ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
-import { MoreHorizontal, Heart, MessageCircle, Send, Bookmark } from "lucide-react";
+import { MoreHorizontal, Heart, MessageCircle, Send, Bookmark, Upload } from "lucide-react";
 import { mockUser } from "../data/mock";
 
 const InstagramPreview = ({ monthlyData, currentMonth }) => {
