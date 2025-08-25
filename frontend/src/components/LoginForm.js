@@ -156,9 +156,11 @@ const LoginForm = () => {
     
     if (result.success) {
       toast({
-        title: "Account Created!",
-        description: "Welcome to Content Strategy Planner!",
+        title: "Registration Submitted!",
+        description: result.message || "Your account is pending approval.",
       });
+      // Reset form
+      setRegisterData({ name: '', email: '', password: '' });
     } else {
       toast({
         title: "Registration Failed",
