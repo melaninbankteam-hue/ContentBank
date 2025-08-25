@@ -19,6 +19,7 @@ const ContentPlanner = () => {
   const { user, logout } = useAuth();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [activeTab, setActiveTab] = useState("overview");
+  const [showAdminPanel, setShowAdminPanel] = useState(false);
 
   // Load data from localStorage with user-specific key
   const [monthlyData, setMonthlyData] = useState(() => {
