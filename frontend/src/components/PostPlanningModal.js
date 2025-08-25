@@ -53,12 +53,12 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = (e, type = 'image') => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        setFormData(prev => ({ ...prev, image: e.target.result }));
+        setFormData(prev => ({ ...prev, [type]: e.target.result }));
       };
       reader.readAsDataURL(file);
     }
