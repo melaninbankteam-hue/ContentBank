@@ -276,6 +276,11 @@ const ContentPlanner = () => {
           </TabsContent>
         </Tabs>
       </div>
+      
+      {/* Admin Panel Modal */}
+      {showAdminPanel && (
+        <AdminPanel onClose={() => setShowAdminPanel(false)} />
+      )}
     </div>
   );
 };
