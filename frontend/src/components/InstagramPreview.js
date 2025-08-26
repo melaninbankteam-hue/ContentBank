@@ -19,11 +19,13 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData }) => {
     if (monthData && monthData.posts) {
       Object.entries(monthData.posts).forEach(([dateKey, dayPosts]) => {
         dayPosts.forEach(post => {
-          if (post.type === 'Post' && post.image) { // Only posts with images
+          if (post.type === 'Post' && (post.image || post.reelCover)) { // Posts with any image
             allPosts.push({
               ...post,
               dateKey,
-              originalDate: dateKey
+              originalDate: dateKey,
+              // Use reel cover for preview if available, otherwise use main image
+              previewImage: post.reelCover || post.image
             });
           }
         });
