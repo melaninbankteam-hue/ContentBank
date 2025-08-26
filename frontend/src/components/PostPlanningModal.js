@@ -246,9 +246,9 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
               </Select>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-4 md:space-y-6">
               <div>
-                <label className="text-sm font-medium text-[#3f2d1d] mb-2 block">Image/Video Upload</label>
+                <label className="text-sm font-medium text-[#3f2d1d] mb-2 block">Main Content Upload</label>
                 <div className="border-2 border-dashed border-[#bb9477]/50 rounded-lg p-4 text-center">
                   <input
                     type="file"
@@ -273,47 +273,49 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
                     ) : (
                       <div>
                         <Upload className="w-6 h-6 text-[#bb9477] mx-auto mb-2" />
-                        <p className="text-[#3f2d1d] text-sm">Main content image/video</p>
+                        <p className="text-[#3f2d1d] text-sm">Main content (photo/video)</p>
                       </div>
                     )}
                   </label>
                 </div>
               </div>
 
-              {formData.type === 'Reel' && (
-                <div>
-                  <label className="text-sm font-medium text-[#3f2d1d] mb-2 block">Reel Cover Image</label>
-                  <div className="border-2 border-dashed border-[#bb9477]/50 rounded-lg p-4 text-center">
-                    <input
-                      type="file"
-                      id="reel-cover-upload"
-                      className="hidden"
-                      accept="image/*"
-                      onChange={(e) => handleImageUpload(e, 'reelCover')}
-                    />
-                    <label htmlFor="reel-cover-upload" className="cursor-pointer">
-                      {formData.reelCover ? (
-                        <div className="relative">
-                          <img src={formData.reelCover} alt="Reel Cover" className="max-w-full h-24 object-cover rounded" />
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            onClick={() => handleInputChange('reelCover', null)}
-                            className="absolute top-1 right-1"
-                          >
-                            <X className="w-3 h-3" />
-                          </Button>
-                        </div>
-                      ) : (
-                        <div>
-                          <Upload className="w-6 h-6 text-[#bb9477] mx-auto mb-2" />
-                          <p className="text-[#3f2d1d] text-sm">Reel cover image</p>
-                        </div>
-                      )}
-                    </label>
-                  </div>
+              <div>
+                <label className="text-sm font-medium text-[#3f2d1d] mb-2 block">
+                  Cover Image for Feed Preview 
+                  <span className="text-xs text-[#3f2d1d]/60 ml-2">(Optional - will use main content if not provided)</span>
+                </label>
+                <div className="border-2 border-dashed border-[#bb9477]/50 rounded-lg p-4 text-center">
+                  <input
+                    type="file"
+                    id="reel-cover-upload"
+                    className="hidden"
+                    accept="image/*"
+                    onChange={(e) => handleImageUpload(e, 'reelCover')}
+                  />
+                  <label htmlFor="reel-cover-upload" className="cursor-pointer">
+                    {formData.reelCover ? (
+                      <div className="relative">
+                        <img src={formData.reelCover} alt="Cover Preview" className="max-w-full h-24 object-cover rounded" />
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleInputChange('reelCover', null)}
+                          className="absolute top-1 right-1"
+                        >
+                          <X className="w-3 h-3" />
+                        </Button>
+                      </div>
+                    ) : (
+                      <div>
+                        <Upload className="w-6 h-6 text-[#bb9477] mx-auto mb-2" />
+                        <p className="text-[#3f2d1d] text-sm">Cover image for Instagram preview</p>
+                        <p className="text-[#3f2d1d]/60 text-xs mt-1">Perfect for Reels, Carousels, or custom thumbnails</p>
+                      </div>
+                    )}
+                  </label>
                 </div>
-              )}
+              </div>
             </div>
 
             <div>
