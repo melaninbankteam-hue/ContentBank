@@ -420,17 +420,38 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
                         </div>
                       )}
                       
-                      {post.image && (
-                        <div className="relative">
-                          <img src={post.image} alt="Post preview" className="w-full h-24 object-cover rounded mt-2" />
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => downloadImage(post.image, `${post.topic.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_image`)}
-                            className="absolute top-1 right-1 bg-white/80 hover:bg-white text-[#3f2d1d] border-[#bb9477]"
-                          >
-                            <Download className="w-3 h-3" />
-                          </Button>
+                      {(post.image || post.reelCover) && (
+                        <div className="space-y-2 mt-2">
+                          {post.reelCover && (
+                            <div className="relative">
+                              <div className="text-xs text-[#3f2d1d]/70 mb-1">Cover Image:</div>
+                              <img src={post.reelCover} alt="Cover preview" className="w-full h-20 object-cover rounded" />
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => downloadImage(post.reelCover, `${post.topic.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_cover`)}
+                                className="absolute top-6 right-1 bg-white/80 hover:bg-white text-[#3f2d1d] border-[#bb9477]"
+                              >
+                                <Download className="w-3 h-3" />
+                              </Button>
+                            </div>
+                          )}
+                          {post.image && (
+                            <div className="relative">
+                              <div className="text-xs text-[#3f2d1d]/70 mb-1">
+                                {post.reelCover ? 'Main Content:' : 'Image:'}
+                              </div>
+                              <img src={post.image} alt="Post preview" className="w-full h-20 object-cover rounded" />
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => downloadImage(post.image, `${post.topic.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_main`)}
+                                className="absolute top-6 right-1 bg-white/80 hover:bg-white text-[#3f2d1d] border-[#bb9477]"
+                              >
+                                <Download className="w-3 h-3" />
+                              </Button>
+                            </div>
+                          )}
                         </div>
                       )}
                       
