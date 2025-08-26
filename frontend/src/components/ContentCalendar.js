@@ -78,9 +78,12 @@ const ContentCalendar = ({ currentMonth, monthlyData, setMonthlyData }) => {
             {posts.slice(0, 1).map((post, index) => (
               <div
                 key={index}
-                className="text-xs bg-[#bb9477]/20 rounded px-1 py-1 truncate text-[#3f2d1d] leading-tight"
+                className="text-xs bg-[#bb9477]/20 rounded px-1 py-1 truncate text-[#3f2d1d] leading-tight relative"
               >
                 <span className="hidden md:inline">{post.type}: </span>{post.topic}
+                {post.reelCover && (
+                  <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#472816] rounded-full" title="Has cover image"></span>
+                )}
               </div>
             ))}
             {posts.length > 1 && (
