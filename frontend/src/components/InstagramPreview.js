@@ -108,7 +108,7 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData }) => {
     const clearedPosts = {};
     Object.keys(monthData.posts || {}).forEach(dateKey => {
       const remainingPosts = (monthData.posts[dateKey] || []).filter(post => 
-        !(post.type === 'Post' && post.image)
+        !(post.type === 'Post' && (post.image || post.reelCover))
       );
       if (remainingPosts.length > 0) {
         clearedPosts[dateKey] = remainingPosts;
