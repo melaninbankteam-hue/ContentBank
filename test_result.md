@@ -200,6 +200,20 @@ test_plan:
   test_all: true
   test_priority: "completed"
 
+  - task: "Enhanced Reel Cover Functionality"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/PostPlanningModal.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+        - agent: "testing"
+        - comment: "✅ PASSED: Enhanced reel cover functionality working perfectly! Two separate upload sections (Main Content Upload & Cover Image for Feed Preview) always visible with clear labeling. Cover image section includes helpful descriptions: 'Optional - will use main content if not provided', 'Cover image for Instagram preview', and 'Perfect for Reels, Carousels, or custom thumbnails'. Cover image priority logic implemented correctly (cover image appears in Instagram preview when present, falls back to main content). Enhanced post management shows both images separately with download functionality. Calendar integration includes visual indicators for posts with cover images. Professional UI with proper spacing, mobile responsiveness confirmed. All user experience improvements implemented successfully."
+
 agent_communication:
     - agent: "testing"
     - message: "COMPREHENSIVE ADVANCED FEATURES TESTING COMPLETED SUCCESSFULLY! All advanced features of the Content Strategy Planner are working perfectly. Admin panel system, user registration & approval flow, auto-populated Instagram preview, drag & drop grid rearrangement, enhanced post planning with reel cover uploads, mobile optimization, and enhanced brainstorm features all tested and confirmed functional. The application is ready for production use with all advanced capabilities working as expected."
+    - agent: "testing"
+    - message: "ENHANCED REEL COVER FUNCTIONALITY TESTING COMPLETED! Thoroughly tested all enhanced reel cover features: ✅ Two separate upload sections always visible ✅ Cover image priority logic working (cover images appear in Instagram preview instead of main content) ✅ Enhanced post management with separate image display and download functionality ✅ Calendar visual indicators for posts with cover images ✅ Professional UX with clear instructions and optional labeling ✅ Mobile responsiveness confirmed ✅ All user experience improvements implemented. The enhanced reel cover functionality is working perfectly and ready for production use."
