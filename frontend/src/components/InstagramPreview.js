@@ -201,7 +201,7 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData }) => {
                     onDragStart={(e) => handleDragStart(e, index)}
                   >
                     <img 
-                      src={post.image} 
+                      src={post.previewImage} 
                       alt={post.topic}
                       className="w-full h-full object-cover rounded border-2 border-transparent hover:border-[#bb9477] transition-all"
                     />
