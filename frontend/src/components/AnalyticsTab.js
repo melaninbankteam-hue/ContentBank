@@ -295,7 +295,7 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
           <div className="text-center text-sm text-[#3f2d1d]">
             <p className="font-medium mb-2">📊 How to use Analytics</p>
             <p>
-              Enter your Instagram metrics manually or connect your Instagram Business account for automatic data sync. 
+              Enter your Instagram metrics manually to track your growth and performance. 
               Growth percentages are calculated automatically compared to the previous month.
             </p>
           </div>
