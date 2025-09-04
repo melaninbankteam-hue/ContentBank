@@ -160,26 +160,14 @@ const LoginForm = ({ onLogin, onRegister }) => {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="register-company">Company</Label>
+                  <Label htmlFor="register-social">Social Media Handle</Label>
                   <Input
-                    id="register-company"
+                    id="register-social"
                     type="text"
-                    value={registerData.company}
-                    onChange={(e) => setRegisterData({...registerData, company: e.target.value})}
+                    value={registerData.socialHandle}
+                    onChange={(e) => setRegisterData({...registerData, socialHandle: e.target.value})}
                     className="border-[#bb9477]/50 focus:border-[#472816]"
-                    placeholder="Enter your company name"
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="register-role">Role</Label>
-                  <Input
-                    id="register-role"
-                    type="text"
-                    value={registerData.role}
-                    onChange={(e) => setRegisterData({...registerData, role: e.target.value})}
-                    className="border-[#bb9477]/50 focus:border-[#472816]"
-                    placeholder="Enter your role"
+                    placeholder="@yourusername"
                     required
                   />
                 </div>
