@@ -685,17 +685,30 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
           </div>
         </div>
 
-        <div className="flex justify-end gap-4 mt-6 pt-4 border-t border-[#bb9477]/20 px-4 md:px-0">
-          <Button variant="outline" onClick={onClose} className="border-[#bb9477] text-[#472816]">
-            Cancel
-          </Button>
-          <Button 
-            onClick={handleSavePost} 
-            className="bg-[#472816] hover:bg-[#3f2d1d] text-[#fffaf1]"
-            disabled={uploading}
-          >
-            {uploading ? "Uploading..." : "Save Post"}
-          </Button>
+        <div className="flex justify-between gap-4 mt-6 pt-4 border-t border-[#bb9477]/20 px-4 md:px-0">
+          <div>
+            {editingPost && (
+              <Button 
+                variant="destructive" 
+                onClick={handleDeletePost}
+                className="bg-red-600 hover:bg-red-700 text-white"
+              >
+                Delete Post
+              </Button>
+            )}
+          </div>
+          <div className="flex gap-4">
+            <Button variant="outline" onClick={onClose} className="border-[#bb9477] text-[#472816]">
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleSavePost} 
+              className="bg-[#472816] hover:bg-[#3f2d1d] text-[#fffaf1]"
+              disabled={uploading}
+            >
+              {uploading ? "Uploading..." : editingPost ? "Update Post" : "Save Post"}
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
