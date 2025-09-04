@@ -630,12 +630,37 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
                           </Badge>
                         </div>
                         <div className="flex gap-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              setFormData({
+                                type: post.type || "",
+                                category: post.category || "",
+                                pillar: post.pillar || "",
+                                topic: post.topic || "",
+                                caption: post.caption || "",
+                                audioLink: post.audioLink || "",
+                                notes: post.notes || "",
+                                image: post.image || null,
+                                reelCover: post.reelCover || null,
+                                scheduledDate: post.scheduledDate || "",
+                                scheduledTime: post.scheduledTime || "09:00"
+                              });
+                              setEditingPost(post);
+                            }}
+                            className="h-6 w-6 p-0"
+                            title="Edit Post"
+                          >
+                            <Edit className="w-3 h-3" />
+                          </Button>
                           {post.caption && (
                             <Button
                               variant="ghost"
                               size="sm"
                               onClick={() => copyCaption(post.caption)}
                               className="h-6 w-6 p-0"
+                              title="Copy Caption"
                             >
                               <Copy className="w-3 h-3" />
                             </Button>
@@ -649,10 +674,36 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
                                 `${post.topic || 'content'}-${index}`
                               )}
                               className="h-6 w-6 p-0"
+                              title="Download Media"
                             >
                               <Download className="w-3 h-3" />
                             </Button>
                           )}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              const updatedData = { ...monthlyData };
+                              if (updatedData[monthKey]?.posts?.[dateKey]) {
+                                updatedData[monthKey].posts[dateKey] = updatedData[monthKey].posts[dateKey].filter(
+                                  p => p.id !== post.id
+                                );
+                                if (updatedData[monthKey].posts[dateKey].length === 0) {
+                                  delete updatedData[monthKey].posts[dateKey];
+                                }
+                              }
+                              setMonthlyData(updatedData);
+                              if (onPostUpdate) onPostUpdate();
+                              toast({
+                                title: "Post Deleted!",
+                                description: "The post has been removed from your calendar.",
+                              });
+                            }}
+                            className="h-6 w-6 p-0 text-red-600 hover:text-red-700"
+                            title="Delete Post"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </Button>
                         </div>
                       </div>
                       
