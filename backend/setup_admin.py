@@ -42,14 +42,14 @@ async def create_admin_user():
         approval_status="approved"
     )
     
-    await users_collection.insert_one(admin_user.dict())
+    await users_collection.insert_one(admin_user.model_dump())
     
     print("✅ Admin user created successfully!")
     print(f"Email: {admin_email}")
     print(f"Password: {admin_password}")
     print("🔐 Please save these credentials securely!")
     
-    await client.close()
+    client.close()
 
 if __name__ == "__main__":
     asyncio.run(create_admin_user())
