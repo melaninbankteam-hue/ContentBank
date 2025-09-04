@@ -53,7 +53,7 @@ async def register(user_data: UserCreate):
         is_active=False  # Not active until approved
     )
     
-    await create_user(user.dict())
+    await create_user(user.model_dump())
     
     # Send pending approval email
     email_result = EmailService.send_pending_approval_notification(user.email, user.name)
