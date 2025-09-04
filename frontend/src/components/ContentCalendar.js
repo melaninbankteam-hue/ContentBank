@@ -8,8 +8,11 @@ import { mockPosts } from "../data/mock";
 import { useToast } from "../hooks/use-toast";
 
 const ContentCalendar = ({ currentMonth, monthlyData, setMonthlyData }) => {
+  const { toast } = useToast();
   const [selectedDate, setSelectedDate] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [draggedPost, setDraggedPost] = useState(null);
+  const [draggedFromDate, setDraggedFromDate] = useState(null);
 
   const monthKey = `${currentMonth.getFullYear()}-${currentMonth.getMonth()}`;
   const currentPosts = monthlyData[monthKey]?.posts || mockPosts;
