@@ -204,16 +204,15 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
               <div 
                 key={index} 
                 className="aspect-square relative"
-                onDragOver={handleDragOver}
-                onDrop={(e) => handleDrop(e, index)}
               >
                 {post ? (
                   <div 
-                    className={`group relative w-full h-full cursor-move ${
-                      draggedIndex === index ? 'opacity-50' : ''
+                    className={`group relative w-full h-full ${
+                      swapMode ? 'cursor-pointer' : 'cursor-default'
+                    } ${
+                      selectedForSwap === index ? 'ring-4 ring-[#bb9477] ring-opacity-70' : ''
                     }`}
-                    draggable
-                    onDragStart={(e) => handleDragStart(e, index)}
+                    onClick={() => handlePostClick(index)}
                   >
                     <img 
                       src={post.previewImage} 
