@@ -180,15 +180,29 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
             <CardTitle className="text-xl md:text-2xl">
               Instagram Feed Preview - {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
             </CardTitle>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={resetToChronological}
-              className="bg-[#bb9477] text-[#3f2d1d] hover:bg-[#fffaf1]"
-            >
-              <RotateCcw className="w-3 h-3 mr-1" />
-              Reset Order
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant={swapMode ? "default" : "secondary"}
+                size="sm"
+                onClick={toggleSwapMode}
+                className={swapMode ? 
+                  "bg-[#472816] text-[#fffaf1] hover:bg-[#3f2d1d]" : 
+                  "bg-[#bb9477] text-[#3f2d1d] hover:bg-[#fffaf1]"
+                }
+              >
+                <ArrowUpDown className="w-3 h-3 mr-1" />
+                {swapMode ? 'Exit Swap' : 'Swap Mode'}
+              </Button>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={resetToChronological}
+                className="bg-[#bb9477] text-[#3f2d1d] hover:bg-[#fffaf1]"
+              >
+                <RotateCcw className="w-3 h-3 mr-1" />
+                Reset Order
+              </Button>
+            </div>
           </div>
         </CardHeader>
         
