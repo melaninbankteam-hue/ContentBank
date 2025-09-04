@@ -128,9 +128,11 @@ async def verify_token(current_user: dict = Depends(get_current_user)):
             id=user["id"],
             email=user["email"],
             name=user["name"],
+            social_handle=user.get("social_handle"),
             is_active=user["is_active"],
             is_admin=user.get("is_admin", False),
             approval_status=user["approval_status"],
+            last_active=user.get("last_active"),
             created_at=user["created_at"]
         )
     }
