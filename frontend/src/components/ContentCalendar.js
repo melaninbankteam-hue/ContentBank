@@ -128,8 +128,10 @@ const ContentCalendar = ({ currentMonth, monthlyData, setMonthlyData }) => {
           key={day}
           className={`h-20 md:h-32 border border-[#bb9477]/20 rounded-lg p-1 md:p-2 cursor-pointer transition-all hover:bg-[#bb9477]/5 hover:shadow-md ${
             hasContent ? 'bg-[#bb9477]/10' : 'bg-white'
-          }`}
+          } ${draggedPost && draggedFromDate !== formatDateKey(day) ? 'border-[#bb9477] border-2 border-dashed' : ''}`}
           onClick={() => handleDateClick(day)}
+          onDragOver={handleDateDragOver}
+          onDrop={(e) => handleDateDrop(e, day)}
         >
           <div className="flex justify-between items-start mb-1 md:mb-2">
             <span className={`text-xs md:text-sm font-medium ${
@@ -148,11 +150,14 @@ const ContentCalendar = ({ currentMonth, monthlyData, setMonthlyData }) => {
             {posts.slice(0, 1).map((post, index) => (
               <div
                 key={index}
-                className="text-xs bg-[#bb9477]/20 rounded px-1 py-1 truncate text-[#3f2d1d] leading-tight relative"
+                draggable
+                onDragStart={(e) => handlePostDragStart(e, post, formatDateKey(day))}
+                className="text-xs bg-[#bb9477]/20 rounded px-1 py-1 truncate text-[#3f2d1d] leading-tight relative cursor-move hover:bg-[#bb9477]/30 transition-colors group"
               >
+                <Move className="w-3 h-3 absolute -top-1 -right-1 opacity-0 group-hover:opacity-100 text-[#472816] bg-white rounded-full p-0.5" />
                 <span className="hidden md:inline">{post.type}: </span>{post.topic}
                 {post.reelCover && (
-                  <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#472816] rounded-full" title="Has cover image"></span>
+                  <span className="absolute -top-1 -left-1 w-2 h-2 bg-[#472816] rounded-full" title="Has cover image"></span>
                 )}
               </div>
             ))}
