@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { MoreHorizontal, Heart, MessageCircle, Send, Bookmark, Upload, RotateCcw } from "lucide-react";
 import { useToast } from "../hooks/use-toast";
 
-const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData }) => {
+const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRefresh }) => {
   const { toast } = useToast();
   const [draggedIndex, setDraggedIndex] = useState(null);
   const [posts, setPosts] = useState([]);
 
   // Get all posts from current month and sort chronologically
-  const getAllPostsFromMonth = () => {
+  const getAllPostsFromMonth = useCallback(() => {
     const monthKey = `${currentMonth.getFullYear()}-${currentMonth.getMonth()}`;
     const monthData = monthlyData[monthKey];
     const allPosts = [];
@@ -19,28 +19,40 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData }) => {
     if (monthData && monthData.posts) {
       Object.entries(monthData.posts).forEach(([dateKey, dayPosts]) => {
         dayPosts.forEach(post => {
-          if (post.type === 'Post' && (post.image || post.reelCover)) { // Posts with any image
+          // Include posts with images, reels with cover images, or carousels
+          if ((post.type === 'Post' || post.type === 'Reel' || post.type === 'Carousel') && 
+              (post.image?.url || post.reelCover?.url)) {
             allPosts.push({
               ...post,
               dateKey,
               originalDate: dateKey,
-              // Use reel cover for preview if available, otherwise use main image
-              previewImage: post.reelCover || post.image
+              // Priority: reel cover > main image for preview
+              previewImage: post.reelCover?.url || post.image?.url
             });
           }
         });
       });
     }
     
-    // Sort by date (oldest first for Instagram grid order)
-    return allPosts.sort((a, b) => new Date(a.dateKey) - new Date(b.dateKey));
-  };
+    // Sort by scheduled date if available, otherwise by dateKey (chronological order)
+    return allPosts.sort((a, b) => {
+      const dateA = new Date(a.scheduledDate || a.dateKey);
+      const dateB = new Date(b.scheduledDate || b.dateKey);
+      return dateA - dateB;
+    });
+  }, [monthlyData, currentMonth]);
 
-  // Update posts when month data changes
+  // Update posts when month data changes or triggerRefresh is called
   useEffect(() => {
     const sortedPosts = getAllPostsFromMonth();
     setPosts(sortedPosts);
-  }, [monthlyData, currentMonth]);
+  }, [getAllPostsFromMonth, triggerRefresh]);
+
+  // Auto-refresh effect - listen for content changes
+  useEffect(() => {
+    const sortedPosts = getAllPostsFromMonth();
+    setPosts(sortedPosts);
+  }, [monthlyData, currentMonth, getAllPostsFromMonth]);
 
   // Fill grid to 30 spots
   const gridPosts = [...posts];
