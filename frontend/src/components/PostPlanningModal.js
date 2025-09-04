@@ -78,22 +78,34 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
   const handleSavePost = () => {
     if (!formData.type || !formData.topic) return;
 
+    const targetDateKey = formData.scheduledDate || dateKey;
     const newPost = {
       id: Date.now(),
       ...formData,
-      date: dateKey
+      dateKey: targetDateKey,
+      originalDate: targetDateKey
     };
 
-    setMonthlyData(prev => ({
-      ...prev,
-      [monthKey]: {
-        ...currentData,
-        posts: {
-          ...posts,
-          [dateKey]: [...existingPosts, newPost]
+    // Update the correct date in monthly data
+    const targetMonthKey = targetDateKey.substring(0, 7).replace('-', '-');
+    const actualMonthKey = `${new Date(targetDateKey).getFullYear()}-${new Date(targetDateKey).getMonth()}`;
+    
+    setMonthlyData(prev => {
+      const currentData = prev[actualMonthKey] || {};
+      const posts = currentData.posts || {};
+      const targetDatePosts = posts[targetDateKey] || [];
+      
+      return {
+        ...prev,
+        [actualMonthKey]: {
+          ...currentData,
+          posts: {
+            ...posts,
+            [targetDateKey]: [...targetDatePosts, newPost]
+          }
         }
-      }
-    }));
+      };
+    });
 
     setFormData({
       type: "",
@@ -102,9 +114,16 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
       topic: "",
       caption: "",
       audioLink: "",
-      format: "",
       notes: "",
-      image: null
+      image: null,
+      reelCover: null,
+      scheduledDate: formData.scheduledDate,
+      scheduledTime: formData.scheduledTime
+    });
+
+    toast({
+      title: "Post Scheduled!",
+      description: `Post scheduled for ${new Date(targetDateKey).toLocaleDateString()} at ${formData.scheduledTime}`,
     });
   };
 
