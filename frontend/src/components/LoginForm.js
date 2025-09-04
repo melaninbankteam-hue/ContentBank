@@ -126,33 +126,52 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-const LoginForm = () => {
-  const { login, register, isLoading } = useAuth();
+const LoginForm = ({ onLogin, onRegister }) => {
   const { toast } = useToast();
   const [loginData, setLoginData] = useState({ email: '', password: '' });
-  const [registerData, setRegisterData] = useState({ name: '', email: '', password: '' });
+  const [registerData, setRegisterData] = useState({ 
+    name: '', 
+    email: '', 
+    password: '', 
+    company: '', 
+    role: '' 
+  });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const result = await login(loginData.email, loginData.password);
+    setIsLoading(true);
+    
+    const result = await onLogin(loginData.email, loginData.password);
     
     if (result.success) {
-      toast({
-        title: "Welcome back!",
-        description: "You have successfully logged in.",
-      });
+      if (result.awaiting) {
+        toast({
+          title: "Account Pending",
+          description: "Your account is awaiting admin approval.",
+        });
+      } else {
+        toast({
+          title: "Welcome back!",
+          description: "You have successfully logged in.",
+        });
+      }
     } else {
       toast({
         title: "Login Failed",
-        description: result.error || "Please check your credentials.",
+        description: result.message || "Please check your credentials.",
         variant: "destructive"
       });
     }
+    
+    setIsLoading(false);
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    const result = await register(registerData.name, registerData.email, registerData.password);
+    setIsLoading(true);
+    
+    const result = await onRegister(registerData);
     
     if (result.success) {
       toast({
@@ -160,14 +179,16 @@ const LoginForm = () => {
         description: result.message || "Your account is pending approval.",
       });
       // Reset form
-      setRegisterData({ name: '', email: '', password: '' });
+      setRegisterData({ name: '', email: '', password: '', company: '', role: '' });
     } else {
       toast({
         title: "Registration Failed",
-        description: result.error || "Please check your information.",
+        description: result.message || "Please check your information.",
         variant: "destructive"
       });
     }
+    
+    setIsLoading(false);
   };
 
   return (
