@@ -27,7 +27,6 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
     scheduledTime: "09:00"
   });
   const [uploading, setUploading] = useState(false);
-  const [editingPost, setEditingPost] = useState(null);
 
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
