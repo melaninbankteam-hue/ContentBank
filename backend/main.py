@@ -260,6 +260,64 @@ async def suspend_user(user_id: str, current_user: dict = Depends(get_current_us
             detail="Failed to suspend user"
         )
 
+# Health Check Route
+@api_router.get("/admin/health", response_model=dict)
+async def get_health_status(current_user: dict = Depends(get_current_user)):
+    # Check if user is admin
+    admin_user = await find_user_by_id(current_user["user_id"])
+    if not admin_user or not admin_user.get("is_admin", False):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin access required"
+        )
+    
+    health_status = {
+        "mongo": False,
+        "jwt": False,
+        "cloudinary": False,
+        "email": False,
+        "cors": False
+    }
+    
+    # Check MongoDB
+    try:
+        from database import db
+        await db.command("ping")
+        health_status["mongo"] = True
+    except:
+        pass
+    
+    # Check JWT
+    try:
+        jwt_secret = os.environ.get('JWT_SECRET_KEY')
+        health_status["jwt"] = bool(jwt_secret and len(jwt_secret) > 10)
+    except:
+        pass
+    
+    # Check Cloudinary
+    try:
+        cloudinary_name = os.environ.get('CLOUDINARY_CLOUD_NAME')
+        cloudinary_key = os.environ.get('CLOUDINARY_API_KEY')
+        cloudinary_secret = os.environ.get('CLOUDINARY_API_SECRET')
+        health_status["cloudinary"] = bool(cloudinary_name and cloudinary_key and cloudinary_secret)
+    except:
+        pass
+    
+    # Check Email
+    try:
+        email_key = os.environ.get('EMAIL_PROVIDER_API_KEY')
+        health_status["email"] = bool(email_key and len(email_key) > 10)
+    except:
+        pass
+    
+    # Check CORS
+    try:
+        cors_origins = os.environ.get('ALLOWED_ORIGINS') or os.environ.get('CORS_ORIGINS')
+        health_status["cors"] = bool(cors_origins)
+    except:
+        pass
+    
+    return health_status
 # Media Upload Routes
 @api_router.post("/media/upload", response_model=dict)
 async def upload_media(
