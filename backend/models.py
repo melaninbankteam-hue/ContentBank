@@ -1,7 +1,16 @@
-from pydantic import BaseModel, Field
-from typing import List, Optional, Dict
-from datetime import datetime
+from pydantic import BaseModel, Field, validator
+from typing import List, Optional, Dict, Any
+from datetime import datetime, date, time
 import uuid
+
+# Status Check Models
+class StatusCheck(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    client_name: str
+    timestamp: datetime = Field(default_factory=datetime.utcnow)
+
+class StatusCheckCreate(BaseModel):
+    client_name: str
 
 # User Models
 class User(BaseModel):
@@ -10,7 +19,10 @@ class User(BaseModel):
     name: str
     password_hash: str
     is_active: bool = True
+    is_admin: bool = False
+    approval_status: str = "pending"  # pending, approved, denied
     created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
 
 class UserCreate(BaseModel):
     email: str
@@ -26,63 +38,42 @@ class UserResponse(BaseModel):
     email: str
     name: str
     is_active: bool
+    is_admin: bool = False
+    approval_status: str = "pending"
     created_at: datetime
 
-# Analytics Model
-class Analytics(BaseModel):
-    followers: int = 0
-    views: int = 0
-    non_follower_views: int = 0
-    reach: int = 0
-    profile_visits: int = 0
-    website_clicks: int = 0
-    email_subscribers: int = 0
-    dm_messages: int = 0
-    interactions: int = 0
-    growth_percentage: Dict[str, float] = Field(default_factory=dict)
+class UserUpdate(BaseModel):
+    name: Optional[str] = None
+    is_active: Optional[bool] = None
+    is_admin: Optional[bool] = None
+    approval_status: Optional[str] = None
 
-# Monthly Data Model
+# Monthly Data Models
 class MonthlyData(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     user_id: str
-    month_key: str  # "YYYY-MM"
+    month_key: str
     goals: str = ""
     themes: str = ""
-    metrics: str = ""
-    events: str = ""
-    notes: str = ""
-    revenue_goals: str = ""
     content_pillars: List[str] = Field(default_factory=list)
-    visual_concepts: str = ""
-    caption_drafts: str = ""
-    resources_links: str = ""
-    growth_goals: str = ""
-    performance_notes: str = ""
-    analytics: Analytics = Field(default_factory=Analytics)
+    brainstorm_ideas: List[str] = Field(default_factory=list)
+    posts: Dict[str, List[Dict]] = Field(default_factory=dict)
+    analytics: Dict[str, Any] = Field(default_factory=dict)
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
 class MonthlyDataCreate(BaseModel):
-    month_key: str
     goals: Optional[str] = ""
     themes: Optional[str] = ""
-    metrics: Optional[str] = ""
-    events: Optional[str] = ""
-    notes: Optional[str] = ""
-    revenue_goals: Optional[str] = ""
     content_pillars: Optional[List[str]] = Field(default_factory=list)
-    visual_concepts: Optional[str] = ""
-    caption_drafts: Optional[str] = ""
-    resources_links: Optional[str] = ""
-    growth_goals: Optional[str] = ""
-    performance_notes: Optional[str] = ""
-    analytics: Optional[Analytics] = Field(default_factory=Analytics)
+    brainstorm_ideas: Optional[List[str]] = Field(default_factory=list)
+    analytics: Optional[Dict[str, Any]] = Field(default_factory=dict)
 
-# Content Ideas Model
+# Content Idea Models
 class ContentIdea(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     user_id: str
-    month_key: str
+    month_key: str = ""
     text: str
     pillar: str = ""
     category: str = ""
@@ -90,7 +81,7 @@ class ContentIdea(BaseModel):
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
 class ContentIdeaCreate(BaseModel):
-    month_key: str
+    month_key: Optional[str] = ""
     text: str
     pillar: Optional[str] = ""
     category: Optional[str] = ""
@@ -100,41 +91,61 @@ class ContentIdeaUpdate(BaseModel):
     pillar: Optional[str] = None
     category: Optional[str] = None
 
-# Posts Model
+# Post Models
+class MediaUpload(BaseModel):
+    url: str
+    public_id: str
+    width: Optional[int] = None
+    height: Optional[int] = None
+
 class Post(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     user_id: str
     month_key: str
-    date_key: str  # "YYYY-MM-DD"
-    type: str  # "Post", "Story", "Reel", "Carousel"
-    category: str = ""  # "Credibility", "Connection", "Community", "Conversion"
+    date_key: str
+    content_type: str
+    category: str = ""
     pillar: str = ""
-    topic: str
+    topic: str = ""
     caption: str = ""
-    image_url: str = ""
     audio_link: str = ""
     notes: str = ""
+    image: Optional[MediaUpload] = None
+    reel_cover: Optional[MediaUpload] = None
+    scheduled_date: Optional[str] = None
+    scheduled_time: Optional[str] = "09:00"
+    instagram_preview_position: Optional[int] = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
 class PostCreate(BaseModel):
     month_key: str
     date_key: str
-    type: str
+    content_type: str
     category: Optional[str] = ""
     pillar: Optional[str] = ""
-    topic: str
+    topic: Optional[str] = ""
     caption: Optional[str] = ""
-    image_url: Optional[str] = ""
     audio_link: Optional[str] = ""
     notes: Optional[str] = ""
+    image: Optional[MediaUpload] = None
+    reel_cover: Optional[MediaUpload] = None
+    scheduled_date: Optional[str] = None
+    scheduled_time: Optional[str] = "09:00"
+    instagram_preview_position: Optional[int] = None
 
 class PostUpdate(BaseModel):
-    type: Optional[str] = None
+    content_type: Optional[str] = None
     category: Optional[str] = None
     pillar: Optional[str] = None
     topic: Optional[str] = None
     caption: Optional[str] = None
-    image_url: Optional[str] = None
     audio_link: Optional[str] = None
     notes: Optional[str] = None
+    image: Optional[MediaUpload] = None
+    reel_cover: Optional[MediaUpload] = None
+    scheduled_date: Optional[str] = None
+    scheduled_time: Optional[str] = None
+    instagram_preview_position: Optional[int] = None
+    date_key: Optional[str] = None
+    month_key: Optional[str] = None
