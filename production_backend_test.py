@@ -490,9 +490,20 @@ class ProductionAPITester:
         if response and response.status_code == 403:
             self.log_test("API Security & CORS", True)
             return True
+        elif response and response.status_code == 422:
+            # FastAPI returns 422 for missing Authorization header
+            self.log_test("API Security & CORS (422 - Missing Auth Header)", True)
+            return True
         else:
             status = response.status_code if response else "No response"
-            self.log_test("API Security & CORS", False, f"Expected 403, got: {status}")
+            if response:
+                try:
+                    error_detail = response.json().get("detail", "Unknown error")
+                except:
+                    error_detail = response.text
+            else:
+                error_detail = "No response"
+            self.log_test("API Security & CORS", False, f"Expected 403/422, got: {status}, Error: {error_detail}")
             return False
 
     def test_admin_deny_user_workflow(self):
