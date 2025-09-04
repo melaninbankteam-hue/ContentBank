@@ -1,269 +1,306 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
 import { Badge } from "./ui/badge";
-import { TrendingUp, TrendingDown, Users, Eye, MousePointer, Mail, MessageCircle, BarChart3 } from "lucide-react";
-import { mockAnalytics } from "../data/mock";
+import { TrendingUp, TrendingDown, Users, Eye, Heart, MessageCircle, Share, Calendar } from "lucide-react";
 
 const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
   const currentData = monthlyData[monthKey] || {};
-  const analytics = currentData.analytics || { ...mockAnalytics };
+  const analytics = currentData.analytics || {};
+  
+  const [metrics, setMetrics] = useState({
+    followers: analytics.followers || 0,
+    reach: analytics.reach || 0,
+    impressions: analytics.impressions || 0,
+    profileViews: analytics.profileViews || 0,
+    websiteClicks: analytics.websiteClicks || 0,
+    emailContacts: analytics.emailContacts || 0,
+    ...analytics
+  });
 
-  const updateField = (field, value) => {
-    setMonthlyData(prev => ({
-      ...prev,
+  // Get previous month's data for growth calculation
+  const getPreviousMonthData = () => {
+    const [year, month] = monthKey.split('-').map(Number);
+    const prevMonth = month === 0 ? 11 : month - 1;
+    const prevYear = month === 0 ? year - 1 : year;
+    const prevMonthKey = `${prevYear}-${prevMonth}`;
+    
+    const prevData = monthlyData[prevMonthKey];
+    return prevData?.analytics || {};
+  };
+
+  // Calculate growth percentage
+  const calculateGrowth = (current, previous) => {
+    if (!previous || previous === 0) return { percentage: 0, isPositive: true };
+    const growth = ((current - previous) / previous) * 100;
+    return {
+      percentage: Math.abs(growth).toFixed(1),
+      isPositive: growth >= 0
+    };
+  };
+
+  const previousMetrics = getPreviousMonthData();
+
+  useEffect(() => {
+    // Auto-save analytics data
+    const updatedMonthlyData = {
+      ...monthlyData,
       [monthKey]: {
         ...currentData,
         analytics: {
           ...analytics,
-          [field]: value
+          ...metrics,
+          lastUpdated: new Date().toISOString()
         }
       }
-    }));
-  };
+    };
+    setMonthlyData(updatedMonthlyData);
+  }, [metrics]);
 
-  const updateGrowthPercentage = (field, value) => {
-    setMonthlyData(prev => ({
+  const handleMetricChange = (field, value) => {
+    const numValue = parseInt(value) || 0;
+    setMetrics(prev => ({
       ...prev,
-      [monthKey]: {
-        ...currentData,
-        analytics: {
-          ...analytics,
-          growthPercentage: {
-            ...analytics.growthPercentage,
-            [field]: value
-          }
-        }
-      }
+      [field]: numValue
     }));
   };
 
-  const formatNumber = (num) => {
-    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-    if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-    return num?.toString() || '0';
+  const MetricCard = ({ title, icon: Icon, value, field, previousValue, color = "text-[#472816]" }) => {
+    const growth = calculateGrowth(value, previousValue);
+    
+    return (
+      <Card className="border-[#bb9477]/30 hover:border-[#bb9477]/50 transition-colors">
+        <CardContent className="p-4 md:p-6">
+          <div className="flex items-center justify-between mb-3">
+            <Icon className={`w-5 h-5 md:w-6 md:h-6 ${color}`} />
+            {previousValue !== undefined && (
+              <Badge 
+                variant={growth.isPositive ? "default" : "destructive"} 
+                className={`text-xs ${growth.isPositive ? 'bg-green-100 text-green-800 border-green-200' : 'bg-red-100 text-red-800 border-red-200'}`}
+              >
+                {growth.isPositive ? <TrendingUp className="w-3 h-3 mr-1" /> : <TrendingDown className="w-3 h-3 mr-1" />}
+                {growth.percentage}%
+              </Badge>
+            )}
+          </div>
+          
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-[#3f2d1d] block">{title}</label>
+            <Input
+              type="number"
+              value={value}
+              onChange={(e) => handleMetricChange(field, e.target.value)}
+              placeholder="0"
+              className="text-lg md:text-xl font-semibold border-[#bb9477]/50 focus:border-[#472816]"
+            />
+          </div>
+          
+          {previousValue !== undefined && (
+            <div className="mt-2 text-xs text-[#3f2d1d]/60">
+              Previous: {previousValue.toLocaleString()}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    );
   };
 
-  const getGrowthIcon = (percentage) => {
-    if (percentage > 0) return <TrendingUp className="w-4 h-4 text-green-600" />;
-    if (percentage < 0) return <TrendingDown className="w-4 h-4 text-red-600" />;
-    return <BarChart3 className="w-4 h-4 text-gray-500" />;
-  };
-
-  const getGrowthColor = (percentage) => {
-    if (percentage > 0) return "text-green-600";
-    if (percentage < 0) return "text-red-600";
-    return "text-gray-500";
-  };
-
-  const metricCards = [
-    {
-      title: "Followers",
-      value: analytics.followers,
-      growth: analytics.growthPercentage?.followers || 0,
-      icon: <Users className="w-5 h-5" />,
-      color: "from-[#472816] to-[#3f2d1d]",
-      field: "followers",
-      growthField: "followers"
-    },
-    {
-      title: "Total Views",
-      value: analytics.views,
-      growth: analytics.growthPercentage?.views || 0,
-      icon: <Eye className="w-5 h-5" />,
-      color: "from-[#bb9477] to-[#472816]",
-      field: "views",
-      growthField: "views"
-    },
-    {
-      title: "Non-Follower Views",
-      value: analytics.nonFollowerViews,
-      growth: 0, // Static for this metric
-      icon: <Eye className="w-5 h-5" />,
-      color: "from-[#3f2d1d] to-[#bb9477]",
-      field: "nonFollowerViews",
-      showGrowth: false
-    },
-    {
-      title: "Reach",
-      value: analytics.reach,
-      growth: analytics.growthPercentage?.reach || 0,
-      icon: <BarChart3 className="w-5 h-5" />,
-      color: "from-[#bb9477]/80 to-[#3f2d1d]",
-      field: "reach",
-      growthField: "reach"
-    },
-    {
-      title: "Profile Visits",
-      value: analytics.profileVisits,
-      growth: 0,
-      icon: <MousePointer className="w-5 h-5" />,
-      color: "from-[#472816]/80 to-[#bb9477]",
-      field: "profileVisits",
-      showGrowth: false
-    },
-    {
-      title: "Website Clicks",
-      value: analytics.websiteClicks,
-      growth: 0,
-      icon: <MousePointer className="w-5 h-5" />,
-      color: "from-[#3f2d1d]/80 to-[#472816]",
-      field: "websiteClicks",
-      showGrowth: false
-    },
-    {
-      title: "Email Subscribers",
-      value: analytics.emailSubscribers,
-      growth: 0,
-      icon: <Mail className="w-5 h-5" />,
-      color: "from-[#bb9477] to-[#3f2d1d]/80",
-      field: "emailSubscribers",
-      showGrowth: false
-    },
-    {
-      title: "DM Messages",
-      value: analytics.dmMessages,
-      growth: 0,
-      icon: <MessageCircle className="w-5 h-5" />,
-      color: "from-[#3f2d1d] to-[#472816]/80",
-      field: "dmMessages",
-      showGrowth: false
-    },
-    {
-      title: "Total Interactions",
-      value: analytics.interactions,
-      growth: analytics.growthPercentage?.interactions || 0,
-      icon: <TrendingUp className="w-5 h-5" />,
-      color: "from-[#472816] to-[#bb9477]/80",
-      field: "interactions",
-      growthField: "interactions"
-    }
-  ];
+  const EngagementMetricCard = ({ title, icon: Icon, value, field, color = "text-[#472816]", suffix = "" }) => (
+    <Card className="border-[#bb9477]/30 hover:border-[#bb9477]/50 transition-colors">
+      <CardContent className="p-4">
+        <div className="flex items-center gap-2 mb-2">
+          <Icon className={`w-4 h-4 ${color}`} />
+          <span className="text-sm font-medium text-[#3f2d1d]">{title}</span>
+        </div>
+        <Input
+          type="number"
+          value={value}
+          onChange={(e) => handleMetricChange(field, e.target.value)}
+          placeholder="0"
+          className="text-base font-semibold border-[#bb9477]/50 focus:border-[#472816]"
+        />
+        {suffix && <span className="text-xs text-[#3f2d1d]/60">{suffix}</span>}
+      </CardContent>
+    </Card>
+  );
 
   return (
-    <div className="space-y-6">
-      {/* Metrics Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-        {metricCards.map((metric, index) => (
-          <Card key={index} className="border-[#bb9477]/30 shadow-lg overflow-hidden">
-            <div className={`bg-gradient-to-br ${metric.color} text-[#fffaf1] p-3 md:p-4`}>
-              <div className="flex items-center justify-between mb-2">
-                <div className="w-4 h-4 md:w-5 md:h-5">{metric.icon}</div>
-                {metric.showGrowth !== false && (
-                  <div className="flex items-center gap-1">
-                    {getGrowthIcon(metric.growth)}
-                    <Input
-                      type="number"
-                      value={metric.growth}
-                      onChange={(e) => updateGrowthPercentage(metric.growthField, parseFloat(e.target.value) || 0)}
-                      className="w-12 md:w-16 h-5 md:h-6 text-xs bg-white/20 border-white/30 text-white placeholder-white/70"
-                      placeholder="0"
-                      step="0.1"
-                    />
-                    <span className="text-xs">%</span>
-                  </div>
-                )}
-              </div>
-              <div className="text-xl md:text-2xl font-bold">{formatNumber(metric.value)}</div>
-              <div className="text-xs md:text-sm text-[#fffaf1]/80">{metric.title}</div>
-            </div>
-            <CardContent className="p-3 md:p-4">
-              <Input
-                type="number"
-                value={metric.value}
-                onChange={(e) => updateField(metric.field, parseInt(e.target.value) || 0)}
-                className="border-[#bb9477]/50 focus:border-[#472816] text-sm"
-                placeholder={`Enter ${metric.title.toLowerCase()}`}
-              />
-            </CardContent>
-          </Card>
-        ))}
+    <div className="space-y-6 md:space-y-8">
+      <div className="text-center md:text-left">
+        <h2 className="text-2xl md:text-3xl font-bold text-[#472816] mb-2">
+          Analytics Dashboard
+        </h2>
+        <p className="text-[#3f2d1d] mb-4">
+          Track your Instagram performance and growth metrics
+        </p>
+        <div className="flex items-center gap-2 justify-center md:justify-start text-sm text-[#3f2d1d]/60">
+          <Calendar className="w-4 h-4" />
+          <span>{new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
+        </div>
       </div>
 
-      {/* Growth Summary */}
-      <Card className="border-[#bb9477]/30 shadow-lg bg-gradient-to-br from-[#fffaf1] to-[#bb9477]/5">
-        <CardHeader className="bg-gradient-to-r from-[#472816] to-[#3f2d1d] text-[#fffaf1] rounded-t-lg">
+      {/* Main Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        <MetricCard
+          title="Followers"
+          icon={Users}
+          value={metrics.followers}
+          field="followers"
+          previousValue={previousMetrics.followers}
+          color="text-[#472816]"
+        />
+        
+        <MetricCard
+          title="Reach"
+          icon={Eye}
+          value={metrics.reach}
+          field="reach"
+          previousValue={previousMetrics.reach}
+          color="text-blue-600"
+        />
+        
+        <MetricCard
+          title="Impressions"
+          icon={TrendingUp}
+          value={metrics.impressions}
+          field="impressions"
+          previousValue={previousMetrics.impressions}
+          color="text-green-600"
+        />
+        
+        <MetricCard
+          title="Profile Views"
+          icon={Eye}
+          value={metrics.profileViews}
+          field="profileViews"
+          previousValue={previousMetrics.profileViews}
+          color="text-purple-600"
+        />
+        
+        <MetricCard
+          title="Website Clicks"
+          icon={Share}
+          value={metrics.websiteClicks}
+          field="websiteClicks"
+          previousValue={previousMetrics.websiteClicks}
+          color="text-orange-600"
+        />
+        
+        <MetricCard
+          title="Email Contacts"
+          icon={MessageCircle}
+          value={metrics.emailContacts}
+          field="emailContacts"
+          previousValue={previousMetrics.emailContacts}
+          color="text-red-600"
+        />
+      </div>
+
+      {/* Engagement Metrics */}
+      <Card className="border-[#bb9477]/30">
+        <CardHeader className="bg-[#472816] text-[#fffaf1] rounded-t-lg">
           <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="w-5 h-5" />
-            Growth Summary
+            <Heart className="w-5 h-5" />
+            Engagement Metrics
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-            <div className="text-center p-3 md:p-4 bg-white/60 rounded-lg">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <Users className="w-3 h-3 md:w-4 md:h-4 text-[#472816]" />
-                <span className={`text-base md:text-lg font-bold ${getGrowthColor(analytics.growthPercentage?.followers)}`}>
-                  {analytics.growthPercentage?.followers > 0 ? '+' : ''}{analytics.growthPercentage?.followers}%
-                </span>
-              </div>
-              <div className="text-xs md:text-sm text-[#3f2d1d]/70">Followers Growth</div>
-            </div>
-
-            <div className="text-center p-3 md:p-4 bg-white/60 rounded-lg">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <Eye className="w-3 h-3 md:w-4 md:h-4 text-[#472816]" />
-                <span className={`text-base md:text-lg font-bold ${getGrowthColor(analytics.growthPercentage?.views)}`}>
-                  {analytics.growthPercentage?.views > 0 ? '+' : ''}{analytics.growthPercentage?.views}%
-                </span>
-              </div>
-              <div className="text-xs md:text-sm text-[#3f2d1d]/70">Views Growth</div>
-            </div>
-
-            <div className="text-center p-3 md:p-4 bg-white/60 rounded-lg">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <BarChart3 className="w-3 h-3 md:w-4 md:h-4 text-[#472816]" />
-                <span className={`text-base md:text-lg font-bold ${getGrowthColor(analytics.growthPercentage?.reach)}`}>
-                  {analytics.growthPercentage?.reach > 0 ? '+' : ''}{analytics.growthPercentage?.reach}%
-                </span>
-              </div>
-              <div className="text-xs md:text-sm text-[#3f2d1d]/70">Reach Growth</div>
-            </div>
-
-            <div className="text-center p-3 md:p-4 bg-white/60 rounded-lg">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <TrendingUp className="w-3 h-3 md:w-4 md:h-4 text-[#472816]" />
-                <span className={`text-base md:text-lg font-bold ${getGrowthColor(analytics.growthPercentage?.interactions)}`}>
-                  {analytics.growthPercentage?.interactions > 0 ? '+' : ''}{analytics.growthPercentage?.interactions}%
-                </span>
-              </div>
-              <div className="text-xs md:text-sm text-[#3f2d1d]/70">Engagement Growth</div>
-            </div>
+        <CardContent className="p-4 md:p-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <EngagementMetricCard
+              title="Avg Likes"
+              icon={Heart}
+              value={metrics.averageLikes || 0}
+              field="averageLikes"
+              color="text-red-500"
+            />
+            
+            <EngagementMetricCard
+              title="Avg Comments"
+              icon={MessageCircle}
+              value={metrics.averageComments || 0}
+              field="averageComments"
+              color="text-blue-500"
+            />
+            
+            <EngagementMetricCard
+              title="Avg Shares"
+              icon={Share}
+              value={metrics.averageShares || 0}
+              field="averageShares"
+              color="text-green-500"
+            />
+            
+            <EngagementMetricCard
+              title="Saves"
+              icon={Users}
+              value={metrics.averageSaves || 0}
+              field="averageSaves"
+              color="text-purple-500"
+            />
           </div>
         </CardContent>
       </Card>
 
-      {/* Goals and Notes */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
-          <CardHeader className="bg-[#bb9477] text-[#3f2d1d] rounded-t-lg">
-            <CardTitle>Growth Goals</CardTitle>
+      {/* Growth Summary */}
+      {Object.keys(previousMetrics).length > 0 && (
+        <Card className="border-[#bb9477]/30">
+          <CardHeader className="bg-gradient-to-r from-[#472816] to-[#3f2d1d] text-[#fffaf1] rounded-t-lg">
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="w-5 h-5" />
+              Month-over-Month Growth Summary
+            </CardTitle>
           </CardHeader>
-          <CardContent className="p-6">
-            <Textarea
-              value={currentData.growthGoals || "Increase followers by 15% this month\nImprove engagement rate to 4%+\nGrow email list to 1000 subscribers\nIncrease course sales by 25%"}
-              onChange={(e) => updateField('growthGoals', e.target.value)}
-              placeholder="What are your growth goals for this month?"
-              className="min-h-32 border-[#bb9477]/50 focus:border-[#472816] resize-none"
-            />
+          <CardContent className="p-4 md:p-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {Object.entries(metrics).map(([key, value]) => {
+                const previousValue = previousMetrics[key];
+                if (previousValue === undefined || typeof value !== 'number') return null;
+                
+                const growth = calculateGrowth(value, previousValue);
+                const labels = {
+                  followers: 'Followers',
+                  reach: 'Reach', 
+                  impressions: 'Impressions',
+                  profileViews: 'Profile Views',
+                  websiteClicks: 'Website Clicks',
+                  emailContacts: 'Email Contacts'
+                };
+                
+                if (!labels[key]) return null;
+                
+                return (
+                  <div key={key} className="text-center p-3 rounded-lg bg-[#bb9477]/5">
+                    <div className="text-sm font-medium text-[#3f2d1d] mb-1">{labels[key]}</div>
+                    <div className={`text-lg font-bold flex items-center justify-center gap-1 ${
+                      growth.isPositive ? 'text-green-600' : 'text-red-600'
+                    }`}>
+                      {growth.isPositive ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
+                      {growth.percentage}%
+                    </div>
+                    <div className="text-xs text-[#3f2d1d]/60">
+                      {previousValue.toLocaleString()} → {value.toLocaleString()}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </CardContent>
         </Card>
+      )}
 
-        <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
-          <CardHeader className="bg-[#bb9477] text-[#3f2d1d] rounded-t-lg">
-            <CardTitle>Performance Notes</CardTitle>
-          </CardHeader>
-          <CardContent className="p-6">
-            <Textarea
-              value={currentData.performanceNotes || "Educational Reels are performing best\nPosts with faces get 40% more engagement\nCarousel posts have highest save rates\nStory highlights driving profile visits"}
-              onChange={(e) => updateField('performanceNotes', e.target.value)}
-              placeholder="Track what's working and what isn't..."
-              className="min-h-32 border-[#bb9477]/50 focus:border-[#472816] resize-none"
-            />
-          </CardContent>
-        </Card>
-      </div>
+      {/* Instructions */}
+      <Card className="border-[#bb9477]/30 bg-[#bb9477]/5">
+        <CardContent className="p-4 md:p-6">
+          <div className="text-center text-sm text-[#3f2d1d]">
+            <p className="font-medium mb-2">📊 How to use Analytics</p>
+            <p>
+              Enter your Instagram metrics manually or connect your Instagram Business account for automatic data sync. 
+              Growth percentages are calculated automatically compared to the previous month.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
