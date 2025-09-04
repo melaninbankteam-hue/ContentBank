@@ -58,7 +58,7 @@ const LoginForm = ({ onLogin, onRegister }) => {
         description: result.message || "Your account is pending approval.",
       });
       // Reset form
-      setRegisterData({ name: '', email: '', password: '', company: '', role: '' });
+      setRegisterData({ name: '', socialHandle: '', email: '', password: '' });
     } else {
       toast({
         title: "Registration Failed",
