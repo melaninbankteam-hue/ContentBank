@@ -42,6 +42,72 @@ const ContentCalendar = ({ currentMonth, monthlyData, setMonthlyData }) => {
     setIsModalOpen(true);
   };
 
+  // Drag and drop handlers for posts
+  const handlePostDragStart = (e, post, fromDate) => {
+    e.stopPropagation();
+    setDraggedPost(post);
+    setDraggedFromDate(fromDate);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDateDragOver = (e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDateDrop = (e, targetDay) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!draggedPost || !draggedFromDate) return;
+
+    const targetDateKey = formatDateKey(targetDay);
+    const fromDateKey = draggedFromDate;
+
+    if (targetDateKey === fromDateKey) {
+      setDraggedPost(null);
+      setDraggedFromDate(null);
+      return;
+    }
+
+    // Move post to new date
+    setMonthlyData(prev => {
+      const currentData = prev[monthKey] || {};
+      const posts = currentData.posts || {};
+      
+      // Remove post from original date
+      const fromPosts = (posts[fromDateKey] || []).filter(p => p.id !== draggedPost.id);
+      
+      // Add post to target date with updated dateKey
+      const updatedPost = { ...draggedPost, dateKey: targetDateKey };
+      const toPosts = [...(posts[targetDateKey] || []), updatedPost];
+      
+      const updatedPosts = { ...posts };
+      if (fromPosts.length === 0) {
+        delete updatedPosts[fromDateKey];
+      } else {
+        updatedPosts[fromDateKey] = fromPosts;
+      }
+      updatedPosts[targetDateKey] = toPosts;
+
+      return {
+        ...prev,
+        [monthKey]: {
+          ...currentData,
+          posts: updatedPosts
+        }
+      };
+    });
+
+    toast({
+      title: "Post Moved!",
+      description: `"${draggedPost.topic}" moved to ${new Date(targetDateKey).toLocaleDateString()}`,
+    });
+
+    setDraggedPost(null);
+    setDraggedFromDate(null);
+  };
+
   const renderCalendar = () => {
     const daysInMonth = getDaysInMonth(currentMonth);
     const firstDay = getFirstDayOfMonth(currentMonth);
