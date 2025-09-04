@@ -149,7 +149,7 @@ const ContentPlanner = ({ user, onLogout }) => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={logout}
+                      onClick={onLogout}
                       className="border-[#bb9477] text-[#fffaf1] hover:bg-[#bb9477]/20"
                     >
                       <LogOut className="w-3 h-3 mr-1" />
