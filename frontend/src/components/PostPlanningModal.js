@@ -195,13 +195,6 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
       return;
     }
 
-    const newPost = {
-      id: Date.now().toString(),
-      ...formData,
-      createdAt: new Date().toISOString()
-    };
-
-    // Update monthly data
     const updatedData = { ...monthlyData };
     if (!updatedData[monthKey]) {
       updatedData[monthKey] = {};
@@ -213,7 +206,61 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
       updatedData[monthKey].posts[dateKey] = [];
     }
 
-    updatedData[monthKey].posts[dateKey].push(newPost);
+    if (editingPost) {
+      // Update existing post
+      const postIndex = updatedData[monthKey].posts[dateKey].findIndex(post => post.id === editingPost.id);
+      if (postIndex !== -1) {
+        updatedData[monthKey].posts[dateKey][postIndex] = {
+          ...editingPost,
+          ...formData,
+          updatedAt: new Date().toISOString()
+        };
+      }
+      
+      toast({
+        title: "Post Updated!",
+        description: "Your content has been updated successfully.",
+      });
+    } else {
+      // Create new post
+      const newPost = {
+        id: Date.now().toString(),
+        ...formData,
+        createdAt: new Date().toISOString()
+      };
+      updatedData[monthKey].posts[dateKey].push(newPost);
+      
+      toast({
+        title: "Post Saved!",
+        description: "Your content has been planned successfully.",
+      });
+    }
+
+    setMonthlyData(updatedData);
+
+    // Trigger preview update
+    if (onPostUpdate) {
+      onPostUpdate();
+    }
+
+    onClose();
+  };
+
+  const handleDeletePost = () => {
+    if (!editingPost) return;
+
+    const updatedData = { ...monthlyData };
+    if (updatedData[monthKey]?.posts?.[dateKey]) {
+      updatedData[monthKey].posts[dateKey] = updatedData[monthKey].posts[dateKey].filter(
+        post => post.id !== editingPost.id
+      );
+      
+      // Remove empty date entries
+      if (updatedData[monthKey].posts[dateKey].length === 0) {
+        delete updatedData[monthKey].posts[dateKey];
+      }
+    }
+
     setMonthlyData(updatedData);
 
     // Trigger preview update
@@ -222,8 +269,8 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
     }
 
     toast({
-      title: "Post Saved!",
-      description: "Your content has been planned successfully.",
+      title: "Post Deleted!",
+      description: "The post has been removed from your calendar.",
     });
 
     onClose();
