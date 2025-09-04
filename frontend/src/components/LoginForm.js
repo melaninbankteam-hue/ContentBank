@@ -11,10 +11,9 @@ const LoginForm = ({ onLogin, onRegister }) => {
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const [registerData, setRegisterData] = useState({ 
     name: '', 
+    socialHandle: '',
     email: '', 
-    password: '', 
-    company: '', 
-    role: '' 
+    password: ''
   });
   const [isLoading, setIsLoading] = useState(false);
 
