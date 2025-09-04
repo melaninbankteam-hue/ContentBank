@@ -31,6 +31,19 @@ async def create_user(user_data: dict) -> str:
 async def find_user_by_id(user_id: str) -> Optional[dict]:
     """Find a user by ID"""
     return await users_collection.find_one({"id": user_id})
+async def get_all_users() -> list:
+    """Get all users"""
+    cursor = users_collection.find({})
+    users = await cursor.to_list(length=None)
+    return users
+
+async def update_user_status(user_id: str, update_data: dict) -> bool:
+    """Update user status"""
+    result = await users_collection.update_one(
+        {"id": user_id},
+        {"$set": update_data}
+    )
+    return result.modified_count > 0
 
 async def get_monthly_data(user_id: str, month_key: str) -> Optional[dict]:
     """Get monthly data for a user and month"""
