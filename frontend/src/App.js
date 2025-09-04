@@ -133,6 +133,16 @@ function App() {
               )
             } 
           />
+          <Route 
+            path="/admin" 
+            element={
+              user && user.is_admin ? (
+                <AdminPortal />
+              ) : (
+                <Navigate to="/" replace />
+              )
+            } 
+          />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         <Toaster />
