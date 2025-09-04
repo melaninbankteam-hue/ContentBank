@@ -59,54 +59,58 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
     gridPosts.push(null);
   }
 
-  // Drag and drop handlers
-  const handleDragStart = (e, index) => {
-    if (!gridPosts[index]) return;
-    setDraggedIndex(index);
-    e.dataTransfer.effectAllowed = 'move';
+  // Handle post swap functionality (like Planoly)
+  const handlePostClick = (clickedIndex) => {
+    if (!swapMode) return;
+    
+    if (selectedForSwap === null) {
+      // First selection
+      setSelectedForSwap(clickedIndex);
+      toast({
+        title: "Post Selected",
+        description: "Click another post to swap positions",
+      });
+    } else if (selectedForSwap === clickedIndex) {
+      // Cancel selection
+      setSelectedForSwap(null);
+      toast({
+        title: "Selection Cancelled",
+        description: "Swap mode cancelled",
+      });
+    } else {
+      // Perform swap
+      const newPosts = [...posts];
+      [newPosts[selectedForSwap], newPosts[clickedIndex]] = [newPosts[clickedIndex], newPosts[selectedForSwap]];
+      setPosts(newPosts);
+      
+      // Update the data with new positions
+      updatePostPositions(newPosts);
+      
+      setSelectedForSwap(null);
+      setSwapMode(false);
+      
+      toast({
+        title: "Posts Swapped!",
+        description: "Post positions have been updated",
+      });
+    }
   };
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
+  const toggleSwapMode = () => {
+    setSwapMode(!swapMode);
+    setSelectedForSwap(null);
+    if (!swapMode) {
+      toast({
+        title: "Swap Mode Enabled",
+        description: "Click posts to swap their positions",
+      });
+    }
   };
 
-  const handleDrop = (e, dropIndex) => {
-    e.preventDefault();
-    
-    if (draggedIndex === null || draggedIndex === dropIndex) {
-      setDraggedIndex(null);
-      return;
-    }
-
-    // Don't allow dropping on empty cells if dragged item exists
-    if (!gridPosts[draggedIndex]) {
-      setDraggedIndex(null);
-      return;
-    }
-
-    // Create new array with swapped positions
-    const newPosts = [...gridPosts];
-    const draggedPost = newPosts[draggedIndex];
-    const droppedPost = newPosts[dropIndex];
-
-    // Swap the posts
-    newPosts[draggedIndex] = droppedPost;
-    newPosts[dropIndex] = draggedPost;
-
-    // Update the posts array (excluding nulls)
-    const validPosts = newPosts.filter(post => post !== null);
-    setPosts(validPosts);
-
-    // Update the calendar data with new dates
-    updateCalendarWithNewOrder(validPosts);
-
-    setDraggedIndex(null);
-    
-    toast({
-      title: "Posts Rearranged!",
-      description: "Your Instagram grid and calendar have been updated.",
-    });
+  const updatePostPositions = (newPosts) => {
+    // This would update the preview positions in the backend/localStorage
+    // For now, we just update the local state
+    // In a full implementation, you'd sync this with your data source
   };
 
   const updateCalendarWithNewOrder = (reorderedPosts) => {
