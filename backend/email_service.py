@@ -7,29 +7,43 @@ resend.api_key = os.getenv('EMAIL_PROVIDER_API_KEY')
 
 class EmailService:
     @staticmethod
-    def send_approval_notification(user_email: str, user_name: str) -> Dict[str, Any]:
-        """Send approval email to user"""
+    def send_pending_approval_notification(user_email: str, user_name: str) -> Dict[str, Any]:
+        """Send pending approval email to user"""
         try:
+            first_name = user_name.split()[0] if user_name else "there"
             r = resend.Emails.send({
                 "from": os.getenv('FROM_EMAIL', 'melaninbankteam@gmail.com'),
                 "to": user_email,
-                "subject": "Welcome to Content Strategy Planner! Account Approved",
+                "subject": "Thanks for signing up — your account is pending approval",
                 "html": f"""
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                    <h2 style="color: #472816;">Welcome to Content Strategy Planner!</h2>
-                    <p>Hi {user_name},</p>
-                    <p>Great news! Your account has been approved and you now have full access to Content Strategy Planner.</p>
-                    <p>You can now:</p>
-                    <ul>
-                        <li>Plan and schedule your Instagram content</li>
-                        <li>Create content calendars</li>
-                        <li>Brainstorm content ideas</li>
-                        <li>Track your analytics and growth</li>
-                    </ul>
-                    <a href="{os.getenv('APP_BASE_URL')}" style="background-color: #472816; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; margin: 20px 0;">
-                        Start Planning Content
-                    </a>
-                    <p>Happy content creating!</p>
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                    <h2 style="color: #472816;">Thanks for signing up! 🎉</h2>
+                    <p>Hi {first_name},</p>
+                    <p>Thanks for joining Content Strategy Planner 🎉. Your account is pending approval. You'll be notified as soon as it's approved.</p>
+                    <p>We'll review your application and get back to you soon!</p>
+                    <p>Best regards,<br>The Content Strategy Planner Team</p>
+                </div>
+                """
+            })
+            return {"success": True, "id": r}
+        except Exception as e:
+            return {"success": False, "error": str(e)}
+    
+    @staticmethod
+    def send_approval_notification(user_email: str, user_name: str) -> Dict[str, Any]:
+        """Send approval email to user"""
+        try:
+            first_name = user_name.split()[0] if user_name else "there"
+            r = resend.Emails.send({
+                "from": os.getenv('FROM_EMAIL', 'melaninbankteam@gmail.com'),
+                "to": user_email,
+                "subject": "You're in! Welcome to Content Strategy Planner 🚀",
+                "html": f"""
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                    <h2 style="color: #472816;">You're in! Welcome to Content Strategy Planner 🚀</h2>
+                    <p>Hi {first_name},</p>
+                    <p>Your account has been approved! Log in here 👉 <a href="https://contentstrategyplanner.emergent.host/login" style="color: #472816; text-decoration: none;">https://contentstrategyplanner.emergent.host/login</a> and start planning your content.</p>
+                    <p>We're excited to have you on board!</p>
                     <p>Best regards,<br>The Content Strategy Planner Team</p>
                 </div>
                 """
@@ -42,47 +56,22 @@ class EmailService:
     def send_denial_notification(user_email: str, user_name: str) -> Dict[str, Any]:
         """Send denial email to user"""
         try:
+            first_name = user_name.split()[0] if user_name else "there"
             r = resend.Emails.send({
                 "from": os.getenv('FROM_EMAIL', 'melaninbankteam@gmail.com'),
                 "to": user_email,
-                "subject": "Content Strategy Planner - Application Update",
+                "subject": "Action needed — complete your Melanin Bank membership to access Content Strategy Planner",
                 "html": f"""
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                    <h2 style="color: #472816;">Content Strategy Planner Application</h2>
-                    <p>Hi {user_name},</p>
-                    <p>Thank you for your interest in Content Strategy Planner.</p>
-                    <p>Unfortunately, we're unable to approve your application at this time. This could be due to capacity limitations or other factors.</p>
-                    <p>If you believe this is an error or would like to reapply in the future, please contact our support team.</p>
-                    <p>Best regards,<br>The Content Strategy Planner Team</p>
-                </div>
-                """
-            })
-            return {"success": True, "id": r}
-        except Exception as e:
-            return {"success": False, "error": str(e)}
-    
-    @staticmethod
-    def send_pending_approval_notification(user_email: str, user_name: str) -> Dict[str, Any]:
-        """Send pending approval email to user"""
-        try:
-            r = resend.Emails.send({
-                "from": os.getenv('FROM_EMAIL', 'melaninbankteam@gmail.com'),
-                "to": user_email,
-                "subject": "Content Strategy Planner - Account Pending Approval",
-                "html": f"""
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                    <h2 style="color: #472816;">Thank you for joining Content Strategy Planner!</h2>
-                    <p>Hi {user_name},</p>
-                    <p>Your account has been created successfully and is currently pending approval from our team.</p>
-                    <p>We'll review your application and notify you once your account has been approved. This typically takes 1-2 business days.</p>
-                    <p>Once approved, you'll have access to:</p>
-                    <ul>
-                        <li>Advanced content planning tools</li>
-                        <li>Instagram preview and scheduling</li>
-                        <li>Content brainstorming features</li>
-                        <li>Analytics tracking</li>
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                    <h2 style="color: #472816;">Action needed — complete your Melanin Bank membership</h2>
+                    <p>Hi {first_name},</p>
+                    <p>Access is reserved for members of the Melanin Bank Community. To continue:</p>
+                    <ul style="margin: 20px 0;">
+                        <li>Sign up at <a href="https://themelaninbank.com" style="color: #472816;">https://themelaninbank.com</a></li>
+                        <li>If you're already a member, confirm you used the same email here.</li>
+                        <li>If still stuck, email us at <a href="mailto:themelaninbankteam@gmail.com" style="color: #472816;">themelaninbankteam@gmail.com</a></li>
                     </ul>
-                    <p>Thank you for your patience!</p>
+                    <p>Once confirmed, we'll approve your account.</p>
                     <p>Best regards,<br>The Content Strategy Planner Team</p>
                 </div>
                 """
