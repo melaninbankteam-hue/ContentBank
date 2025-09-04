@@ -46,10 +46,19 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
         audioLink: "",
         notes: "",
         image: null,
-        reelCover: null
+        reelCover: null,
+        scheduledDate: "",
+        scheduledTime: "09:00"
       });
+    } else if (selectedDate) {
+      // Set default date to selected date
+      const defaultDate = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(selectedDate).padStart(2, '0')}`;
+      setFormData(prev => ({
+        ...prev,
+        scheduledDate: defaultDate
+      }));
     }
-  }, [isOpen]);
+  }, [isOpen, selectedDate, currentMonth]);
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
