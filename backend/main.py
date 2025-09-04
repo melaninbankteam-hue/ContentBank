@@ -131,6 +131,188 @@ async def verify_token(current_user: dict = Depends(get_current_user)):
             created_at=user["created_at"]
         )
     }
+# Admin Routes
+@api_router.get("/admin/users", response_model=List[UserResponse])
+async def get_all_users_admin(current_user: dict = Depends(get_current_user)):
+    # Check if user is admin
+    admin_user = await find_user_by_id(current_user["user_id"])
+    if not admin_user or not admin_user.get("is_admin", False):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin access required"
+        )
+    
+    users = await get_all_users()
+    return [UserResponse(
+        id=user["id"],
+        email=user["email"],
+        name=user["name"],
+        is_active=user["is_active"],
+        is_admin=user.get("is_admin", False),
+        approval_status=user["approval_status"],
+        created_at=user["created_at"]
+    ) for user in users]
+
+@api_router.patch("/admin/users/{user_id}/approve", response_model=dict)
+async def approve_user(user_id: str, current_user: dict = Depends(get_current_user)):
+    # Check if user is admin
+    admin_user = await find_user_by_id(current_user["user_id"])
+    if not admin_user or not admin_user.get("is_admin", False):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin access required"
+        )
+    
+    # Get user to approve
+    user = await find_user_by_id(user_id)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    
+    # Update user status
+    success = await update_user_status(user_id, {
+        "approval_status": "approved",
+        "is_active": True,
+        "updated_at": datetime.utcnow()
+    })
+    
+    if success:
+        # Send approval email
+        email_result = EmailService.send_approval_notification(user["email"], user["name"])
+        return {
+            "message": "User approved successfully",
+            "email_sent": email_result.get("success", False)
+        }
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to approve user"
+        )
+
+@api_router.patch("/admin/users/{user_id}/deny", response_model=dict)
+async def deny_user(user_id: str, current_user: dict = Depends(get_current_user)):
+    # Check if user is admin
+    admin_user = await find_user_by_id(current_user["user_id"])
+    if not admin_user or not admin_user.get("is_admin", False):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin access required"
+        )
+    
+    # Get user to deny
+    user = await find_user_by_id(user_id)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    
+    # Update user status
+    success = await update_user_status(user_id, {
+        "approval_status": "denied",
+        "is_active": False,
+        "updated_at": datetime.utcnow()
+    })
+    
+    if success:
+        # Send denial email
+        email_result = EmailService.send_denial_notification(user["email"], user["name"])
+        return {
+            "message": "User denied successfully",
+            "email_sent": email_result.get("success", False)
+        }
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to deny user"
+        )
+
+@api_router.patch("/admin/users/{user_id}/suspend", response_model=dict)
+async def suspend_user(user_id: str, current_user: dict = Depends(get_current_user)):
+    # Check if user is admin
+    admin_user = await find_user_by_id(current_user["user_id"])
+    if not admin_user or not admin_user.get("is_admin", False):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin access required"
+        )
+    
+    # Update user status
+    success = await update_user_status(user_id, {
+        "is_active": False,
+        "updated_at": datetime.utcnow()
+    })
+    
+    if success:
+        return {"message": "User suspended successfully"}
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to suspend user"
+        )
+
+# Media Upload Routes
+@api_router.post("/media/upload", response_model=dict)
+async def upload_media(
+    file: UploadFile = File(...),
+    folder: str = "content_planner",
+    current_user: dict = Depends(get_current_user)
+):
+    """Upload media to Cloudinary"""
+    try:
+        # Read file data
+        file_data = await file.read()
+        
+        # Generate filename
+        filename = f"user_{current_user['user_id']}_{file.filename}"
+        
+        # Upload to Cloudinary
+        result = MediaService.upload_image(file_data, filename, folder)
+        
+        if result["success"]:
+            return {
+                "success": True,
+                "media": MediaUpload(
+                    url=result["url"],
+                    public_id=result["public_id"],
+                    width=result.get("width"),
+                    height=result.get("height")
+                )
+            }
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Upload failed: {result['error']}"
+            )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Upload failed: {str(e)}"
+        )
+
+@api_router.delete("/media/{public_id}", response_model=dict)
+async def delete_media(
+    public_id: str,
+    current_user: dict = Depends(get_current_user)
+):
+    """Delete media from Cloudinary"""
+    try:
+        result = MediaService.delete_image(public_id)
+        
+        if result["success"]:
+            return {"message": "Media deleted successfully"}
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Delete failed: {result.get('error', 'Unknown error')}"
+            )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Delete failed: {str(e)}"
+        )
 
 # Monthly Data Routes
 @api_router.get("/months/{month_key}", response_model=MonthlyData)
