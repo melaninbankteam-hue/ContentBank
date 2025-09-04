@@ -13,13 +13,12 @@ import InstagramPreview from "./InstagramPreview";
 import BrainstormTab from "./BrainstormTab";
 import AnalyticsTab from "./AnalyticsTab";
 import AdminPanel from "./AdminPanel";
-import { useAuth } from "./LoginForm";
 
-const ContentPlanner = () => {
-  const { user, logout } = useAuth();
+const ContentPlanner = ({ user, onLogout }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [activeTab, setActiveTab] = useState("overview");
   const [showAdminPanel, setShowAdminPanel] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   // Load data from localStorage with user-specific key
   const [monthlyData, setMonthlyData] = useState(() => {
@@ -48,6 +47,11 @@ const ContentPlanner = () => {
 
   const formatMonthYear = (date) => {
     return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  };
+
+  // Trigger refresh of Instagram preview
+  const handlePostUpdate = () => {
+    setRefreshTrigger(prev => prev + 1);
   };
 
   return (
