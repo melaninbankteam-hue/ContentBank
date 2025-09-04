@@ -228,6 +228,7 @@ const ContentCalendar = ({ currentMonth, monthlyData, setMonthlyData, onPostUpda
         currentMonth={currentMonth}
         monthlyData={monthlyData}
         setMonthlyData={setMonthlyData}
+        onPostUpdate={onPostUpdate}
       />
     </div>
   );
