@@ -146,25 +146,38 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
     const file = e.target.files[0];
     if (!file) return;
 
-    // Validate file type
-    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'video/mp4', 'video/quicktime'];
-    if (!validTypes.includes(file.type)) {
+    // Validate file type - allow videos up to 30 seconds
+    const validImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+    const validVideoTypes = ['video/mp4', 'video/quicktime', 'video/avi', 'video/mov'];
+    const allValidTypes = [...validImageTypes, ...validVideoTypes];
+    
+    if (!allValidTypes.includes(file.type)) {
       toast({
         title: "Invalid File Type",
-        description: "Please upload an image (JPG, PNG, GIF) or video (MP4, MOV).",
+        description: "Please upload an image (JPG, PNG, GIF) or video (MP4, MOV, AVI).",
         variant: "destructive"
       });
       return;
     }
 
-    // Validate file size (10MB limit)
-    if (file.size > 10 * 1024 * 1024) {
+    // Validate file size (50MB limit for videos, 10MB for images)
+    const maxSize = validVideoTypes.includes(file.type) ? 50 * 1024 * 1024 : 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+      const maxSizeText = validVideoTypes.includes(file.type) ? "50MB" : "10MB";
       toast({
         title: "File Too Large",
-        description: "Please upload a file smaller than 10MB.",
+        description: `Please upload a file smaller than ${maxSizeText}.`,
         variant: "destructive"
       });
       return;
+    }
+
+    // For videos, show duration check info
+    if (validVideoTypes.includes(file.type)) {
+      toast({
+        title: "Video Upload",
+        description: "Uploading video... Please ensure it's under 30 seconds for best results.",
+      });
     }
 
     const uploadResult = await uploadToCloudinary(file, type);
@@ -172,7 +185,7 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
       handleInputChange(type, uploadResult);
       toast({
         title: "Upload Successful",
-        description: `${type === 'image' ? 'Main content' : 'Reel cover'} uploaded successfully!`,
+        description: `${validVideoTypes.includes(file.type) ? 'Video' : 'Image'} uploaded successfully!`,
       });
     }
   };
