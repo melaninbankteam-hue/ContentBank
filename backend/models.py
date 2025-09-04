@@ -17,16 +17,19 @@ class User(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     email: str
     name: str
+    social_handle: Optional[str] = None
     password_hash: str
     is_active: bool = True
     is_admin: bool = False
     approval_status: str = "pending"  # pending, approved, denied
+    last_active: Optional[datetime] = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
 class UserCreate(BaseModel):
     email: str
     name: str
+    socialHandle: Optional[str] = None
     password: str
 
 class UserLogin(BaseModel):
@@ -37,9 +40,11 @@ class UserResponse(BaseModel):
     id: str
     email: str
     name: str
+    social_handle: Optional[str] = None
     is_active: bool
     is_admin: bool = False
     approval_status: str = "pending"
+    last_active: Optional[datetime] = None
     created_at: datetime
 
 class UserUpdate(BaseModel):
