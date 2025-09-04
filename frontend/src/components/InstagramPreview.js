@@ -266,17 +266,14 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
                         </Badge>
                       </div>
                     )}
-                    {/* Drag indicator */}
-                    <div className="absolute top-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <div className="bg-white/80 rounded p-1">
-                        <div className="w-2 h-2 grid grid-cols-2 gap-0.5">
-                          <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-                          <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-                          <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-                          <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+                    {/* Swap indicator */}
+                    {swapMode && (
+                      <div className="absolute top-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="bg-white/80 rounded p-1">
+                          <ArrowUpDown className="w-3 h-3 text-[#472816]" />
                         </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 ) : (
                   <div className="w-full h-full bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center rounded hover:border-[#bb9477] transition-colors">
