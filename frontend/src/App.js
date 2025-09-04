@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import ContentPlanner from './components/ContentPlanner';
-import LoginForm, { AuthProvider } from './components/LoginForm';
+import LoginForm from './components/LoginForm';
 import AwaitingApproval from './components/AwaitingApproval';
 import { Toaster } from './components/ui/sonner';
 import './App.css';
