@@ -7,7 +7,7 @@ import PostPlanningModal from "./PostPlanningModal";
 import { mockPosts } from "../data/mock";
 import { useToast } from "../hooks/use-toast";
 
-const ContentCalendar = ({ currentMonth, monthlyData, setMonthlyData }) => {
+const ContentCalendar = ({ currentMonth, monthlyData, setMonthlyData, onPostUpdate }) => {
   const { toast } = useToast();
   const [selectedDate, setSelectedDate] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
