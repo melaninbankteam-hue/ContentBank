@@ -10,7 +10,7 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
   const [draggedIndex, setDraggedIndex] = useState(null);
   const [posts, setPosts] = useState([]);
 
-  // Get all posts from current month and sort chronologically
+  // Get all posts from current month and sort in Instagram feed order (newest first)
   const getAllPostsFromMonth = useCallback(() => {
     const monthKey = `${currentMonth.getFullYear()}-${currentMonth.getMonth()}`;
     const monthData = monthlyData[monthKey];
@@ -19,27 +19,25 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
     if (monthData && monthData.posts) {
       Object.entries(monthData.posts).forEach(([dateKey, dayPosts]) => {
         dayPosts.forEach(post => {
-          // Include posts with images, reels with cover images, or carousels
+          // Include all content types with images
           if ((post.type === 'Post' || post.type === 'Reel' || post.type === 'Carousel') && 
               (post.image?.url || post.reelCover?.url)) {
             allPosts.push({
               ...post,
               dateKey,
               originalDate: dateKey,
-              // Priority: reel cover > main image for preview
-              previewImage: post.reelCover?.url || post.image?.url
+              // Priority: reel cover > main image for preview (as requested)
+              previewImage: post.reelCover?.url || post.image?.url,
+              // Use scheduled date/time for sorting, fallback to dateKey
+              sortDate: new Date(post.scheduledDate || dateKey + 'T' + (post.scheduledTime || '09:00'))
             });
           }
         });
       });
     }
     
-    // Sort by scheduled date if available, otherwise by dateKey (chronological order)
-    return allPosts.sort((a, b) => {
-      const dateA = new Date(a.scheduledDate || a.dateKey);
-      const dateB = new Date(b.scheduledDate || b.dateKey);
-      return dateA - dateB;
-    });
+    // Sort by scheduled date/time in reverse chronological order (newest first - like Instagram feed)
+    return allPosts.sort((a, b) => b.sortDate - a.sortDate);
   }, [monthlyData, currentMonth]);
 
   // Update posts when month data changes or triggerRefresh is called
