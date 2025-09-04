@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, status
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, status, UploadFile, File
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 import os
@@ -8,24 +8,26 @@ from typing import List, Dict
 from datetime import datetime
 
 from models import (
-    User, UserCreate, UserLogin, UserResponse,
+    User, UserCreate, UserLogin, UserResponse, UserUpdate,
     MonthlyData, MonthlyDataCreate,
     ContentIdea, ContentIdeaCreate, ContentIdeaUpdate,
-    Post, PostCreate, PostUpdate
+    Post, PostCreate, PostUpdate, MediaUpload
 )
 from auth import hash_password, verify_password, create_access_token, get_current_user
 from database import (
-    find_user_by_email, create_user, find_user_by_id,
+    find_user_by_email, create_user, find_user_by_id, get_all_users, update_user_status,
     get_monthly_data, upsert_monthly_data,
     get_all_content_ideas, create_content_idea, update_content_idea, delete_content_idea,
     get_posts_for_date, get_posts_for_month, create_post, update_post, delete_post
 )
+from media_service import MediaService
+from email_service import EmailService
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 # Create the main app without a prefix
-app = FastAPI(title="The Melanin Bank - Content Planner API")
+app = FastAPI(title="Content Strategy Planner API")
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
@@ -41,28 +43,24 @@ async def register(user_data: UserCreate):
             detail="Email already registered"
         )
     
-    # Create new user
+    # Create new user with pending approval status
     user = User(
         email=user_data.email,
         name=user_data.name,
-        password_hash=hash_password(user_data.password)
+        password_hash=hash_password(user_data.password),
+        approval_status="pending",
+        is_active=False  # Not active until approved
     )
     
     await create_user(user.dict())
     
-    # Create access token
-    token = create_access_token(user.id, user.email)
+    # Send pending approval email
+    email_result = EmailService.send_pending_approval_notification(user.email, user.name)
     
     return {
-        "message": "User created successfully",
-        "token": token,
-        "user": UserResponse(
-            id=user.id,
-            email=user.email,
-            name=user.name,
-            is_active=user.is_active,
-            created_at=user.created_at
-        )
+        "message": "Registration successful! Your account is pending approval. You'll receive an email once approved.",
+        "approval_status": "pending",
+        "email_sent": email_result.get("success", False)
     }
 
 @api_router.post("/auth/login", response_model=dict)
@@ -73,6 +71,20 @@ async def login(login_data: UserLogin):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password"
+        )
+    
+    # Check approval status
+    if user["approval_status"] == "pending":
+        return {
+            "message": "Account pending approval",
+            "approval_status": "pending",
+            "show_awaiting_approval": True
+        }
+    
+    if user["approval_status"] == "denied":
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Account access has been denied"
         )
     
     if not user["is_active"]:
@@ -92,6 +104,8 @@ async def login(login_data: UserLogin):
             email=user["email"],
             name=user["name"],
             is_active=user["is_active"],
+            is_admin=user.get("is_admin", False),
+            approval_status=user["approval_status"],
             created_at=user["created_at"]
         )
     }
@@ -112,6 +126,8 @@ async def verify_token(current_user: dict = Depends(get_current_user)):
             email=user["email"],
             name=user["name"],
             is_active=user["is_active"],
+            is_admin=user.get("is_admin", False),
+            approval_status=user["approval_status"],
             created_at=user["created_at"]
         )
     }
