@@ -2,13 +2,14 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { MoreHorizontal, Heart, MessageCircle, Send, Bookmark, Upload, RotateCcw } from "lucide-react";
+import { MoreHorizontal, Heart, MessageCircle, Send, Bookmark, Upload, RotateCcw, ArrowUpDown } from "lucide-react";
 import { useToast } from "../hooks/use-toast";
 
 const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRefresh }) => {
   const { toast } = useToast();
-  const [draggedIndex, setDraggedIndex] = useState(null);
   const [posts, setPosts] = useState([]);
+  const [selectedForSwap, setSelectedForSwap] = useState(null);
+  const [swapMode, setSwapMode] = useState(false);
 
   // Get all posts from current month and sort in Instagram feed order (newest first)
   const getAllPostsFromMonth = useCallback(() => {
