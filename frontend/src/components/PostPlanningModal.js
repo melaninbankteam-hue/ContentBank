@@ -21,7 +21,9 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
     audioLink: "",
     notes: "",
     image: null,
-    reelCover: null
+    reelCover: null,
+    scheduledDate: "",
+    scheduledTime: "09:00"
   });
 
   const monthKey = `${currentMonth.getFullYear()}-${currentMonth.getMonth()}`;
