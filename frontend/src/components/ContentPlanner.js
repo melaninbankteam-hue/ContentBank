@@ -254,6 +254,7 @@ const ContentPlanner = ({ user, onLogout }) => {
               currentMonth={currentMonth}
               monthlyData={monthlyData}
               setMonthlyData={setMonthlyData}
+              onPostUpdate={handlePostUpdate}
             />
           </TabsContent>
 
@@ -268,6 +269,7 @@ const ContentPlanner = ({ user, onLogout }) => {
               monthlyData={monthlyData}
               currentMonth={currentMonth}
               setMonthlyData={setMonthlyData}
+              triggerRefresh={refreshTrigger}
             />
           </TabsContent>
 
