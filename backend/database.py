@@ -68,7 +68,8 @@ async def get_all_content_ideas(user_id: str):
 async def create_content_idea(idea_data: dict) -> str:
     """Create a new content idea"""
     result = await content_ideas_collection.insert_one(idea_data)
-    return str(result.inserted_id)
+    # Return the UUID id field, not the MongoDB _id
+    return idea_data["id"]
 
 async def update_content_idea(idea_id: str, user_id: str, update_data: dict) -> bool:
     """Update a content idea"""
