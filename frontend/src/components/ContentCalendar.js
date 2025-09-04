@@ -161,11 +161,12 @@ const ContentCalendar = ({ currentMonth, monthlyData, setMonthlyData, onPostUpda
                 key={index}
                 draggable
                 onDragStart={(e) => handlePostDragStart(e, post, formatDateKey(day))}
-                className="text-xs bg-[#bb9477]/20 rounded px-1 py-1 truncate text-[#3f2d1d] leading-tight relative cursor-move hover:bg-[#bb9477]/30 transition-colors group"
+                onClick={() => handlePostClick(post, formatDateKey(day))}
+                className="text-xs bg-[#bb9477]/20 rounded px-1 py-1 truncate text-[#3f2d1d] leading-tight relative cursor-pointer hover:bg-[#bb9477]/40 transition-colors group"
               >
                 <Move className="w-3 h-3 absolute -top-1 -right-1 opacity-0 group-hover:opacity-100 text-[#472816] bg-white rounded-full p-0.5" />
                 <span className="hidden md:inline">{post.type}: </span>{post.topic}
-                {post.reelCover && (
+                {post.reelCover?.url && (
                   <span className="absolute -top-1 -left-1 w-2 h-2 bg-[#472816] rounded-full" title="Has cover image"></span>
                 )}
               </div>
