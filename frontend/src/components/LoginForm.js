@@ -332,7 +332,7 @@ const LoginForm = ({ onLogin, onRegister }) => {
               New registrations require admin approval
             </p>
             <p className="text-xs text-[#3f2d1d]/60">
-              Admin login: admin@melaninbank.com
+              Admin login: admin@contentstrategyplanner.com
             </p>
           </div>
         </CardContent>
