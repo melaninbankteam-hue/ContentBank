@@ -54,6 +54,21 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
         scheduledDate: "",
         scheduledTime: "09:00"
       });
+    } else if (isOpen && editingPost) {
+      // Pre-populate form with editing post data
+      setFormData({
+        type: editingPost.type || "",
+        category: editingPost.category || "",
+        pillar: editingPost.pillar || "",
+        topic: editingPost.topic || "",
+        caption: editingPost.caption || "",
+        audioLink: editingPost.audioLink || "",
+        notes: editingPost.notes || "",
+        image: editingPost.image || null,
+        reelCover: editingPost.reelCover || null,
+        scheduledDate: editingPost.scheduledDate || "",
+        scheduledTime: editingPost.scheduledTime || "09:00"
+      });
     } else if (isOpen && selectedDate) {
       // Set default scheduled date to selected date
       const defaultDate = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(selectedDate).padStart(2, '0')}`;
@@ -62,7 +77,7 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
         scheduledDate: defaultDate
       }));
     }
-  }, [isOpen, selectedDate, currentMonth]);
+  }, [isOpen, selectedDate, currentMonth, editingPost]);
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
