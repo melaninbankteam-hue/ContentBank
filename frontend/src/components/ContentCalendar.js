@@ -233,12 +233,16 @@ const ContentCalendar = ({ currentMonth, monthlyData, setMonthlyData, onPostUpda
       {/* Post Planning Modal */}
       <PostPlanningModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditingPost(null);
+        }}
         selectedDate={selectedDate}
         currentMonth={currentMonth}
         monthlyData={monthlyData}
         setMonthlyData={setMonthlyData}
         onPostUpdate={onPostUpdate}
+        editingPost={editingPost}
       />
     </div>
   );
