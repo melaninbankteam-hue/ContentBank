@@ -233,18 +233,68 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
               </div>
             </div>
 
-            <div>
-              <label className="text-sm font-medium text-[#3f2d1d] mb-2 block">Content Pillar</label>
-              <Select value={formData.pillar} onValueChange={(value) => handleInputChange('pillar', value)}>
-                <SelectTrigger className="border-[#bb9477]/50 focus:border-[#472816]">
-                  <SelectValue placeholder="Select pillar" />
-                </SelectTrigger>
-                <SelectContent>
-                  {contentPillars.map(pillar => (
-                    <SelectItem key={pillar} value={pillar}>{pillar}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium text-[#3f2d1d] mb-2 block">Content Pillar</label>
+                <Select value={formData.pillar} onValueChange={(value) => handleInputChange('pillar', value)}>
+                  <SelectTrigger className="border-[#bb9477]/50 focus:border-[#472816]">
+                    <SelectValue placeholder="Select pillar" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {contentPillars.map(pillar => (
+                      <SelectItem key={pillar} value={pillar}>{pillar}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-[#3f2d1d] mb-2 block">Category</label>
+                <Select value={formData.category} onValueChange={(value) => handleInputChange('category', value)}>
+                  <SelectTrigger className="border-[#bb9477]/50 focus:border-[#472816]">
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {contentCategories.map(category => (
+                      <SelectItem key={category} value={category}>{category}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* Schedule Date and Time */}
+            <div className="bg-[#bb9477]/5 rounded-lg p-4 border border-[#bb9477]/20">
+              <h4 className="text-sm font-semibold text-[#472816] mb-3 flex items-center gap-2">
+                <Calendar className="w-4 h-4" />
+                Schedule Post
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-[#3f2d1d] mb-2 block">Date</label>
+                  <Input
+                    type="date"
+                    value={formData.scheduledDate}
+                    onChange={(e) => handleInputChange('scheduledDate', e.target.value)}
+                    className="border-[#bb9477]/50 focus:border-[#472816]"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-[#3f2d1d] mb-2 block">Time</label>
+                  <div className="relative">
+                    <Clock className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-[#bb9477]" />
+                    <Input
+                      type="time"
+                      value={formData.scheduledTime}
+                      onChange={(e) => handleInputChange('scheduledTime', e.target.value)}
+                      className="border-[#bb9477]/50 focus:border-[#472816] pl-10"
+                    />
+                  </div>
+                </div>
+              </div>
+              <p className="text-xs text-[#3f2d1d]/60 mt-2">
+                📅 You can reschedule this post to any date and time
+              </p>
             </div>
 
             <div>
