@@ -208,7 +208,7 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
         
         <CardContent className="p-6 md:p-8">
           <div className="mb-4 text-center text-sm text-[#3f2d1d]/70">
-            <p className="mb-2">📱 Drag and drop posts to rearrange your Instagram grid</p>
+            <p className="mb-2">📱 {swapMode ? 'Click posts to swap their positions' : 'Enable swap mode to rearrange your Instagram grid'}</p>
             <p>Changes will automatically update your calendar dates</p>
           </div>
 
