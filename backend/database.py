@@ -108,7 +108,8 @@ async def get_posts_for_month(user_id: str, month_key: str):
 async def create_post(post_data: dict) -> str:
     """Create a new post"""
     result = await posts_collection.insert_one(post_data)
-    return str(result.inserted_id)
+    # Return the UUID id field, not the MongoDB _id
+    return post_data["id"]
 
 async def update_post(post_id: str, user_id: str, update_data: dict) -> bool:
     """Update a post"""
