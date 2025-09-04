@@ -208,11 +208,8 @@ const LoginForm = ({ onLogin, onRegister }) => {
           </Tabs>
           
           <div className="mt-6 text-center">
-            <p className="text-xs text-[#3f2d1d]/60 mb-2">
+            <p className="text-xs text-[#3f2d1d]/60 text-center">
               New registrations require admin approval
-            </p>
-            <p className="text-xs text-[#3f2d1d]/60">
-              Admin login: admin@contentstrategyplanner.com
             </p>
           </div>
         </CardContent>
