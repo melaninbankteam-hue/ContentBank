@@ -16,11 +16,12 @@ import base64
 # Load environment variables
 load_dotenv('/app/frontend/.env')
 
-# Get the backend URL from environment
-BACKEND_URL = os.environ.get('REACT_APP_BACKEND_URL', 'http://localhost:8001')
+# Get the backend URL from environment - use internal URL for testing
+BACKEND_URL = "http://localhost:8001"  # Use internal URL for testing
 API_BASE_URL = f"{BACKEND_URL}/api"
 
 print(f"🌐 Testing PRODUCTION backend at: {API_BASE_URL}")
+print(f"📡 Production URL: {os.environ.get('REACT_APP_BACKEND_URL', 'Not set')}")
 
 class ProductionAPITester:
     def __init__(self):
