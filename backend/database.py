@@ -52,7 +52,8 @@ async def upsert_monthly_data(user_id: str, month_key: str, data: dict) -> str:
     )
     
     if result.upserted_id:
-        return str(result.upserted_id)
+        # Return the UUID id field, not the MongoDB _id
+        return data["id"]
     else:
         existing = await monthly_data_collection.find_one({
             "user_id": user_id,
