@@ -47,6 +47,7 @@ async def register(user_data: UserCreate):
     user = User(
         email=user_data.email,
         name=user_data.name,
+        social_handle=user_data.socialHandle,
         password_hash=hash_password(user_data.password),
         approval_status="pending",
         is_active=False  # Not active until approved
