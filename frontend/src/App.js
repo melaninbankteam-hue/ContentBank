@@ -119,24 +119,26 @@ function App() {
   }
 
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route 
-            path="/" 
-            element={
-              user ? (
-                <ContentPlanner user={user} onLogout={handleLogout} />
-              ) : (
-                <LoginForm onLogin={handleLogin} onRegister={handleRegister} />
-              )
-            } 
-          />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-        <Toaster />
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div className="App">
+          <Routes>
+            <Route 
+              path="/" 
+              element={
+                user ? (
+                  <ContentPlanner user={user} onLogout={handleLogout} />
+                ) : (
+                  <LoginForm onLogin={handleLogin} onRegister={handleRegister} />
+                )
+              } 
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+          <Toaster />
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
