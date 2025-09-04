@@ -4,6 +4,7 @@ import axios from 'axios';
 import ContentPlanner from './components/ContentPlanner';
 import LoginForm from './components/LoginForm';
 import AwaitingApproval from './components/AwaitingApproval';
+import AdminPortal from './components/AdminPortal';
 import { Toaster } from './components/ui/sonner';
 import './App.css';
 
