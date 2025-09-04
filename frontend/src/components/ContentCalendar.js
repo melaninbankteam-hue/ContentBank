@@ -38,7 +38,15 @@ const ContentCalendar = ({ currentMonth, monthlyData, setMonthlyData, onPostUpda
     return currentPosts[dateKey] || [];
   };
 
+  const handlePostClick = (post, dateKey) => {
+    setEditingPost(post);
+    const dayOfMonth = parseInt(dateKey.split('-')[2]);
+    setSelectedDate(dayOfMonth);
+    setIsModalOpen(true);
+  };
+
   const handleDateClick = (day) => {
+    setEditingPost(null);
     setSelectedDate(day);
     setIsModalOpen(true);
   };
