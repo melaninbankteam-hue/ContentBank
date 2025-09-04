@@ -13,6 +13,7 @@ const ContentCalendar = ({ currentMonth, monthlyData, setMonthlyData, onPostUpda
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [draggedPost, setDraggedPost] = useState(null);
   const [draggedFromDate, setDraggedFromDate] = useState(null);
+  const [editingPost, setEditingPost] = useState(null);
 
   const monthKey = `${currentMonth.getFullYear()}-${currentMonth.getMonth()}`;
   const currentPosts = monthlyData[monthKey]?.posts || mockPosts;
