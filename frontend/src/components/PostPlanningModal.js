@@ -6,7 +6,7 @@ import { Textarea } from "./ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Card, CardContent } from "./ui/card";
 import { Badge } from "./ui/badge";
-import { X, Upload, Trash2, Download, Copy } from "lucide-react";
+import { X, Upload, Trash2, Download, Copy, Calendar, Clock } from "lucide-react";
 import { contentCategories, contentTypes, mockBrainstormIdeas } from "../data/mock";
 import { useToast } from "../hooks/use-toast";
 
