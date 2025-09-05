@@ -60,9 +60,17 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
     gridPosts.push(null);
   }
 
-  // Handle post swap functionality (like Planoly)
-  const handlePostClick = (clickedIndex) => {
-    if (!swapMode) return;
+  // Handle post click to open post planner
+  const handlePostEdit = (post) => {
+    if (onPostEdit) {
+      onPostEdit(post);
+    } else {
+      toast({
+        title: "Edit Post",
+        description: "Click on Calendar tab to edit this post",
+      });
+    }
+  };
     
     if (selectedForSwap === null) {
       // First selection
