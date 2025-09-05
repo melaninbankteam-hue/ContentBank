@@ -83,7 +83,7 @@ const ContentPlanner = ({ user, onLogout }) => {
                 <div className="flex items-center gap-2">
                   <User className="w-4 h-4" />
                   <span>{user?.name}</span>
-                  {user?.role === 'admin' && (
+                  {user?.is_admin && (
                     <Badge variant="outline" className="bg-[#bb9477]/20 text-[#fffaf1] border-[#bb9477] text-xs">
                       Admin
                     </Badge>
