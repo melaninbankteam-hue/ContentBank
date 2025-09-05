@@ -71,6 +71,17 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
       });
     }
   };
+
+  // Handle post swap functionality (like Planoly)
+  const handlePostClick = (clickedIndex) => {
+    if (!swapMode) {
+      // If not in swap mode, try to edit the post
+      const post = posts[clickedIndex];
+      if (post) {
+        handlePostEdit(post);
+      }
+      return;
+    }
     
     if (selectedForSwap === null) {
       // First selection
