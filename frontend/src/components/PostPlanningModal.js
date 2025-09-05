@@ -478,7 +478,16 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
                   <label htmlFor="image-upload" className="cursor-pointer">
                     {formData.image ? (
                       <div className="relative">
-                        <img src={formData.image.url} alt="Preview" className="max-w-full h-24 object-cover rounded mx-auto" />
+                        {formData.image.url.includes('video') || formData.image.url.includes('.mp4') || formData.image.url.includes('.mov') ? (
+                          <video 
+                            src={formData.image.url} 
+                            controls 
+                            className="max-w-full h-24 object-cover rounded mx-auto"
+                            preload="metadata"
+                          />
+                        ) : (
+                          <img src={formData.image.url} alt="Preview" className="max-w-full h-24 object-cover rounded mx-auto" />
+                        )}
                         <div className="flex gap-2 mt-2 justify-center">
                           <Button
                             variant="outline"
