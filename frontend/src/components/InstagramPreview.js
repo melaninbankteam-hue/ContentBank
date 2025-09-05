@@ -37,7 +37,8 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
       });
     }
     
-    // Sort by scheduled date/time in reverse chronological order (newest first - like Instagram feed)
+    // Sort by scheduled date/time in reverse chronological order (newest first - Instagram feed order)
+    // Most recent post goes to top-left, then fills left-to-right, top-to-bottom
     return allPosts.sort((a, b) => b.sortDate - a.sortDate);
   }, [monthlyData, currentMonth]);
 
