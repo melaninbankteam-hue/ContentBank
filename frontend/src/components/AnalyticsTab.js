@@ -66,65 +66,6 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
     }));
   };
 
-  const MetricCard = ({ title, icon: Icon, value, field, previousValue, color = "text-[#472816]" }) => {
-    const growth = calculateGrowth(value, previousValue);
-    
-    return (
-      <Card className="border-[#bb9477]/30 hover:border-[#bb9477]/50 transition-colors">
-        <CardContent className="p-4 md:p-6">
-          <div className="flex items-center justify-between mb-3">
-            <Icon className={`w-5 h-5 md:w-6 md:h-6 ${color}`} />
-            {previousValue !== undefined && (
-              <Badge 
-                variant={growth.isPositive ? "default" : "destructive"} 
-                className={`text-xs ${growth.isPositive ? 'bg-green-100 text-green-800 border-green-200' : 'bg-red-100 text-red-800 border-red-200'}`}
-              >
-                {growth.isPositive ? <TrendingUp className="w-3 h-3 mr-1" /> : <TrendingDown className="w-3 h-3 mr-1" />}
-                {growth.percentage}%
-              </Badge>
-            )}
-          </div>
-          
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-[#3f2d1d] block">{title}</label>
-            <Input
-              type="number"
-              value={value}
-              onChange={(e) => handleMetricChange(field, e.target.value)}
-              placeholder="0"
-              className="text-lg md:text-xl font-semibold border-[#bb9477]/50 focus:border-[#472816]"
-            />
-          </div>
-          
-          {previousValue !== undefined && (
-            <div className="mt-2 text-xs text-[#3f2d1d]/60">
-              Previous: {previousValue.toLocaleString()}
-            </div>
-          )}
-        </CardContent>
-      </Card>
-    );
-  };
-
-  const EngagementMetricCard = ({ title, icon: Icon, value, field, color = "text-[#472816]", suffix = "" }) => (
-    <Card className="border-[#bb9477]/30 hover:border-[#bb9477]/50 transition-colors">
-      <CardContent className="p-4">
-        <div className="flex items-center gap-2 mb-2">
-          <Icon className={`w-4 h-4 ${color}`} />
-          <span className="text-sm font-medium text-[#3f2d1d]">{title}</span>
-        </div>
-        <Input
-          type="number"
-          value={value}
-          onChange={(e) => handleMetricChange(field, e.target.value)}
-          placeholder="0"
-          className="text-base font-semibold border-[#bb9477]/50 focus:border-[#472816]"
-        />
-        {suffix && <span className="text-xs text-[#3f2d1d]/60">{suffix}</span>}
-      </CardContent>
-    </Card>
-  );
-
   return (
     <div className="space-y-6 md:space-y-8">
       <div className="text-center md:text-left">
@@ -134,160 +75,112 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
         <p className="text-[#3f2d1d] mb-4">
           Track your Instagram performance and growth metrics
         </p>
-        <div className="flex items-center gap-2 justify-center md:justify-start text-sm text-[#3f2d1d]/60">
-          <Calendar className="w-4 h-4" />
-          <span>{new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
-        </div>
       </div>
 
-      {/* Main Metrics */}
+      {/* Main Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-        <MetricCard
-          title="Followers"
-          icon={Users}
-          value={metrics.followers}
-          field="followers"
-          previousValue={previousMetrics.followers}
-          color="text-[#472816]"
-        />
-        
-        <MetricCard
-          title="Reach"
-          icon={Eye}
-          value={metrics.reach}
-          field="reach"
-          previousValue={previousMetrics.reach}
-          color="text-blue-600"
-        />
-        
-        <MetricCard
-          title="Impressions"
-          icon={TrendingUp}
-          value={metrics.impressions}
-          field="impressions"
-          previousValue={previousMetrics.impressions}
-          color="text-green-600"
-        />
-        
-        <MetricCard
-          title="Profile Views"
-          icon={Eye}
-          value={metrics.profileViews}
-          field="profileViews"
-          previousValue={previousMetrics.profileViews}
-          color="text-purple-600"
-        />
-        
-        <MetricCard
-          title="Website Clicks"
-          icon={Share}
-          value={metrics.websiteClicks}
-          field="websiteClicks"
-          previousValue={previousMetrics.websiteClicks}
-          color="text-orange-600"
-        />
-        
-        <MetricCard
-          title="Email Contacts"
-          icon={MessageCircle}
-          value={metrics.emailContacts}
-          field="emailContacts"
-          previousValue={previousMetrics.emailContacts}
-          color="text-red-600"
-        />
-      </div>
-
-      {/* Engagement Metrics */}
-      <Card className="border-[#bb9477]/30">
-        <CardHeader className="bg-[#472816] text-[#fffaf1] rounded-t-lg">
-          <CardTitle className="flex items-center gap-2">
-            <Heart className="w-5 h-5" />
-            Engagement Metrics
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="p-4 md:p-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <EngagementMetricCard
-              title="Avg Likes"
-              icon={Heart}
-              value={metrics.averageLikes || 0}
-              field="averageLikes"
-              color="text-red-500"
-            />
-            
-            <EngagementMetricCard
-              title="Avg Comments"
-              icon={MessageCircle}
-              value={metrics.averageComments || 0}
-              field="averageComments"
-              color="text-blue-500"
-            />
-            
-            <EngagementMetricCard
-              title="Avg Shares"
-              icon={Share}
-              value={metrics.averageShares || 0}
-              field="averageShares"
-              color="text-green-500"
-            />
-            
-            <EngagementMetricCard
-              title="Saves"
-              icon={Users}
-              value={metrics.averageSaves || 0}
-              field="averageSaves"
-              color="text-purple-500"
-            />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Growth Summary */}
-      {Object.keys(previousMetrics).length > 0 && (
-        <Card className="border-[#bb9477]/30">
-          <CardHeader className="bg-gradient-to-r from-[#472816] to-[#3f2d1d] text-[#fffaf1] rounded-t-lg">
-            <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="w-5 h-5" />
-              Month-over-Month Growth Summary
-            </CardTitle>
-          </CardHeader>
+        <Card className="border-[#bb9477]/30 hover:border-[#bb9477]/50 transition-colors">
           <CardContent className="p-4 md:p-6">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {Object.entries(metrics).map(([key, value]) => {
-                const previousValue = previousMetrics[key];
-                if (previousValue === undefined || typeof value !== 'number') return null;
-                
-                const growth = calculateGrowth(value, previousValue);
-                const labels = {
-                  followers: 'Followers',
-                  reach: 'Reach', 
-                  impressions: 'Impressions',
-                  profileViews: 'Profile Views',
-                  websiteClicks: 'Website Clicks',
-                  emailContacts: 'Email Contacts'
-                };
-                
-                if (!labels[key]) return null;
-                
-                return (
-                  <div key={key} className="text-center p-3 rounded-lg bg-[#bb9477]/5">
-                    <div className="text-sm font-medium text-[#3f2d1d] mb-1">{labels[key]}</div>
-                    <div className={`text-lg font-bold flex items-center justify-center gap-1 ${
-                      growth.isPositive ? 'text-green-600' : 'text-red-600'
-                    }`}>
-                      {growth.isPositive ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
-                      {growth.percentage}%
-                    </div>
-                    <div className="text-xs text-[#3f2d1d]/60">
-                      {previousValue.toLocaleString()} → {value.toLocaleString()}
-                    </div>
-                  </div>
-                );
-              })}
+            <div className="flex items-center justify-between mb-3">
+              <Users className="w-5 h-5 md:w-6 md:h-6 text-[#472816]" />
+              {previousMetrics.followers !== undefined && (
+                <Badge 
+                  variant={calculateGrowth(metrics.followers, previousMetrics.followers).isPositive ? "default" : "destructive"} 
+                  className={`text-xs ${calculateGrowth(metrics.followers, previousMetrics.followers).isPositive ? 'bg-green-100 text-green-800 border-green-200' : 'bg-red-100 text-red-800 border-red-200'}`}
+                >
+                  {calculateGrowth(metrics.followers, previousMetrics.followers).isPositive ? <TrendingUp className="w-3 h-3 mr-1" /> : <TrendingDown className="w-3 h-3 mr-1" />}
+                  {calculateGrowth(metrics.followers, previousMetrics.followers).percentage}%
+                </Badge>
+              )}
             </div>
+            
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-[#3f2d1d] block">Followers</label>
+              <Input
+                type="number"
+                value={metrics.followers}
+                onChange={(e) => handleMetricChange('followers', e.target.value)}
+                placeholder="0"
+                className="text-lg md:text-xl font-semibold border-[#bb9477]/50 focus:border-[#472816]"
+              />
+            </div>
+            
+            {previousMetrics.followers !== undefined && (
+              <div className="mt-2 text-xs text-[#3f2d1d]/60">
+                Previous: {previousMetrics.followers.toLocaleString()}
+              </div>
+            )}
           </CardContent>
         </Card>
-      )}
+        
+        <Card className="border-[#bb9477]/30 hover:border-[#bb9477]/50 transition-colors">
+          <CardContent className="p-4 md:p-6">
+            <div className="flex items-center justify-between mb-3">
+              <Eye className="w-5 h-5 md:w-6 md:h-6 text-blue-600" />
+              {previousMetrics.reach !== undefined && (
+                <Badge 
+                  variant={calculateGrowth(metrics.reach, previousMetrics.reach).isPositive ? "default" : "destructive"} 
+                  className={`text-xs ${calculateGrowth(metrics.reach, previousMetrics.reach).isPositive ? 'bg-green-100 text-green-800 border-green-200' : 'bg-red-100 text-red-800 border-red-200'}`}
+                >
+                  {calculateGrowth(metrics.reach, previousMetrics.reach).isPositive ? <TrendingUp className="w-3 h-3 mr-1" /> : <TrendingDown className="w-3 h-3 mr-1" />}
+                  {calculateGrowth(metrics.reach, previousMetrics.reach).percentage}%
+                </Badge>
+              )}
+            </div>
+            
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-[#3f2d1d] block">Reach</label>
+              <Input
+                type="number"
+                value={metrics.reach}
+                onChange={(e) => handleMetricChange('reach', e.target.value)}
+                placeholder="0"
+                className="text-lg md:text-xl font-semibold border-[#bb9477]/50 focus:border-[#472816]"
+              />
+            </div>
+            
+            {previousMetrics.reach !== undefined && (
+              <div className="mt-2 text-xs text-[#3f2d1d]/60">
+                Previous: {previousMetrics.reach.toLocaleString()}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+        
+        <Card className="border-[#bb9477]/30 hover:border-[#bb9477]/50 transition-colors">
+          <CardContent className="p-4 md:p-6">
+            <div className="flex items-center justify-between mb-3">
+              <TrendingUp className="w-5 h-5 md:w-6 md:h-6 text-green-600" />
+              {previousMetrics.impressions !== undefined && (
+                <Badge 
+                  variant={calculateGrowth(metrics.impressions, previousMetrics.impressions).isPositive ? "default" : "destructive"} 
+                  className={`text-xs ${calculateGrowth(metrics.impressions, previousMetrics.impressions).isPositive ? 'bg-green-100 text-green-800 border-green-200' : 'bg-red-100 text-red-800 border-red-200'}`}
+                >
+                  {calculateGrowth(metrics.impressions, previousMetrics.impressions).isPositive ? <TrendingUp className="w-3 h-3 mr-1" /> : <TrendingDown className="w-3 h-3 mr-1" />}
+                  {calculateGrowth(metrics.impressions, previousMetrics.impressions).percentage}%
+                </Badge>
+              )}
+            </div>
+            
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-[#3f2d1d] block">Impressions</label>
+              <Input
+                type="number"
+                value={metrics.impressions}
+                onChange={(e) => handleMetricChange('impressions', e.target.value)}
+                placeholder="0"
+                className="text-lg md:text-xl font-semibold border-[#bb9477]/50 focus:border-[#472816]"
+              />
+            </div>
+            
+            {previousMetrics.impressions !== undefined && (
+              <div className="mt-2 text-xs text-[#3f2d1d]/60">
+                Previous: {previousMetrics.impressions.toLocaleString()}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Instructions */}
       <Card className="border-[#bb9477]/30 bg-[#bb9477]/5">
