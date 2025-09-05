@@ -258,18 +258,18 @@ const ContentPlanner = ({ user, onLogout }) => {
             />
           </TabsContent>
 
-          <TabsContent value="tracker">
-            <ContentTracker 
-              monthlyData={monthlyData}
-            />
-          </TabsContent>
-
           <TabsContent value="preview">
             <InstagramPreview 
               monthlyData={monthlyData}
               currentMonth={currentMonth}
               setMonthlyData={setMonthlyData}
               triggerRefresh={refreshTrigger}
+            />
+          </TabsContent>
+
+          <TabsContent value="tracker">
+            <ContentTracker 
+              monthlyData={monthlyData}
             />
           </TabsContent>
 
