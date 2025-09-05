@@ -135,7 +135,7 @@ const ContentPlanner = ({ user, onLogout }) => {
                     )}
                   </div>
                   <div className="flex gap-2">
-                    {user?.role === 'admin' && (
+                    {user?.is_admin && (
                       <Button
                         variant="outline"
                         size="sm"
