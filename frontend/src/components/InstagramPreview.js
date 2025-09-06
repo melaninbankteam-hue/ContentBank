@@ -208,8 +208,8 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
             <p>Grid shows posts in chronological order - oldest top-left, newest bottom-right</p>
           </div>
 
-          {/* Posts Grid - 10 rows x 3 columns = 30 posts */}
-          <div className="grid grid-cols-3 gap-2">
+          {/* Instagram Grid */}
+          <div className="grid grid-cols-3 gap-1 md:gap-2 max-w-lg mx-auto">
             {gridPosts.map((post, index) => (
               <div 
                 key={index} 
