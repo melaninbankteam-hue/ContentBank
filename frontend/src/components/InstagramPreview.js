@@ -37,9 +37,9 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
       });
     }
     
-    // Sort by scheduled date/time in chronological order (oldest first)
-    // Fill grid left-to-right, top-to-bottom, with newest posts at bottom-right
-    return allPosts.sort((a, b) => a.sortDate - b.sortDate);
+    // Sort by scheduled date/time in reverse chronological order (newest first)
+    // Fill grid left-to-right, top-to-bottom, with newest posts at top-left
+    return allPosts.sort((a, b) => b.sortDate - a.sortDate);
   }, [monthlyData, currentMonth]);
 
   // Update posts when month data changes or triggerRefresh is called
