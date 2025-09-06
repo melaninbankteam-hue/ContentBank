@@ -7,6 +7,7 @@ import { Badge } from "./ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Plus, X, Lightbulb, Eye, PenTool, Link, Trash2, Search, Calendar } from "lucide-react";
 import { mockBrainstormIdeas, contentCategories } from "../data/mock";
+import { useToast } from "../hooks/use-toast";
 
 const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
   const [newIdea, setNewIdea] = useState("");
