@@ -11,7 +11,7 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
   const [selectedForSwap, setSelectedForSwap] = useState(null);
   const [swapMode, setSwapMode] = useState(false);
 
-  // Get all posts from current month and sort in Instagram feed order (newest first)
+  // Get all posts from current month and sort chronologically (oldest first)
   const getAllPostsFromMonth = useCallback(() => {
     const monthKey = `${currentMonth.getFullYear()}-${currentMonth.getMonth()}`;
     const monthData = monthlyData[monthKey];
