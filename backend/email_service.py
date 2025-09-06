@@ -62,7 +62,7 @@ class EmailService:
             first_name = user_name.split()[0] if user_name else "there"
             r = resend.Emails.send({
                 "from": os.getenv('FROM_EMAIL', 'melaninbankteam@gmail.com'),
-                "to": user_email,
+                "to": [user_email],  # Must be a list
                 "subject": "Action needed — complete your Melanin Bank membership to access Content Strategy Planner",
                 "html": f"""
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
