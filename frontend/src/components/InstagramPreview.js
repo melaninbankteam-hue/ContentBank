@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 import { MoreHorizontal, Heart, MessageCircle, Send, Bookmark, Upload, RotateCcw, ArrowUpDown } from "lucide-react";
 import { useToast } from "../hooks/use-toast";
 
-const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRefresh, onPostEdit }) => {
+const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRefresh }) => {
   const { toast } = useToast();
   const [posts, setPosts] = useState([]);
   const [selectedForSwap, setSelectedForSwap] = useState(null);
