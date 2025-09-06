@@ -42,8 +42,12 @@ class EmailService:
         """Send approval email to user"""
         try:
             first_name = user_name.split()[0] if user_name else "there"
+            
+            # Use a verified domain for Resend
+            from_email = "onboarding@resend.dev"
+            
             r = resend.Emails.send({
-                "from": os.getenv('FROM_EMAIL', 'melaninbankteam@gmail.com'),
+                "from": from_email,
                 "to": [user_email],  # Must be a list
                 "subject": "You're in! Welcome to Content Strategy Planner 🚀",
                 "html": f"""
