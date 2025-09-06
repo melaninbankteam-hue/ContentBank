@@ -56,7 +56,7 @@ class EmailService:
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
                     <p><strong>TEST EMAIL - User: {user_email}</strong></p>
                     <p>Hi {first_name},</p>
-                    <p>Your account has been approved! Log in 👉 <a href="https://contentstrategyplanner.emergent.host/login" style="color: #472816; text-decoration: none;">https://contentstrategyplanner.emergent.host/login</a> and start planning your content.</p>
+                    <p>Your account has been approved! Log in 👉 <a href="{os.getenv('APP_BASE_URL', 'https://contentstrategyplanner.emergent.host')}/login" style="color: #472816; text-decoration: none;">{os.getenv('APP_BASE_URL', 'https://contentstrategyplanner.emergent.host')}/login</a> and start planning your content.</p>
                     <p>Best regards,<br>The Content Strategy Planner Team</p>
                 </div>
                 """
