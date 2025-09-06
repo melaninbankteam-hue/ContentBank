@@ -17,6 +17,12 @@ class EmailService:
         """Send pending approval email to user"""
         try:
             first_name = user_name.split()[0] if user_name else "there"
+            
+            # Debug: Print configuration
+            print(f"DEBUG: API Key set: {bool(resend.api_key)}")
+            print(f"DEBUG: From email: {os.getenv('FROM_EMAIL', 'melaninbankteam@gmail.com')}")
+            print(f"DEBUG: To email: {user_email}")
+            
             r = resend.Emails.send({
                 "from": os.getenv('FROM_EMAIL', 'melaninbankteam@gmail.com'),
                 "to": user_email,
@@ -29,8 +35,12 @@ class EmailService:
                 </div>
                 """
             })
+            print(f"DEBUG: Email sent successfully: {r}")
             return {"success": True, "id": r}
         except Exception as e:
+            print(f"DEBUG: Email error: {str(e)}")
+            import traceback
+            traceback.print_exc()
             return {"success": False, "error": str(e)}
     
     @staticmethod
