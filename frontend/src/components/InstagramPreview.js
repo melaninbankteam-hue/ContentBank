@@ -281,29 +281,9 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
               </div>
             ))}
           </div>
-        </CardContent>
-      </Card>
 
-      {/* Preview Statistics */}
-      <Card className="border-[#bb9477]/30 shadow-lg bg-gradient-to-br from-[#fffaf1] to-[#bb9477]/5 max-w-4xl mx-auto">
-        <CardContent className="p-6">
-          <div className="flex justify-center gap-6 md:gap-8 text-center">
-            <div>
-              <div className="text-xl md:text-2xl font-bold text-[#472816]">{posts.length}</div>
-              <div className="text-[#3f2d1d]/60 text-sm">Scheduled Posts</div>
-            </div>
-            <div>
-              <div className="text-xl md:text-2xl font-bold text-[#472816]">{posts.filter(p => p.type === 'Reel').length}</div>
-              <div className="text-[#3f2d1d]/60 text-sm">Reels</div>
-            </div>
-            <div>
-              <div className="text-xl md:text-2xl font-bold text-[#472816]">{posts.filter(p => p.type === 'Carousel').length}</div>
-              <div className="text-[#3f2d1d]/60 text-sm">Carousels</div>
-            </div>
-            <div>
-              <div className="text-xl md:text-2xl font-bold text-[#472816]">{30 - posts.length}</div>
-              <div className="text-[#3f2d1d]/60 text-sm">Available Spots</div>
-            </div>
+          <div className="mt-4 text-center text-xs text-[#3f2d1d]/60">
+            <p>Showing {posts.length} of 30 posts</p>
           </div>
         </CardContent>
       </Card>
