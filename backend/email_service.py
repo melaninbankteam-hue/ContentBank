@@ -45,15 +45,16 @@ class EmailService:
         try:
             first_name = user_name.split()[0] if user_name else "there"
             
-            # Use a verified domain for Resend
-            from_email = "onboarding@resend.dev"
+            # For testing: Use verified email address as recipient
+            test_recipient = "melaninbankteam@gmail.com"
             
             r = resend.Emails.send({
-                "from": from_email,
-                "to": [user_email],  # Must be a list
-                "subject": "You're in! Welcome to Content Strategy Planner 🚀",
+                "from": "onboarding@resend.dev",
+                "to": [test_recipient],  # Using verified email for testing
+                "subject": f"[TEST] You're in! Welcome {user_name} ({user_email}) to Content Strategy Planner 🚀",
                 "html": f"""
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                    <p><strong>TEST EMAIL - User: {user_email}</strong></p>
                     <p>Hi {first_name},</p>
                     <p>Your account has been approved! Log in 👉 <a href="https://contentstrategyplanner.emergent.host/login" style="color: #472816; text-decoration: none;">https://contentstrategyplanner.emergent.host/login</a> and start planning your content.</p>
                     <p>Best regards,<br>The Content Strategy Planner Team</p>
