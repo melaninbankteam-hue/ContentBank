@@ -17,10 +17,8 @@ class EmailService:
                 "subject": "Thanks for signing up — your account is pending approval",
                 "html": f"""
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-                    <h2 style="color: #472816;">Thanks for signing up! 🎉</h2>
                     <p>Hi {first_name},</p>
-                    <p>Thanks for joining Content Strategy Planner 🎉. Your account is pending approval. You'll be notified as soon as it's approved.</p>
-                    <p>We'll review your application and get back to you soon!</p>
+                    <p>Thanks for joining Content Strategy Planner 🎉. Your account is pending approval. You'll be notified when approved.</p>
                     <p>Best regards,<br>The Content Strategy Planner Team</p>
                 </div>
                 """
