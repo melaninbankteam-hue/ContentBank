@@ -66,11 +66,22 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
     if (!post) return;
     
     if (!swapMode) {
-      // Click to edit post - show message to go to calendar
+      // Store the post to edit in localStorage and notify user
+      localStorage.setItem('editingPost', JSON.stringify(post));
       toast({
-        title: "Edit Post",
-        description: "Go to Calendar tab to edit this post",
-        duration: 3000,
+        title: "Click to Edit",
+        description: "Go to Calendar tab to edit this post, or click here to open editor",
+        duration: 5000,
+        action: {
+          label: "Edit Now",
+          onClick: () => {
+            // Trigger post editing by dispatching a custom event
+            const editEvent = new CustomEvent('openPostEditor', { 
+              detail: { post, date: post.dateKey } 
+            });
+            window.dispatchEvent(editEvent);
+          }
+        }
       });
       return;
     }
