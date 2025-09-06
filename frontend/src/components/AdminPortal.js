@@ -272,6 +272,9 @@ const AdminPortal = () => {
                         <div className="flex items-center gap-4 text-xs text-[#3f2d1d]/60">
                           <span>Joined: {new Date(user.created_at).toLocaleDateString()}</span>
                           <span>Last Active: {formatLastActivity(user.last_active)}</span>
+                          <span>Status: {user.is_active ? 'Active' : 'Inactive'}</span>
+                          <span>Posts: {user.total_posts || 0}</span>
+                          <span>Login Count: {user.login_count || 0}</span>
                         </div>
                       </div>
                       
