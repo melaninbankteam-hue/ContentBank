@@ -219,16 +219,18 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
       updatedData[monthKey].posts[dateKey] = [];
     }
 
-    if (editingPost) {
+    // Check if we're editing an existing post by looking for a post with the same content
+    const existingPostIndex = updatedData[monthKey].posts[dateKey].findIndex(
+      post => post.id && editingPost && post.id === editingPost.id
+    );
+
+    if (existingPostIndex !== -1) {
       // Update existing post
-      const postIndex = updatedData[monthKey].posts[dateKey].findIndex(post => post.id === editingPost.id);
-      if (postIndex !== -1) {
-        updatedData[monthKey].posts[dateKey][postIndex] = {
-          ...editingPost,
-          ...formData,
-          updatedAt: new Date().toISOString()
-        };
-      }
+      updatedData[monthKey].posts[dateKey][existingPostIndex] = {
+        ...updatedData[monthKey].posts[dateKey][existingPostIndex],
+        ...formData,
+        updatedAt: new Date().toISOString()
+      };
       
       toast({
         title: "Post Updated!",
