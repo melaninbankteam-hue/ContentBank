@@ -205,7 +205,7 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
         <CardContent className="p-6 md:p-8">
           <div className="mb-4 text-center text-sm text-[#3f2d1d]/70">
             <p className="mb-2">📱 {swapMode ? 'Click posts to swap their positions' : 'Click posts to edit them (opens in Calendar tab)'}</p>
-            <p>Grid shows posts in chronological order - oldest top-left, newest bottom-right</p>
+            <p>Grid shows posts with newest in top-left, oldest in bottom-right</p>
           </div>
 
           {/* Instagram Grid */}
