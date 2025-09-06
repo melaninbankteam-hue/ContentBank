@@ -60,28 +60,48 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
     gridPosts.push(null);
   }
 
-  // Handle post click to open post planner
-  const handlePostEdit = (post) => {
-    if (onPostEdit) {
-      onPostEdit(post);
-    } else {
+  // Handle post click functionality
+  const handlePostClick = (clickedIndex) => {
+    const post = posts[clickedIndex];
+    if (!post) return;
+    
+    if (!swapMode) {
+      // Click to edit post - show message to go to calendar
       toast({
         title: "Edit Post",
-        description: "Click on Calendar tab to edit this post",
+        description: "Go to Calendar tab to edit this post",
+        duration: 3000,
+      });
+      return;
+    }
+    
+    // Swap mode functionality
+    if (selectedForSwap === null) {
+      setSelectedForSwap(clickedIndex);
+      toast({
+        title: "Post Selected",
+        description: "Click another post to swap positions",
+      });
+    } else if (selectedForSwap === clickedIndex) {
+      setSelectedForSwap(null);
+      toast({
+        title: "Selection Cancelled",
+        description: "Swap mode cancelled",
+      });
+    } else {
+      // Perform swap
+      const newPosts = [...posts];
+      [newPosts[selectedForSwap], newPosts[clickedIndex]] = [newPosts[clickedIndex], newPosts[selectedForSwap]];
+      setPosts(newPosts);
+      updatePostPositions(newPosts);
+      setSelectedForSwap(null);
+      setSwapMode(false);
+      toast({
+        title: "Posts Swapped!",
+        description: "Post positions have been updated",
       });
     }
   };
-
-  // Handle post swap functionality (like Planoly)
-  const handlePostClick = (clickedIndex) => {
-    if (!swapMode) {
-      // If not in swap mode, try to edit the post
-      const post = posts[clickedIndex];
-      if (post) {
-        handlePostEdit(post);
-      }
-      return;
-    }
     
     if (selectedForSwap === null) {
       // First selection
