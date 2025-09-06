@@ -121,52 +121,40 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
   };
 
   const updateCalendarWithNewOrder = (reorderedPosts) => {
+    // Generate new dates for the reordered posts
+    const today = new Date();
+    const updatedData = { ...monthlyData };
     const monthKey = `${currentMonth.getFullYear()}-${currentMonth.getMonth()}`;
-    const monthData = monthlyData[monthKey];
     
-    if (!monthData) return;
-
-    // Clear existing posts from their original dates
-    const clearedPosts = {};
-    Object.keys(monthData.posts || {}).forEach(dateKey => {
-      const remainingPosts = (monthData.posts[dateKey] || []).filter(post => 
-        !(post.type === 'Post' && (post.image || post.reelCover))
-      );
-      if (remainingPosts.length > 0) {
-        clearedPosts[dateKey] = remainingPosts;
-      }
-    });
-
-    // Generate new dates for reordered posts
-    const startDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
-    const datesInMonth = [];
-    
-    for (let day = 1; day <= new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate(); day++) {
-      const dateStr = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-      datesInMonth.push(dateStr);
+    if (!updatedData[monthKey]) {
+      updatedData[monthKey] = {};
+    }
+    if (!updatedData[monthKey].posts) {
+      updatedData[monthKey].posts = {};
     }
 
-    // Assign new dates to reordered posts
+    // Clear existing posts for this month
+    updatedData[monthKey].posts = {};
+
+    // Reassign dates to posts based on their new order
     reorderedPosts.forEach((post, index) => {
-      if (post && index < datesInMonth.length) {
-        const newDateKey = datesInMonth[index];
-        post.dateKey = newDateKey;
+      if (post) {
+        const newDate = new Date(today);
+        newDate.setDate(today.getDate() + index);
+        const newDateKey = `${newDate.getFullYear()}-${String(newDate.getMonth() + 1).padStart(2, '0')}-${String(newDate.getDate()).padStart(2, '0')}`;
         
-        if (!clearedPosts[newDateKey]) {
-          clearedPosts[newDateKey] = [];
+        if (!updatedData[monthKey].posts[newDateKey]) {
+          updatedData[monthKey].posts[newDateKey] = [];
         }
-        clearedPosts[newDateKey].push(post);
+        
+        updatedData[monthKey].posts[newDateKey].push({
+          ...post,
+          scheduledDate: newDateKey
+        });
       }
     });
 
-    // Update the monthly data
-    setMonthlyData(prev => ({
-      ...prev,
-      [monthKey]: {
-        ...monthData,
-        posts: clearedPosts
-      }
-    }));
+    setMonthlyData(updatedData);
   };
 
   const resetToChronological = () => {
