@@ -25,7 +25,7 @@ if frontend_env_path.exists():
     load_dotenv(frontend_env_path)
 
 # Test Configuration
-BASE_URL = os.getenv('REACT_APP_BACKEND_URL', 'https://content-hub-247.preview.emergentagent.com')
+BASE_URL = os.getenv('REACT_APP_BACKEND_URL', 'https://melanin-bank.preview.emergentagent.com')
 API_BASE = f"{BASE_URL}/api"
 
 # Admin credentials from review request
