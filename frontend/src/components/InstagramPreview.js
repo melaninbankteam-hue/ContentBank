@@ -226,25 +226,20 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
                   >
                     <img 
                       src={post.previewImage} 
-                      alt={post.topic}
-                      className="w-full h-full object-cover rounded border-2 border-transparent hover:border-[#bb9477] transition-all"
+                      alt={post.topic || `Post ${index + 1}`}
+                      className="w-full h-full object-cover rounded"
                     />
-                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity duration-200 flex items-center justify-center rounded">
-                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-white text-center p-2">
-                        <div className="text-xs font-semibold mb-1">{post.type}</div>
-                        <div className="text-xs mb-2">{post.topic.length > 30 ? `${post.topic.substring(0, 30)}...` : post.topic}</div>
-                        <div className="text-xs text-[#bb9477] bg-black/50 rounded px-2 py-1">
-                          {new Date(post.dateKey).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                    
+                    {/* Instagram overlay on hover */}
+                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-200 rounded flex items-center justify-center opacity-0 group-hover:opacity-100">
+                      <div className="flex items-center gap-4 text-white text-sm font-medium">
+                        <div className="flex items-center gap-1">
+                          <Heart className="w-4 h-4 fill-white" />
+                          <span>234</span>
                         </div>
-                        <div className="flex items-center justify-center gap-4 mt-2">
-                          <div className="flex items-center gap-1">
-                            <Heart className="w-4 h-4 fill-white" />
-                            <span className="text-xs">125</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <MessageCircle className="w-4 h-4 fill-white" />
-                            <span className="text-xs">12</span>
-                          </div>
+                        <div className="flex items-center gap-1">
+                          <MessageCircle className="w-4 h-4 fill-white" />
+                          <span>12</span>
                         </div>
                       </div>
                     </div>
