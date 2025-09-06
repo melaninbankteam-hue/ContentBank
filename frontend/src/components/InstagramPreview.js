@@ -160,6 +160,7 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
   const resetToChronological = () => {
     const chronologicalPosts = getAllPostsFromMonth();
     setPosts(chronologicalPosts);
+    updateCalendarWithNewOrder(chronologicalPosts);
     
     toast({
       title: "Reset Complete!",
