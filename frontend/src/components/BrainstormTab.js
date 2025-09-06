@@ -10,6 +10,7 @@ import { mockBrainstormIdeas, contentCategories } from "../data/mock";
 import { useToast } from "../hooks/use-toast";
 
 const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
+  const { toast } = useToast();
   const [newIdea, setNewIdea] = useState("");
   const [isAddingIdea, setIsAddingIdea] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
