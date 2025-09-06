@@ -54,7 +54,7 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
     setPosts(sortedPosts);
   }, [monthlyData, currentMonth, getAllPostsFromMonth]);
 
-  // Fill grid to 30 spots
+  // Create grid posts array (30 slots)
   const gridPosts = [...posts];
   while (gridPosts.length < 30) {
     gridPosts.push(null);
