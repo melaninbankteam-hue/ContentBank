@@ -275,11 +275,7 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
                   </div>
                 ) : (
                   <div className="w-full h-full bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center rounded hover:border-[#bb9477] transition-colors">
-                    <div className="text-gray-400 text-xs text-center p-2">
-                      <Upload className="w-6 h-6 mx-auto mb-1 opacity-50" />
-                      <div>Plan content</div>
-                      <div>in calendar</div>
-                    </div>
+                    <Upload className="w-4 h-4 text-gray-400" />
                   </div>
                 )}
               </div>
