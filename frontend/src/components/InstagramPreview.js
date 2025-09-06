@@ -243,17 +243,24 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
                         </div>
                       </div>
                     </div>
-                    {post.type === 'Reel' && (
-                      <div className="absolute top-2 right-2">
-                        <Badge variant="secondary" className="bg-black/70 text-white text-xs">
-                          Reel
-                        </Badge>
+                    
+                    {/* Post type indicator */}
+                    {post.type === 'Carousel' && (
+                      <div className="absolute top-1 right-1">
+                        <div className="bg-black bg-opacity-60 rounded px-1 py-0.5">
+                          <div className="flex gap-0.5">
+                            <div className="w-1 h-1 bg-white rounded-full"></div>
+                            <div className="w-1 h-1 bg-white rounded-full"></div>
+                            <div className="w-1 h-1 bg-white rounded-full opacity-50"></div>
+                          </div>
+                        </div>
                       </div>
                     )}
-                    {post.type === 'Carousel' && (
-                      <div className="absolute top-2 right-2">
-                        <Badge variant="secondary" className="bg-black/70 text-white text-xs">
-                          📷
+                    
+                    {post.type === 'Reel' && (
+                      <div className="absolute top-1 right-1">
+                        <Badge variant="secondary" className="bg-black bg-opacity-60 text-white text-xs px-1 py-0">
+                          ▶
                         </Badge>
                       </div>
                     )}
