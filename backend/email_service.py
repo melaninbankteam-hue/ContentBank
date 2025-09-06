@@ -71,15 +71,16 @@ class EmailService:
         try:
             first_name = user_name.split()[0] if user_name else "there"
             
-            # Use a verified domain for Resend
-            from_email = "onboarding@resend.dev"
+            # For testing: Use verified email address as recipient
+            test_recipient = "melaninbankteam@gmail.com"
             
             r = resend.Emails.send({
-                "from": from_email,
-                "to": [user_email],  # Must be a list
-                "subject": "Action needed — complete your Melanin Bank membership to access Content Strategy Planner",
+                "from": "onboarding@resend.dev",
+                "to": [test_recipient],  # Using verified email for testing
+                "subject": f"[TEST] Action needed — {user_name} ({user_email}) Melanin Bank membership required",
                 "html": f"""
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                    <p><strong>TEST EMAIL - User: {user_email}</strong></p>
                     <p>Hi {first_name},</p>
                     <p>Access is reserved for members of the Melanin Bank Community.</p>
                     <p>Sign up at <a href="https://themelaninbank.com" style="color: #472816; text-decoration: none;">https://themelaninbank.com</a></p>
