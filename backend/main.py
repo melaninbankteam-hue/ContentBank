@@ -97,6 +97,12 @@ async def login(login_data: UserLogin):
     # Create access token
     token = create_access_token(user["id"], user["email"])
     
+    # Update last active timestamp
+    await update_user_status(user["id"], {
+        "last_active": datetime.utcnow(),
+        "login_count": user.get("login_count", 0) + 1
+    })
+    
     return {
         "message": "Login successful",
         "token": token,
