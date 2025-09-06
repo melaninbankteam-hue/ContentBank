@@ -59,14 +59,11 @@ class EmailService:
                 "subject": "Action needed — complete your Melanin Bank membership to access Content Strategy Planner",
                 "html": f"""
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-                    <h2 style="color: #472816;">Action needed — complete your Melanin Bank membership</h2>
                     <p>Hi {first_name},</p>
-                    <p>Access is reserved for members of the Melanin Bank Community. To continue:</p>
-                    <ul style="margin: 20px 0;">
-                        <li>Sign up at <a href="https://themelaninbank.com" style="color: #472816;">https://themelaninbank.com</a></li>
-                        <li>If you're already a member, confirm you used the same email here.</li>
-                        <li>If still stuck, email us at <a href="mailto:themelaninbankteam@gmail.com" style="color: #472816;">themelaninbankteam@gmail.com</a></li>
-                    </ul>
+                    <p>Access is reserved for members of the Melanin Bank Community.</p>
+                    <p>Sign up at <a href="https://themelaninbank.com" style="color: #472816; text-decoration: none;">https://themelaninbank.com</a></p>
+                    <p>If you're already a member, confirm you used the same email here.</p>
+                    <p>If still stuck, email us at <a href="mailto:themelaninbankteam@gmail.com" style="color: #472816;">themelaninbankteam@gmail.com</a></p>
                     <p>Once confirmed, we'll approve your account.</p>
                     <p>Best regards,<br>The Content Strategy Planner Team</p>
                 </div>
