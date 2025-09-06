@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Input } from "./ui/input";
 import { Badge } from "./ui/badge";
-import { Users, Eye, MessageCircle, TrendingUp, Share, Mail, Target, BarChart3 } from "lucide-react";
+import { Users, Eye, MessageCircle, TrendingUp, Share, Mail, Target, BarChart3, MousePointer } from "lucide-react";
 
 const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
   const currentData = monthlyData[monthKey] || {};
@@ -18,8 +18,8 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
     emailSubscribers: analytics.emailSubscribers || "",
     dmMessages: analytics.dmMessages || "",
     totalInteractions: analytics.totalInteractions || "",
-    growthGoals: analytics.growthGoals || "",
-    performanceNotes: analytics.performanceNotes || "",
+    growthGoals: analytics.growthGoals || "Increase followers by 15% this month\nImprove engagement rate to 4%+\nGrow email list to 1000 subscribers\nIncrease course sales by 25%",
+    performanceNotes: analytics.performanceNotes || "Educational Reels are performing best\nPosts with faces get 40% more engagement\nCarousel posts have highest save rates\nStory highlights driving profile visits",
     ...analytics
   });
 
@@ -49,7 +49,7 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
   const previousMetrics = getPreviousMonthData();
 
   useEffect(() => {
-    // Auto-save analytics data
+    // Auto-save analytics data with visual confirmation
     const updatedMonthlyData = {
       ...monthlyData,
       [monthKey]: {
@@ -62,7 +62,7 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
       }
     };
     setMonthlyData(updatedMonthlyData);
-  }, [metrics]);
+  }, [metrics, monthKey, monthlyData, setMonthlyData, currentData, analytics]);
 
   const handleInputChange = (field, value) => {
     setMetrics(prev => ({
@@ -71,12 +71,34 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
     }));
   };
 
-  const MetricCard = ({ title, icon: Icon, value, field, previousValue, showGrowth = false }) => {
+  // Melanin Bank brown color variations for each card
+  const cardStyles = [
+    // Row 1
+    { from: '#5D4037', to: '#6D4C41' }, // Followers - Deep brown
+    { from: '#8D6E63', to: '#A1887F' }, // Total Views - Medium brown  
+    { from: '#8A6F5E', to: '#9E7B68' }, // Non-Follower Views - Warm brown
+    // Row 2
+    { from: '#7B5E57', to: '#8D6E63' }, // Reach - Rich brown
+    { from: '#6F4E3F', to: '#7D5A4B' }, // Profile Visits - Dark brown
+    { from: '#9B7B6C', to: '#A68B7B' }, // Website Clicks - Light brown
+    // Row 3
+    { from: '#6B4F44', to: '#785A4F' }, // Email Subscribers - Mocha brown
+    { from: '#7A5D52', to: '#8A6B60' }, // DM Messages - Coffee brown
+    { from: '#8B6F5E', to: '#9D7B6A' }  // Total Interactions - Caramel brown
+  ];
+
+  const MetricCard = ({ title, icon: Icon, value, field, previousValue, showGrowth = false, colorIndex }) => {
     const growth = calculateGrowth(value, previousValue);
+    const cardStyle = cardStyles[colorIndex];
     
     return (
-      <Card className="border-[#bb9477]/30 overflow-hidden">
-        <CardHeader className="bg-gradient-to-r from-[#8B6F47] to-[#A0845C] text-white p-4 relative">
+      <Card className="border-[#bb9477]/30 overflow-hidden shadow-lg">
+        <CardHeader 
+          className="text-white p-4 relative"
+          style={{
+            background: `linear-gradient(135deg, ${cardStyle.from} 0%, ${cardStyle.to} 100%)`
+          }}
+        >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Icon className="w-4 h-4" />
@@ -85,9 +107,7 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
             {showGrowth && previousValue !== undefined && previousValue !== "" && (
               <Badge 
                 variant="secondary" 
-                className={`text-xs px-2 py-1 ${
-                  growth.isPositive ? 'bg-green-500/20 text-green-100 border-green-400' : 'bg-red-500/20 text-red-100 border-red-400'
-                }`}
+                className="text-xs px-2 py-1 bg-white/20 text-white border-white/30"
               >
                 <TrendingUp className="w-3 h-3 mr-1" />
                 {growth.percentage}%
@@ -98,13 +118,13 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
             {value ? (parseInt(value) || 0).toLocaleString() : '0'}
           </div>
         </CardHeader>
-        <CardContent className="p-4">
+        <CardContent className="p-4 bg-white">
           <Input
             type="number"
             value={value}
             onChange={(e) => handleInputChange(field, e.target.value)}
             placeholder="0"
-            className="border-[#bb9477]/50 focus:border-[#472816]"
+            className="border-[#bb9477]/50 focus:border-[#472816] w-full"
           />
         </CardContent>
       </Card>
@@ -113,7 +133,7 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
 
   return (
     <div className="space-y-6">
-      {/* Analytics Metrics Grid - 3x3 */}
+      {/* Analytics Metrics Grid - 3x3 with Melanin Bank brown variations */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <MetricCard
           title="Followers"
@@ -122,6 +142,7 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
           field="followers"
           previousValue={previousMetrics.followers}
           showGrowth={true}
+          colorIndex={0}
         />
         
         <MetricCard
@@ -131,6 +152,7 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
           field="totalViews"
           previousValue={previousMetrics.totalViews}
           showGrowth={true}
+          colorIndex={1}
         />
         
         <MetricCard
@@ -139,6 +161,8 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
           value={metrics.nonFollowerViews}
           field="nonFollowerViews"
           previousValue={previousMetrics.nonFollowerViews}
+          showGrowth={false}
+          colorIndex={2}
         />
         
         <MetricCard
@@ -148,14 +172,17 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
           field="reach"
           previousValue={previousMetrics.reach}
           showGrowth={true}
+          colorIndex={3}
         />
         
         <MetricCard
           title="Profile Visits"
-          icon={Users}
+          icon={MousePointer}
           value={metrics.profileVisits}
           field="profileVisits"
           previousValue={previousMetrics.profileVisits}
+          showGrowth={false}
+          colorIndex={4}
         />
         
         <MetricCard
@@ -164,6 +191,8 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
           value={metrics.websiteClicks}
           field="websiteClicks"
           previousValue={previousMetrics.websiteClicks}
+          showGrowth={false}
+          colorIndex={5}
         />
         
         <MetricCard
@@ -172,6 +201,8 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
           value={metrics.emailSubscribers}
           field="emailSubscribers"
           previousValue={previousMetrics.emailSubscribers}
+          showGrowth={false}
+          colorIndex={6}
         />
         
         <MetricCard
@@ -180,6 +211,8 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
           value={metrics.dmMessages}
           field="dmMessages"
           previousValue={previousMetrics.dmMessages}
+          showGrowth={false}
+          colorIndex={7}
         />
         
         <MetricCard
@@ -189,18 +222,24 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
           field="totalInteractions"
           previousValue={previousMetrics.totalInteractions}
           showGrowth={true}
+          colorIndex={8}
         />
       </div>
 
-      {/* Growth Summary */}
-      <Card className="border-[#bb9477]/30">
-        <CardHeader className="bg-gradient-to-r from-[#8B6F47] to-[#A0845C] text-white">
+      {/* Growth Summary - Chocolate Brown Header */}
+      <Card className="border-[#bb9477]/30 shadow-lg">
+        <CardHeader 
+          className="text-white"
+          style={{
+            background: 'linear-gradient(135deg, #3E2723 0%, #4E342E 100%)'
+          }}
+        >
           <CardTitle className="flex items-center gap-2">
             <TrendingUp className="w-5 h-5" />
             Growth Summary
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-6">
+        <CardContent className="p-6 bg-white">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="text-center">
               <div className="text-2xl font-bold text-green-600 mb-1">
@@ -233,13 +272,18 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
         </CardContent>
       </Card>
 
-      {/* Growth Goals and Performance Notes */}
+      {/* Growth Goals and Performance Notes - Chocolate Brown Headers */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <Card className="border-[#bb9477]/30">
-          <CardHeader className="bg-gradient-to-r from-[#8B6F47] to-[#A0845C] text-white">
+        <Card className="border-[#bb9477]/30 shadow-lg">
+          <CardHeader 
+            className="text-white"
+            style={{
+              background: 'linear-gradient(135deg, #3E2723 0%, #4E342E 100%)'
+            }}
+          >
             <CardTitle>Growth Goals</CardTitle>
           </CardHeader>
-          <CardContent className="p-6">
+          <CardContent className="p-6 bg-white">
             <textarea
               value={metrics.growthGoals}
               onChange={(e) => handleInputChange('growthGoals', e.target.value)}
@@ -250,11 +294,16 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
           </CardContent>
         </Card>
 
-        <Card className="border-[#bb9477]/30">
-          <CardHeader className="bg-gradient-to-r from-[#8B6F47] to-[#A0845C] text-white">
+        <Card className="border-[#bb9477]/30 shadow-lg">
+          <CardHeader 
+            className="text-white"
+            style={{
+              background: 'linear-gradient(135deg, #3E2723 0%, #4E342E 100%)'
+            }}
+          >
             <CardTitle>Performance Notes</CardTitle>
           </CardHeader>
-          <CardContent className="p-6">
+          <CardContent className="p-6 bg-white">
             <textarea
               value={metrics.performanceNotes}
               onChange={(e) => handleInputChange('performanceNotes', e.target.value)}
