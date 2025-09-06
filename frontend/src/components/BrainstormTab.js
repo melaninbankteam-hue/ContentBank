@@ -167,6 +167,15 @@ const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
                     <Button
                       variant="outline"
                       size="sm"
+                      onClick={() => {
+                        // Store the idea for use in calendar
+                        localStorage.setItem('selectedIdea', JSON.stringify({ text: idea.text, pillar: idea.pillar, category: idea.category }));
+                        toast({
+                          title: "Idea Selected!",
+                          description: "Go to Calendar tab to create a post with this idea",
+                          duration: 5000,
+                        });
+                      }}
                       className="ml-3 border-[#bb9477] text-[#3f2d1d] hover:bg-[#bb9477]/10"
                     >
                       <Calendar className="w-4 h-4 mr-1" />
