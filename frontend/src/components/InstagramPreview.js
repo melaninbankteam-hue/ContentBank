@@ -102,39 +102,6 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
       });
     }
   };
-    
-    if (selectedForSwap === null) {
-      // First selection
-      setSelectedForSwap(clickedIndex);
-      toast({
-        title: "Post Selected",
-        description: "Click another post to swap positions",
-      });
-    } else if (selectedForSwap === clickedIndex) {
-      // Cancel selection
-      setSelectedForSwap(null);
-      toast({
-        title: "Selection Cancelled",
-        description: "Swap mode cancelled",
-      });
-    } else {
-      // Perform swap
-      const newPosts = [...posts];
-      [newPosts[selectedForSwap], newPosts[clickedIndex]] = [newPosts[clickedIndex], newPosts[selectedForSwap]];
-      setPosts(newPosts);
-      
-      // Update the data with new positions
-      updatePostPositions(newPosts);
-      
-      setSelectedForSwap(null);
-      setSwapMode(false);
-      
-      toast({
-        title: "Posts Swapped!",
-        description: "Post positions have been updated",
-      });
-    }
-  };
 
   const toggleSwapMode = () => {
     setSwapMode(!swapMode);
