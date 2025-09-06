@@ -38,10 +38,8 @@ class EmailService:
                 "subject": "You're in! Welcome to Content Strategy Planner 🚀",
                 "html": f"""
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-                    <h2 style="color: #472816;">You're in! Welcome to Content Strategy Planner 🚀</h2>
                     <p>Hi {first_name},</p>
-                    <p>Your account has been approved! Log in here 👉 <a href="https://contentstrategyplanner.emergent.host/login" style="color: #472816; text-decoration: none;">https://contentstrategyplanner.emergent.host/login</a> and start planning your content.</p>
-                    <p>We're excited to have you on board!</p>
+                    <p>Your account has been approved! Log in 👉 <a href="https://contentstrategyplanner.emergent.host/login" style="color: #472816; text-decoration: none;">https://contentstrategyplanner.emergent.host/login</a> and start planning your content.</p>
                     <p>Best regards,<br>The Content Strategy Planner Team</p>
                 </div>
                 """
