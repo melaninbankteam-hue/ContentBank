@@ -1,6 +1,12 @@
 import resend
 import os
 from typing import Dict, Any
+from dotenv import load_dotenv
+from pathlib import Path
+
+# Load environment variables
+ROOT_DIR = Path(__file__).parent
+load_dotenv(ROOT_DIR / '.env')
 
 # Configure Resend
 resend.api_key = os.getenv('EMAIL_PROVIDER_API_KEY')
