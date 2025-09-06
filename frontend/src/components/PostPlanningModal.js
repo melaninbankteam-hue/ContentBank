@@ -643,7 +643,8 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
                             variant="ghost"
                             size="sm"
                             onClick={() => {
-                              // Set form data to edit this post
+                              // Load the post data into the form for editing
+                              const editingPost = { ...post, id: post.id };
                               setFormData({
                                 type: post.type || "",
                                 category: post.category || "",
@@ -657,10 +658,10 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
                                 scheduledDate: post.scheduledDate || "",
                                 scheduledTime: post.scheduledTime || "09:00"
                               });
-                              // Switch to edit mode by setting the editing post
+                              
                               toast({
-                                title: "Edit Mode",
-                                description: "Form loaded with post data. Edit and save to update.",
+                                title: "Edit Mode Activated",
+                                description: "Post data loaded for editing. Make your changes and save.",
                               });
                             }}
                             className="h-6 w-6 p-0"
