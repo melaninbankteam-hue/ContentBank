@@ -18,15 +18,17 @@ class EmailService:
         try:
             first_name = user_name.split()[0] if user_name else "there"
             
-            # Use a verified domain for Resend - try onboarding@resend.dev for testing
-            from_email = "onboarding@resend.dev"
+            # For testing: Use verified email address as recipient
+            # In production, this would be user_email
+            test_recipient = "melaninbankteam@gmail.com"
             
             r = resend.Emails.send({
-                "from": from_email,
-                "to": [user_email],  # Must be a list
-                "subject": "Thanks for signing up — your account is pending approval",
+                "from": "onboarding@resend.dev",
+                "to": [test_recipient],  # Using verified email for testing
+                "subject": f"[TEST] Thanks for signing up — {user_name} ({user_email}) account is pending approval",
                 "html": f"""
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                    <p><strong>TEST EMAIL - User: {user_email}</strong></p>
                     <p>Hi {first_name},</p>
                     <p>Thanks for joining Content Strategy Planner 🎉. Your account is pending approval. You'll be notified when approved.</p>
                     <p>Best regards,<br>The Content Strategy Planner Team</p>
