@@ -208,7 +208,7 @@ const ContentPlanner = ({ user, onLogout }) => {
             <TabsList className="flex md:grid md:grid-cols-6 bg-[#3f2d1d] min-w-max md:min-w-0 w-full">
               <TabsTrigger value="overview" className="data-[state=active]:bg-[#bb9477] data-[state=active]:text-[#3f2d1d] text-[#fffaf1] whitespace-nowrap px-3 md:px-4">
                 <Target className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
-                <span className="text-xs md:text-sm">Overview</span>
+                <span className="text-xs md:text-sm">Strategy</span>
               </TabsTrigger>
               <TabsTrigger value="brainstorm" className="data-[state=active]:bg-[#bb9477] data-[state=active]:text-[#3f2d1d] text-[#fffaf1] whitespace-nowrap px-3 md:px-4">
                 <Lightbulb className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
