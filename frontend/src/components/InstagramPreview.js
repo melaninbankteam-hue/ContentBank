@@ -229,7 +229,7 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
                 {post ? (
                   <div 
                     className={`group relative w-full h-full ${
-                      swapMode ? 'cursor-pointer' : 'cursor-default'
+                      swapMode ? 'cursor-pointer' : 'cursor-pointer'
                     } ${
                       selectedForSwap === index ? 'ring-4 ring-[#bb9477] ring-opacity-70' : ''
                     }`}
