@@ -47,6 +47,8 @@ const AdminPortal = () => {
       });
       
       const userData = response.data;
+      console.log('Fetched users:', userData);
+      console.log('Pending users:', userData.filter(u => u.approval_status === 'pending'));
       setUsers(userData);
       
       // Calculate stats
@@ -56,6 +58,7 @@ const AdminPortal = () => {
         approvedMembers: userData.filter(u => u.approval_status === 'approved').length,
         deniedMembers: userData.filter(u => u.approval_status === 'denied').length
       };
+      console.log('Calculated stats:', stats);
       setStats(stats);
       
     } catch (error) {
