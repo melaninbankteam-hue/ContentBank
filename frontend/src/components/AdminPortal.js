@@ -41,10 +41,23 @@ const AdminPortal = () => {
 
   const fetchUsers = async () => {
     try {
+      console.log('AdminPortal: Starting to fetch users...');
+      console.log('Backend URL:', BACKEND_URL);
+      
       const token = localStorage.getItem('token');
+      console.log('Token exists:', !!token);
+      
+      if (!token) {
+        console.error('No token found in localStorage');
+        return;
+      }
+      
       const response = await axios.get(`${BACKEND_URL}/api/admin/users`, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      
+      console.log('API Response status:', response.status);
+      console.log('API Response data:', response.data);
       
       const userData = response.data;
       console.log('Fetched users:', userData);
@@ -63,9 +76,11 @@ const AdminPortal = () => {
       
     } catch (error) {
       console.error('Error fetching users:', error);
+      console.error('Error response:', error.response);
+      console.error('Error message:', error.message);
       toast({
         title: "Error",
-        description: "Failed to fetch users",
+        description: "Failed to fetch users: " + (error.response?.data?.detail || error.message),
         variant: "destructive"
       });
     } finally {
