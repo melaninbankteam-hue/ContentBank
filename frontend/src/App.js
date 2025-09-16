@@ -80,6 +80,9 @@ function App() {
 
   const handleRegister = async (userData) => {
     try {
+      console.log('Sending registration data:', userData);
+      console.log('Backend URL:', BACKEND_URL);
+      
       const response = await axios.post(`${BACKEND_URL}/api/auth/register`, userData);
       
       if (response.data.approval_status === 'pending') {
@@ -93,7 +96,10 @@ function App() {
 
       return { success: true, message: response.data.message };
     } catch (error) {
-      const message = error.response?.data?.detail || 'Registration failed. Please try again.';
+      console.error('Registration error:', error);
+      console.error('Error response:', error.response?.data);
+      
+      const message = error.response?.data?.detail || error.response?.data?.message || 'Registration failed. Please try again.';
       return { success: false, message };
     }
   };
