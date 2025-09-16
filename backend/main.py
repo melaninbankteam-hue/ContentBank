@@ -35,34 +35,49 @@ api_router = APIRouter(prefix="/api")
 # Authentication Routes
 @api_router.post("/auth/register", response_model=dict)
 async def register(user_data: UserCreate):
-    # Check if user already exists
-    existing_user = await find_user_by_email(user_data.email)
-    if existing_user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Email already registered"
+    try:
+        logger.info(f"Registration attempt for email: {user_data.email}")
+        logger.info(f"Registration data: name={user_data.name}, socialHandle={user_data.socialHandle}")
+        
+        # Check if user already exists
+        existing_user = await find_user_by_email(user_data.email)
+        if existing_user:
+            logger.warning(f"Registration failed - email already exists: {user_data.email}")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Email already registered"
+            )
+        
+        # Create new user with pending approval status
+        user = User(
+            email=user_data.email,
+            name=user_data.name,
+            social_handle=user_data.socialHandle,
+            password_hash=hash_password(user_data.password),
+            approval_status="pending",
+            is_active=False  # Not active until approved
         )
-    
-    # Create new user with pending approval status
-    user = User(
-        email=user_data.email,
-        name=user_data.name,
-        social_handle=user_data.socialHandle,
-        password_hash=hash_password(user_data.password),
-        approval_status="pending",
-        is_active=False  # Not active until approved
-    )
-    
-    await create_user(user.model_dump())
-    
-    # Send pending approval email
-    email_result = EmailService.send_pending_approval_notification(user.email, user.name)
-    
-    return {
-        "message": "Registration successful! Your account is pending approval. You'll receive an email once approved.",
-        "approval_status": "pending",
-        "email_sent": email_result.get("success", False)
-    }
+        
+        await create_user(user.model_dump())
+        logger.info(f"User created successfully: {user_data.email}")
+        
+        # Send pending approval email
+        email_result = EmailService.send_pending_approval_notification(user.email, user.name)
+        logger.info(f"Email notification result: {email_result}")
+        
+        return {
+            "message": "Registration successful! Your account is pending approval. You'll receive an email once approved.",
+            "approval_status": "pending",
+            "email_sent": email_result.get("success", False)
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Registration error: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal server error during registration"
+        )
 
 @api_router.post("/auth/login", response_model=dict)
 async def login(login_data: UserLogin):
