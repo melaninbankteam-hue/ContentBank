@@ -235,11 +235,20 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
                     }`}
                     onClick={() => handlePostClick(index)}
                   >
-                    <img 
-                      src={post.previewImage} 
-                      alt={post.topic || `Post ${index + 1}`}
-                      className="w-full h-full object-cover rounded"
-                    />
+                    {post.previewImage && (post.previewImage.includes('video') || post.previewImage.includes('.mp4') || post.previewImage.includes('.mov')) ? (
+                      <video
+                        src={post.previewImage}
+                        className="w-full h-full object-cover rounded"
+                        preload="metadata"
+                        muted
+                      />
+                    ) : (
+                      <img 
+                        src={post.previewImage} 
+                        alt={post.topic || `Post ${index + 1}`}
+                        className="w-full h-full object-cover rounded"
+                      />
+                    )}
                     
                     {/* Hover overlay with post info */}
                     <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 rounded flex items-center justify-center opacity-0 group-hover:opacity-100">
