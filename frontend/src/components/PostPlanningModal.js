@@ -555,7 +555,7 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
                   <label htmlFor="reel-cover-upload" className="cursor-pointer">
                     {formData.reelCover ? (
                       <div className="relative">
-                        <img src={formData.reelCover.url} alt="Cover Preview" className="max-w-full h-24 object-cover rounded mx-auto" />
+                        <img src={formData.reelCover.url} alt="Cover Preview" className="w-full h-48 object-cover rounded mx-auto" />
                         <div className="flex gap-2 mt-2 justify-center">
                           <Button
                             variant="outline"
