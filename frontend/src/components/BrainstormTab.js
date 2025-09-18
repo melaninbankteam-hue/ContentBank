@@ -170,12 +170,24 @@ const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
                       variant="outline"
                       size="sm"
                       onClick={() => {
-                        // Store the idea for use in calendar
-                        localStorage.setItem('selectedIdea', JSON.stringify({ text: idea.text, pillar: idea.pillar, category: idea.category }));
+                        // Store the idea with metadata for use in calendar
+                        const selectedIdeaData = {
+                          text: idea.text,
+                          pillar: idea.pillar,
+                          category: idea.category
+                        };
+                        localStorage.setItem('selectedBrainstormIdea', JSON.stringify(selectedIdeaData));
+                        
+                        // Dispatch custom event to open post planner with prefilled data
+                        const openPlannerEvent = new CustomEvent('openPostPlannerFromBrainstorm', {
+                          detail: selectedIdeaData
+                        });
+                        window.dispatchEvent(openPlannerEvent);
+                        
                         toast({
-                          title: "Idea Selected!",
-                          description: "Go to Calendar tab to create a post with this idea",
-                          duration: 5000,
+                          title: "Opening Post Planner!",
+                          description: "Pre-filled with your brainstorm idea.",
+                          duration: 3000,
                         });
                       }}
                       className="ml-3 border-[#bb9477] text-[#3f2d1d] hover:bg-[#bb9477]/10"
