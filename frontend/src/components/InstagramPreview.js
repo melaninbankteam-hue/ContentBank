@@ -250,6 +250,20 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
                       />
                     )}
                     
+                    {/* Clock icon for scheduled posts */}
+                    {post.scheduledDate && post.scheduledTime && !post.isDraft && (
+                      <div className="absolute top-1 left-1 bg-black bg-opacity-60 rounded-full p-1">
+                        <Clock className="w-3 h-3 text-white" />
+                      </div>
+                    )}
+                    
+                    {/* Draft indicator */}
+                    {post.isDraft && (
+                      <div className="absolute top-1 left-1 bg-yellow-500 bg-opacity-80 rounded px-2 py-1">
+                        <span className="text-xs font-medium text-white">DRAFT</span>
+                      </div>
+                    )}
+                    
                     {/* Hover overlay with post info */}
                     <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 rounded flex items-center justify-center opacity-0 group-hover:opacity-100">
                       <div className="text-white text-center p-2">
