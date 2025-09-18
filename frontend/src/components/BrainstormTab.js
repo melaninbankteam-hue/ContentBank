@@ -242,14 +242,45 @@ const BrainstormTab = ({ monthKey, monthlyData, setMonthlyData }) => {
                           onChange={(e) => editIdea(index, e.target.value)}
                           placeholder="Enter content idea..."
                         />
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => removeIdea(index)}
-                          className="opacity-0 group-hover:opacity-100 transition-opacity text-red-500 hover:text-red-700 ml-2"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
+                        <div className="flex items-center gap-2 ml-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              // Store the idea with metadata for use in calendar
+                              const selectedIdeaData = {
+                                text: ideaText,
+                                pillar: idea.pillar || "",
+                                category: idea.category || ""
+                              };
+                              localStorage.setItem('selectedBrainstormIdea', JSON.stringify(selectedIdeaData));
+                              
+                              // Dispatch custom event to open post planner with prefilled data
+                              const openPlannerEvent = new CustomEvent('openPostPlannerFromBrainstorm', {
+                                detail: selectedIdeaData
+                              });
+                              window.dispatchEvent(openPlannerEvent);
+                              
+                              toast({
+                                title: "Opening Post Planner!",
+                                description: "Pre-filled with your brainstorm idea.",
+                                duration: 3000,
+                              });
+                            }}
+                            className="border-[#bb9477] text-[#3f2d1d] hover:bg-[#bb9477]/10 opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <Calendar className="w-3 h-3 mr-1" />
+                            Use
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => removeIdea(index)}
+                            className="opacity-0 group-hover:opacity-100 transition-opacity text-red-500 hover:text-red-700"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
                       </div>
                     );
                   })}
