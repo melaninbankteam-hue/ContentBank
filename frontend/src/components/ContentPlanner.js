@@ -304,6 +304,23 @@ const ContentPlanner = ({ user, onLogout }) => {
           </TabsContent>
         </Tabs>
       </div>
+      
+      {/* Post Planning Modal */}
+      <PostPlanningModal
+        isOpen={showPostPlanner}
+        onClose={() => {
+          setShowPostPlanner(false);
+          setBrainstormData(null);
+          setEditingPost(null);
+        }}
+        selectedDate={selectedDate}
+        currentMonth={currentMonth}
+        monthlyData={monthlyData}
+        setMonthlyData={setMonthlyData}
+        onPostUpdate={handlePostUpdate}
+        editingPost={editingPost}
+        brainstormData={brainstormData}
+      />
     </div>
   );
 };
