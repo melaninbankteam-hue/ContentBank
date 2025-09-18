@@ -447,14 +447,18 @@ frontend:
 
 metadata:
   created_by: "testing_agent"
-  version: "1.0"
-  test_sequence: 2
+  version: "1.1"
+  test_sequence: 3
 
 test_plan:
-  current_focus: []
-  stuck_tasks: []
-  test_all: true
-  test_priority: "completed"
+  current_focus:
+    - "Analytics Manual Input Fields"
+    - "Brainstorm Use in Calendar Button"
+  stuck_tasks:
+    - "Analytics Manual Input Fields"
+    - "Brainstorm Use in Calendar Button"
+  test_all: false
+  test_priority: "stuck_first"
 
 agent_communication:
     - agent: "main"
