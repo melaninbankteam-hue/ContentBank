@@ -68,6 +68,26 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
     setMetrics(combinedMetrics);
   }, [monthKey]); // Only depend on monthKey, not all the analytics data
 
+  // Separate useEffect for auto-saving to monthly data
+  useEffect(() => {
+    // Only save if metrics have actual values to avoid infinite loops
+    const hasValues = Object.values(metrics).some(value => value !== "");
+    if (hasValues) {
+      const updatedMonthlyData = {
+        ...monthlyData,
+        [monthKey]: {
+          ...currentData,
+          analytics: {
+            ...analytics,
+            ...metrics,
+            lastUpdated: new Date().toISOString()
+          }
+        }
+      };
+      setMonthlyData(updatedMonthlyData);
+    }
+  }, [metrics]); // Only depend on metrics to avoid circular dependencies
+
   const handleInputChange = (field, value) => {
     setMetrics(prev => {
       const newMetrics = {
