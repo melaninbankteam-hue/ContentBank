@@ -15,9 +15,9 @@ import AnalyticsTab from "./AnalyticsTab";
 import { useNavigate } from "react-router-dom";
 
 const ContentPlanner = ({ user, onLogout }) => {
+  const navigate = useNavigate();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [activeTab, setActiveTab] = useState("overview");
-  const [showAdminPanel, setShowAdminPanel] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   // Load data from localStorage with user-specific key
