@@ -41,6 +41,7 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
   const posts = currentData.posts || {};
   const existingPosts = dateKey ? posts[dateKey] || [] : [];
 
+  // Pre-fill form data when editing post or using brainstorm data
   useEffect(() => {
     if (!isOpen) {
       setFormData({
@@ -71,6 +72,20 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
         scheduledDate: editingPost.scheduledDate || "",
         scheduledTime: editingPost.scheduledTime || "09:00"
       });
+      setIsDraft(editingPost.isDraft || false);
+      setCarouselImages(editingPost.carouselImages || []);
+    } else if (isOpen && brainstormData) {
+      // Pre-fill with brainstorm data
+      const defaultDate = selectedDate ? `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(selectedDate).padStart(2, '0')}` : "";
+      setFormData(prev => ({
+        ...prev,
+        topic: brainstormData.text || "",
+        pillar: brainstormData.pillar || "",
+        category: brainstormData.category || "",
+        scheduledDate: defaultDate,
+        scheduledTime: "09:00"
+      }));
+      setSelectedBrainstormIdea(brainstormData.text || "");
     } else if (isOpen && selectedDate) {
       // Set default scheduled date to selected date
       const defaultDate = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(selectedDate).padStart(2, '0')}`;
@@ -79,7 +94,7 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
         scheduledDate: defaultDate
       }));
     }
-  }, [isOpen, selectedDate, currentMonth, editingPost]);
+  }, [isOpen, selectedDate, currentMonth, editingPost, brainstormData]);
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
