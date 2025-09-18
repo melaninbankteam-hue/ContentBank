@@ -445,7 +445,7 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
 
             <div>
               <label className="text-sm font-medium text-[#3f2d1d] mb-2 block">Brainstorm Ideas</label>
-              <Select value="" onValueChange={selectBrainstormIdea}>
+              <Select value={selectedBrainstormIdea} onValueChange={selectBrainstormIdea}>
                 <SelectTrigger className="border-[#bb9477]/50 focus:border-[#472816]">
                   <SelectValue placeholder="Choose from your brainstorm ideas" />
                 </SelectTrigger>
@@ -460,6 +460,12 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
                   })}
                 </SelectContent>
               </Select>
+              {selectedBrainstormIdea && (
+                <div className="mt-2 p-3 bg-[#bb9477]/10 rounded-lg border border-[#bb9477]/30">
+                  <p className="text-sm font-medium text-[#472816] mb-1">Selected Idea:</p>
+                  <p className="text-sm text-[#3f2d1d]">{selectedBrainstormIdea}</p>
+                </div>
+              )}
             </div>
 
             {/* Media Upload Section */}
