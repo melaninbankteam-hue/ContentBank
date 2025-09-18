@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { MoreHorizontal, Heart, MessageCircle, Send, Bookmark, Upload, RotateCcw, ArrowUpDown } from "lucide-react";
+import { MoreHorizontal, Heart, MessageCircle, Send, Bookmark, Upload, RotateCcw, ArrowUpDown, Clock } from "lucide-react";
 import { useToast } from "../hooks/use-toast";
 
 const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRefresh }) => {
