@@ -305,12 +305,14 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
         updatedData[monthKey].posts[dateKey][existingPostIndex] = {
           ...editingPost,
           ...formData,
+          isDraft: isDraft,
+          carouselImages: formData.type === 'Carousel' ? carouselImages : undefined,
           updatedAt: new Date().toISOString()
         };
         
         toast({
-          title: "Post Updated!",
-          description: "Your content has been updated successfully.",
+          title: isDraft ? "Draft Updated!" : "Post Updated!",
+          description: isDraft ? "Your draft has been saved." : "Your content has been updated successfully.",
         });
       }
     } else {
@@ -318,13 +320,27 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
       const newPost = {
         id: Date.now().toString(),
         ...formData,
+        isDraft: isDraft,
+        carouselImages: formData.type === 'Carousel' ? carouselImages : undefined,
         createdAt: new Date().toISOString()
       };
-      updatedData[monthKey].posts[dateKey].push(newPost);
+      
+      // Store in drafts or scheduled posts based on status
+      if (isDraft) {
+        if (!updatedData[monthKey].drafts) {
+          updatedData[monthKey].drafts = {};
+        }
+        if (!updatedData[monthKey].drafts[dateKey]) {
+          updatedData[monthKey].drafts[dateKey] = [];
+        }
+        updatedData[monthKey].drafts[dateKey].push(newPost);
+      } else {
+        updatedData[monthKey].posts[dateKey].push(newPost);
+      }
       
       toast({
-        title: "Post Saved!",
-        description: "Your content has been planned successfully.",
+        title: isDraft ? "Draft Saved!" : "Post Scheduled!",
+        description: isDraft ? "Your draft has been saved and won't appear in calendar." : "Your content has been planned successfully.",
       });
     }
 
