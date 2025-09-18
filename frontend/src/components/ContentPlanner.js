@@ -12,7 +12,7 @@ import ContentTracker from "./ContentTracker";
 import InstagramPreview from "./InstagramPreview";
 import BrainstormTab from "./BrainstormTab";
 import AnalyticsTab from "./AnalyticsTab";
-import AdminPanel from "./AdminPanel";
+import { useNavigate } from "react-router-dom";
 
 const ContentPlanner = ({ user, onLogout }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
