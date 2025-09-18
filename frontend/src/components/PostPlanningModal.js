@@ -199,6 +199,79 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
     handleInputChange(type, null);
   };
 
+  const handleCarouselUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
+    // Validate total count doesn't exceed 15
+    if (carouselImages.length + files.length > 15) {
+      toast({
+        title: "Too Many Files",
+        description: `You can only upload up to 15 items total. Currently have ${carouselImages.length}, trying to add ${files.length}.`,
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setUploading(true);
+    const uploadedItems = [];
+
+    for (const file of files) {
+      // Validate file type
+      const validImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+      const validVideoTypes = ['video/mp4', 'video/quicktime', 'video/avi', 'video/mov'];
+      const allValidTypes = [...validImageTypes, ...validVideoTypes];
+      
+      if (!allValidTypes.includes(file.type)) {
+        toast({
+          title: "Invalid File Type",
+          description: `File ${file.name} is not a supported format.`,
+          variant: "destructive"
+        });
+        continue;
+      }
+
+      // Validate file size
+      const maxSize = validVideoTypes.includes(file.type) ? 50 * 1024 * 1024 : 10 * 1024 * 1024;
+      if (file.size > maxSize) {
+        const maxSizeText = validVideoTypes.includes(file.type) ? "50MB" : "10MB";
+        toast({
+          title: "File Too Large",
+          description: `File ${file.name} exceeds ${maxSizeText} limit.`,
+          variant: "destructive"
+        });
+        continue;
+      }
+
+      const uploadResult = await uploadToCloudinary(file);
+      if (uploadResult) {
+        uploadedItems.push(uploadResult);
+      }
+    }
+
+    if (uploadedItems.length > 0) {
+      setCarouselImages(prev => [...prev, ...uploadedItems]);
+      toast({
+        title: "Carousel Items Uploaded",
+        description: `${uploadedItems.length} items added to your carousel.`,
+      });
+    }
+
+    setUploading(false);
+  };
+
+  const removeCarouselItem = async (index) => {
+    const itemToRemove = carouselImages[index];
+    if (itemToRemove.public_id) {
+      await deleteFromCloudinary(itemToRemove.public_id);
+    }
+    setCarouselImages(prev => prev.filter((_, i) => i !== index));
+    toast({
+      title: "Item Removed",
+      description: "Carousel item has been deleted.",
+    });
+  };
+
   const handleSavePost = () => {
     if (!formData.type || !formData.category) {
       toast({
