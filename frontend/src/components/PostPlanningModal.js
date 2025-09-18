@@ -291,13 +291,13 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
     onClose();
   };
 
+  const [selectedBrainstormIdea, setSelectedBrainstormIdea] = useState("");
+
   const selectBrainstormIdea = (ideaText) => {
-    const currentCaption = formData.caption;
-    const newCaption = currentCaption ? `${currentCaption}\n\n${ideaText}` : ideaText;
-    handleInputChange('caption', newCaption);
+    setSelectedBrainstormIdea(ideaText);
     toast({
-      title: "Idea Added!",
-      description: "Brainstorm idea has been added to your caption.",
+      title: "Idea Selected!",
+      description: "Brainstorm idea has been highlighted. Use it as inspiration for your caption.",
     });
   };
 
