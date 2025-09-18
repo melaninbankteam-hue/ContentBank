@@ -49,20 +49,24 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
   const previousMetrics = getPreviousMonthData();
 
   useEffect(() => {
-    // Auto-save analytics data with visual confirmation
-    const updatedMonthlyData = {
-      ...monthlyData,
-      [monthKey]: {
-        ...currentData,
-        analytics: {
-          ...analytics,
-          ...metrics,
-          lastUpdated: new Date().toISOString()
-        }
-      }
+    // Load analytics data from localStorage and monthly data
+    const storedData = localStorage.getItem(`analytics_${monthKey}`);
+    const savedMetrics = storedData ? JSON.parse(storedData) : {};
+    
+    const combinedMetrics = {
+      followers: savedMetrics.followers || analytics.followers || "",
+      totalViews: savedMetrics.totalViews || analytics.totalViews || "",
+      nonFollowerViews: savedMetrics.nonFollowerViews || analytics.nonFollowerViews || "",
+      reach: savedMetrics.reach || analytics.reach || "",
+      profileVisits: savedMetrics.profileVisits || analytics.profileVisits || "",
+      websiteClicks: savedMetrics.websiteClicks || analytics.websiteClicks || "",
+      emailSubscribers: savedMetrics.emailSubscribers || analytics.emailSubscribers || "",
+      dmMessages: savedMetrics.dmMessages || analytics.dmMessages || "",
+      totalInteractions: savedMetrics.totalInteractions || analytics.totalInteractions || ""
     };
-    setMonthlyData(updatedMonthlyData);
-  }, [metrics, monthKey, monthlyData, setMonthlyData, currentData, analytics]);
+    
+    setMetrics(combinedMetrics);
+  }, [monthKey]); // Only depend on monthKey, not all the analytics data
 
   const handleInputChange = (field, value) => {
     setMetrics(prev => {
