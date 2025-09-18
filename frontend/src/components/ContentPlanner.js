@@ -12,6 +12,7 @@ import ContentTracker from "./ContentTracker";
 import InstagramPreview from "./InstagramPreview";
 import BrainstormTab from "./BrainstormTab";
 import AnalyticsTab from "./AnalyticsTab";
+import PostPlanningModal from "./PostPlanningModal";
 import { useNavigate } from "react-router-dom";
 
 const ContentPlanner = ({ user, onLogout }) => {
