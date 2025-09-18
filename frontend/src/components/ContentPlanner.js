@@ -19,6 +19,10 @@ const ContentPlanner = ({ user, onLogout }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [activeTab, setActiveTab] = useState("overview");
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [showPostPlanner, setShowPostPlanner] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [editingPost, setEditingPost] = useState(null);
+  const [brainstormData, setBrainstormData] = useState(null);
 
   // Load data from localStorage with user-specific key
   const [monthlyData, setMonthlyData] = useState(() => {
