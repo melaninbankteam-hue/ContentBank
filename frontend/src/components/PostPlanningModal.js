@@ -473,125 +473,187 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
 
             {/* Media Upload Section */}
             <div className="space-y-4">
-              {/* Main Content Upload */}
-              <div className="bg-[#bb9477]/5 rounded-lg p-4 border border-[#bb9477]/20">
-                <h4 className="text-sm font-semibold text-[#472816] mb-3 flex items-center gap-2">
-                  <ImageIcon className="w-4 h-4" />
-                  Main Content Upload
-                </h4>
-                <div className="border-2 border-dashed border-[#bb9477]/50 rounded-lg p-4 text-center">
-                  <input
-                    type="file"
-                    id="image-upload"
-                    className="hidden"
-                    accept="image/*,video/*"
-                    onChange={(e) => handleImageUpload(e, 'image')}
-                    disabled={uploading}
-                  />
-                  <label htmlFor="image-upload" className="cursor-pointer">
-                    {formData.image ? (
-                      <div className="relative">
-                        {formData.image.url.includes('video') || formData.image.url.includes('.mp4') || formData.image.url.includes('.mov') ? (
-                          <video 
-                            src={formData.image.url} 
-                            controls 
-                            className="w-full h-64 object-cover rounded mx-auto"
-                            preload="metadata"
-                          />
+              {formData.type === 'Carousel' ? (
+                /* Carousel Multiple Upload */
+                <div className="bg-[#bb9477]/5 rounded-lg p-4 border border-[#bb9477]/20">
+                  <h4 className="text-sm font-semibold text-[#472816] mb-3 flex items-center gap-2">
+                    <ImageIcon className="w-4 h-4" />
+                    Carousel Content (Up to 15 items)
+                  </h4>
+                  <div className="border-2 border-dashed border-[#bb9477]/50 rounded-lg p-4 text-center">
+                    <input
+                      type="file"
+                      id="carousel-upload"
+                      className="hidden"
+                      accept="image/*,video/*"
+                      multiple
+                      onChange={(e) => handleCarouselUpload(e)}
+                      disabled={uploading || carouselImages.length >= 15}
+                    />
+                    <label htmlFor="carousel-upload" className="cursor-pointer">
+                      {carouselImages.length > 0 ? (
+                        <div>
+                          <div className="flex gap-2 flex-wrap mb-4">
+                            {carouselImages.map((item, index) => (
+                              <div key={index} className="relative w-20 h-20">
+                                {item.url.includes('video') ? (
+                                  <video src={item.url} className="w-full h-full object-cover rounded" preload="metadata" />
+                                ) : (
+                                  <img src={item.url} alt={`Carousel ${index + 1}`} className="w-full h-full object-cover rounded" />
+                                )}
+                                <button
+                                  onClick={() => removeCarouselItem(index)}
+                                  className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs"
+                                >
+                                  ×
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                          {carouselImages.length < 15 && (
+                            <p className="text-sm text-[#3f2d1d]">
+                              Click to add more ({carouselImages.length}/15)
+                            </p>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="py-8">
+                          <Upload className="w-8 h-8 mx-auto text-[#bb9477] mb-2" />
+                          <p className="text-sm text-[#3f2d1d]">
+                            {uploading ? "Uploading..." : "Click to upload carousel content"}
+                          </p>
+                          <p className="text-xs text-[#3f2d1d]/60 mt-1">
+                            Select up to 15 images/videos for your carousel
+                          </p>
+                        </div>
+                      )}
+                    </label>
+                  </div>
+                </div>
+              ) : (
+                /* Regular Single Upload */
+                <>
+                  {/* Main Content Upload */}
+                  <div className="bg-[#bb9477]/5 rounded-lg p-4 border border-[#bb9477]/20">
+                    <h4 className="text-sm font-semibold text-[#472816] mb-3 flex items-center gap-2">
+                      <ImageIcon className="w-4 h-4" />
+                      Main Content Upload
+                    </h4>
+                    <div className="border-2 border-dashed border-[#bb9477]/50 rounded-lg p-4 text-center">
+                      <input
+                        type="file"
+                        id="image-upload"
+                        className="hidden"
+                        accept="image/*,video/*"
+                        onChange={(e) => handleImageUpload(e, 'image')}
+                        disabled={uploading}
+                      />
+                      <label htmlFor="image-upload" className="cursor-pointer">
+                        {formData.image ? (
+                          <div className="relative">
+                            {formData.image.url.includes('video') || formData.image.url.includes('.mp4') || formData.image.url.includes('.mov') ? (
+                              <video 
+                                src={formData.image.url} 
+                                controls 
+                                className="w-full h-64 object-cover rounded mx-auto"
+                                preload="metadata"
+                              />
+                            ) : (
+                              <img src={formData.image.url} alt="Preview" className="w-full h-64 object-cover rounded mx-auto" />
+                            )}
+                            <div className="flex gap-2 mt-2 justify-center">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => downloadImage(formData.image.url, 'main-content')}
+                              >
+                                <Download className="w-3 h-3 mr-1" />
+                                Download
+                              </Button>
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={() => handleDeleteMedia('image')}
+                              >
+                                <Trash2 className="w-3 h-3 mr-1" />
+                                Delete
+                              </Button>
+                            </div>
+                          </div>
                         ) : (
-                          <img src={formData.image.url} alt="Preview" className="w-full h-64 object-cover rounded mx-auto" />
+                          <div className="py-8">
+                            <Upload className="w-8 h-8 mx-auto text-[#bb9477] mb-2" />
+                            <p className="text-sm text-[#3f2d1d]">
+                              {uploading ? "Uploading..." : "Click to upload image or video"}
+                            </p>
+                            <p className="text-xs text-[#3f2d1d]/60 mt-1">
+                              Supports JPG, PNG, GIF, MP4, MOV (max 50MB)
+                            </p>
+                          </div>
                         )}
-                        <div className="flex gap-2 mt-2 justify-center">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => downloadImage(formData.image.url, 'main-content')}
-                          >
-                            <Download className="w-3 h-3 mr-1" />
-                            Download
-                          </Button>
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            onClick={() => handleDeleteMedia('image')}
-                          >
-                            <Trash2 className="w-3 h-3 mr-1" />
-                            Delete
-                          </Button>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="py-8">
-                        <Upload className="w-8 h-8 mx-auto text-[#bb9477] mb-2" />
-                        <p className="text-sm text-[#3f2d1d]">
-                          {uploading ? "Uploading..." : "Click to upload image or video"}
-                        </p>
-                        <p className="text-xs text-[#3f2d1d]/60 mt-1">
-                          Supports JPG, PNG, GIF, MP4, MOV (max 10MB)
-                        </p>
-                      </div>
-                    )}
-                  </label>
-                </div>
-              </div>
+                      </label>
+                    </div>
+                  </div>
 
-              {/* Reel Cover Upload */}
-              <div className="bg-[#bb9477]/5 rounded-lg p-4 border border-[#bb9477]/20">
-                <h4 className="text-sm font-semibold text-[#472816] mb-2 flex items-center gap-2">
-                  <ImageIcon className="w-4 h-4" />
-                  Cover Image for Feed Preview
-                </h4>
-                <p className="text-xs text-[#3f2d1d]/60 mb-3">
-                  Optional - will use main content if not provided<br />
-                  Cover image for Instagram preview<br />
-                  Perfect for Reels, Carousels, or custom thumbnails
-                </p>
-                <div className="border-2 border-dashed border-[#bb9477]/50 rounded-lg p-4 text-center">
-                  <input
-                    type="file"
-                    id="reel-cover-upload"
-                    className="hidden"
-                    accept="image/*"
-                    onChange={(e) => handleImageUpload(e, 'reelCover')}
-                    disabled={uploading}
-                  />
-                  <label htmlFor="reel-cover-upload" className="cursor-pointer">
-                    {formData.reelCover ? (
-                      <div className="relative">
-                        <img src={formData.reelCover.url} alt="Cover Preview" className="w-full h-48 object-cover rounded mx-auto" />
-                        <div className="flex gap-2 mt-2 justify-center">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => downloadImage(formData.reelCover.url, 'reel-cover')}
-                          >
-                            <Download className="w-3 h-3 mr-1" />
-                            Download
-                          </Button>
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            onClick={() => handleDeleteMedia('reelCover')}
-                          >
-                            <Trash2 className="w-3 h-3 mr-1" />
-                            Delete
-                          </Button>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="py-6">
-                        <Upload className="w-6 h-6 mx-auto text-[#bb9477] mb-2" />
-                        <p className="text-sm text-[#3f2d1d]">
-                          {uploading ? "Uploading..." : "Click to upload cover image"}
-                        </p>
-                        <p className="text-xs text-[#3f2d1d]/60 mt-1">
-                          JPG, PNG, GIF (max 10MB)
-                        </p>
-                      </div>
-                    )}
-                  </label>
-                </div>
-              </div>
+                  {/* Reel Cover Upload */}
+                  <div className="bg-[#bb9477]/5 rounded-lg p-4 border border-[#bb9477]/20">
+                    <h4 className="text-sm font-semibold text-[#472816] mb-2 flex items-center gap-2">
+                      <ImageIcon className="w-4 h-4" />
+                      Cover Image for Feed Preview
+                    </h4>
+                    <p className="text-xs text-[#3f2d1d]/60 mb-3">
+                      Optional - will use main content if not provided<br />
+                      Cover image for Instagram preview<br />
+                      Perfect for Reels, Carousels, or custom thumbnails
+                    </p>
+                    <div className="border-2 border-dashed border-[#bb9477]/50 rounded-lg p-4 text-center">
+                      <input
+                        type="file"
+                        id="reel-cover-upload"
+                        className="hidden"
+                        accept="image/*"
+                        onChange={(e) => handleImageUpload(e, 'reelCover')}
+                        disabled={uploading}
+                      />
+                      <label htmlFor="reel-cover-upload" className="cursor-pointer">
+                        {formData.reelCover ? (
+                          <div className="relative">
+                            <img src={formData.reelCover.url} alt="Cover Preview" className="w-full h-48 object-cover rounded mx-auto" />
+                            <div className="flex gap-2 mt-2 justify-center">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => downloadImage(formData.reelCover.url, 'reel-cover')}
+                              >
+                                <Download className="w-3 h-3 mr-1" />
+                                Download
+                              </Button>
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={() => handleDeleteMedia('reelCover')}
+                              >
+                                <Trash2 className="w-3 h-3 mr-1" />
+                                Delete
+                              </Button>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="py-6">
+                            <Upload className="w-6 h-6 mx-auto text-[#bb9477] mb-2" />
+                            <p className="text-sm text-[#3f2d1d]">
+                              {uploading ? "Uploading..." : "Click to upload cover image"}
+                            </p>
+                            <p className="text-xs text-[#3f2d1d]/60 mt-1">
+                              JPG, PNG, GIF (max 10MB)
+                            </p>
+                          </div>
+                        )}
+                      </label>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
 
             <div>
