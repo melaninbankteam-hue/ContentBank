@@ -361,6 +361,90 @@ frontend:
         - agent: "testing"
         - comment: "✅ CRITICAL ISSUE FIXED: Resolved major React AuthProvider error that was preventing application from loading. Fixed conflicting authentication systems between App.js (backend API) and LoginForm (localStorage). Updated LoginForm to work with backend API authentication, removed localStorage system, updated admin credentials to production values (admin@contentstrategyplanner.com), verified login form displays correctly, confirmed registration form has all required fields (name, email, company, role, password), and verified mobile responsiveness. Frontend authentication now properly integrated with backend API system."
 
+  - task: "Draft vs Scheduled Functionality"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/PostPlanningModal.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+        - agent: "testing"
+        - comment: "✅ VERIFIED: Draft functionality working correctly. No draft posts visible in calendar (proper behavior), draft checkbox present in post planning modal, posts saved as drafts stored separately from scheduled posts. Calendar shows only scheduled content as expected."
+
+  - task: "Brainstorm Use in Calendar Button"
+    implemented: false
+    working: false
+    file: "/app/frontend/src/components/BrainstormTab.js"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: false
+        - agent: "testing"
+        - comment: "❌ MISSING FEATURE: 'Use in Calendar' buttons not found in Master Content Library. Code shows event dispatching logic exists but buttons are not rendering in the UI. Feature appears partially implemented but not functional."
+
+  - task: "Video Preview Sizing (9:16 Aspect Ratio)"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/InstagramPreview.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+        - agent: "testing"
+        - comment: "ℹ️ CANNOT VERIFY: No video content found in preview grid to test 9:16 aspect ratio sizing. Code shows aspect-square classes used for grid consistency. Requires actual video posts to verify w-64 h-80 classes implementation."
+
+  - task: "Analytics Manual Input Fields"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/components/AnalyticsTab.js"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: false
+        - agent: "testing"
+        - comment: "❌ CRITICAL ISSUE: All 9 analytics input fields present but have DOM attachment problems. React state management causing elements to detach from DOM when attempting to fill values. Input fields visible but not functional for manual entry."
+
+  - task: "Carousel Content Type (Multiple Upload)"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/PostPlanningModal.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+        - agent: "testing"
+        - comment: "ℹ️ PARTIALLY VERIFIED: Carousel content type available in dropdown, code shows 'Up to 15 items' upload section, but modal overlay issues prevent full testing of multiple image upload functionality."
+
+  - task: "Edit Post Functionality"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/ContentCalendar.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+        - agent: "testing"
+        - comment: "ℹ️ CANNOT VERIFY: No existing posts with edit/delete buttons found in current interface. Code shows edit functionality exists but requires actual post content to test updating vs creating new posts."
+
+  - task: "Strategy Tab Rename"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/ContentPlanner.js"
+    stuck_count: 0
+    priority: "low"
+    needs_retesting: false
+    status_history:
+        - working: true
+        - agent: "testing"
+        - comment: "✅ VERIFIED: Overview tab successfully renamed to Strategy tab. Navigation working correctly, tab displays proper content."
+
 metadata:
   created_by: "testing_agent"
   version: "1.0"
