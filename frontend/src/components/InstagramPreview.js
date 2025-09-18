@@ -192,6 +192,50 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
 
   return (
     <div className="space-y-6">
+      {/* Story Preview Section */}
+      <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
+        <CardHeader className="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-t-lg">
+          <CardTitle className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500"></div>
+            Story Preview ({stories.length}/30)
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-4">
+          {stories.length > 0 ? (
+            <div className="flex gap-2 overflow-x-auto pb-2">
+              {stories.slice(0, 10).map((story, index) => (
+                <div key={index} className="flex-shrink-0">
+                  <div className="w-16 h-28 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl p-0.5 cursor-pointer hover:scale-105 transition-transform">
+                    <div className="w-full h-full bg-white rounded-xl flex items-center justify-center overflow-hidden">
+                      {story.previewImage ? (
+                        <img 
+                          src={story.previewImage} 
+                          alt={story.topic || `Story ${index + 1}`}
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                      ) : (
+                        <span className="text-xs text-[#3f2d1d] font-medium">Story {index + 1}</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {stories.length > 10 && (
+                <div className="flex-shrink-0 w-16 h-28 rounded-xl bg-[#bb9477]/20 flex items-center justify-center">
+                  <span className="text-xs text-[#3f2d1d]">+{stories.length - 10}</span>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="text-center py-8 text-[#3f2d1d]/60">
+              <div className="w-16 h-28 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl mx-auto mb-3 opacity-30"></div>
+              <p className="text-sm">No stories scheduled</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Main Feed Preview */}
       <Card className="border-[#bb9477]/30 shadow-lg bg-white max-w-4xl mx-auto">
         <CardHeader className="bg-gradient-to-r from-[#472816] to-[#3f2d1d] text-[#fffaf1] rounded-t-lg">
           <div className="flex items-center justify-between">
