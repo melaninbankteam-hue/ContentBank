@@ -492,11 +492,11 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
                           <video 
                             src={formData.image.url} 
                             controls 
-                            className="max-w-full h-48 object-cover rounded mx-auto"
+                            className="w-full h-64 object-cover rounded mx-auto"
                             preload="metadata"
                           />
                         ) : (
-                          <img src={formData.image.url} alt="Preview" className="max-w-full h-48 object-cover rounded mx-auto" />
+                          <img src={formData.image.url} alt="Preview" className="w-full h-64 object-cover rounded mx-auto" />
                         )}
                         <div className="flex gap-2 mt-2 justify-center">
                           <Button
