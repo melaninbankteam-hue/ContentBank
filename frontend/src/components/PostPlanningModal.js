@@ -176,7 +176,7 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
     if (validVideoTypes.includes(file.type)) {
       toast({
         title: "Video Upload",
-        description: "Uploading video... Please ensure it's under 30 seconds for best results.",
+        description: "Uploading video... Please ensure it's under 90 seconds for best results.",
       });
     }
 
