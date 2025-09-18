@@ -97,19 +97,18 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
     const cardStyle = cardStyles[colorIndex];
     
     return (
-      <Card className="border-[#bb9477]/30 overflow-hidden shadow-lg">
-        <CardHeader 
-          className="text-white p-4 relative"
-          style={{
-            background: `linear-gradient(135deg, ${cardStyle.from} 0%, ${cardStyle.to} 100%)`
-          }}
-        >
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Icon className="w-4 h-4" />
-              <span className="text-sm font-medium">{title}</span>
+      <Card className="border-[#bb9477]/30 shadow-lg bg-gradient-to-br text-[#fffaf1]" style={{ background: `linear-gradient(to bottom right, ${cardStyle.from}, ${cardStyle.to})` }}>
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <p className="text-[#fffaf1]/80 text-sm font-medium">{title}</p>
+              <p className="text-3xl font-bold">{value ? (parseInt(value) || 0).toLocaleString() : '0'}</p>
             </div>
-            {showGrowth && previousValue !== undefined && previousValue !== "" && (
+            <Icon className="w-8 h-8 text-[#fffaf1]/80" />
+          </div>
+          
+          {showGrowth && previousValue !== undefined && previousValue !== "" && (
+            <div className="mb-4">
               <Badge 
                 variant="secondary" 
                 className="text-xs px-2 py-1 bg-white/20 text-white border-white/30"
@@ -117,20 +116,18 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
                 <TrendingUp className="w-3 h-3 mr-1" />
                 {growth.percentage}%
               </Badge>
-            )}
+            </div>
+          )}
+          
+          <div className="bg-white/90 rounded p-3">
+            <Input
+              type="number"
+              value={value}
+              onChange={(e) => handleInputChange(field, e.target.value)}
+              placeholder="Enter value"
+              className="border-[#bb9477]/50 focus:border-[#472816] w-full text-[#3f2d1d]"
+            />
           </div>
-          <div className="text-2xl font-bold mt-2">
-            {value ? (parseInt(value) || 0).toLocaleString() : '0'}
-          </div>
-        </CardHeader>
-        <CardContent className="p-4 bg-white">
-          <Input
-            type="number"
-            value={value}
-            onChange={(e) => handleInputChange(field, e.target.value)}
-            placeholder="0"
-            className="border-[#bb9477]/50 focus:border-[#472816] w-full"
-          />
         </CardContent>
       </Card>
     );
