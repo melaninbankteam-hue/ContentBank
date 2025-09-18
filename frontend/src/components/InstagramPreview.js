@@ -17,14 +17,13 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
     const monthKey = `${currentMonth.getFullYear()}-${currentMonth.getMonth()}`;
     const monthData = monthlyData[monthKey];
     const allPosts = [];
+    const allStories = [];
     
     if (monthData && monthData.posts) {
       Object.entries(monthData.posts).forEach(([dateKey, dayPosts]) => {
         dayPosts.forEach(post => {
-          // Include all content types with images
-          if ((post.type === 'Post' || post.type === 'Reel' || post.type === 'Carousel') && 
-              (post.image?.url || post.reelCover?.url)) {
-            allPosts.push({
+          if (!post.isDraft) { // Only show scheduled posts
+            const postData = {
               ...post,
               dateKey,
               originalDate: dateKey,
@@ -32,7 +31,14 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
               previewImage: post.reelCover?.url || post.image?.url,
               // Use scheduled date/time for sorting, fallback to dateKey
               sortDate: new Date(post.scheduledDate || dateKey + 'T' + (post.scheduledTime || '09:00'))
-            });
+            };
+            
+            if (post.type === 'Story') {
+              allStories.push(postData);
+            } else if ((post.type === 'Post' || post.type === 'Reel' || post.type === 'Carousel') && 
+                       (post.image?.url || post.reelCover?.url)) {
+              allPosts.push(postData);
+            }
           }
         });
       });
@@ -40,7 +46,11 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
     
     // Sort by scheduled date/time in reverse chronological order (newest first)
     // Fill grid left-to-right, top-to-bottom, with newest posts at top-left
-    return allPosts.sort((a, b) => b.sortDate - a.sortDate);
+    const sortedPosts = allPosts.sort((a, b) => b.sortDate - a.sortDate);
+    const sortedStories = allStories.sort((a, b) => b.sortDate - a.sortDate);
+    
+    setStories(sortedStories);
+    return sortedPosts;
   }, [monthlyData, currentMonth]);
 
   // Update posts when month data changes or triggerRefresh is called
