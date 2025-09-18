@@ -65,10 +65,15 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
   }, [metrics, monthKey, monthlyData, setMonthlyData, currentData, analytics]);
 
   const handleInputChange = (field, value) => {
-    setMetrics(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    setMetrics(prev => {
+      const newMetrics = {
+        ...prev,
+        [field]: value
+      };
+      // Save to localStorage immediately for persistence
+      localStorage.setItem(`analytics_${monthKey}`, JSON.stringify(newMetrics));
+      return newMetrics;
+    });
   };
 
   // Melanin Bank brown color variations for each card
