@@ -628,11 +628,12 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
                               <video 
                                 src={formData.image.url} 
                                 controls 
-                                className="w-full h-64 object-cover rounded mx-auto"
+                                className="w-64 h-80 object-cover rounded mx-auto"
                                 preload="metadata"
+                                style={{ aspectRatio: '9/16' }}
                               />
                             ) : (
-                              <img src={formData.image.url} alt="Preview" className="w-full h-64 object-cover rounded mx-auto" />
+                              <img src={formData.image.url} alt="Preview" className="w-64 h-80 object-cover rounded mx-auto" style={{ aspectRatio: '9/16' }} />
                             )}
                             <div className="flex gap-2 mt-2 justify-center">
                               <Button
