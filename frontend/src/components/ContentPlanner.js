@@ -53,6 +53,23 @@ const ContentPlanner = ({ user, onLogout }) => {
     return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
   };
 
+  useEffect(() => {
+    // Listen for brainstorm idea events
+    const handleBrainstormEvent = (event) => {
+      setBrainstormData(event.detail);
+      setSelectedDate(new Date()); // Use today's date as default
+      setEditingPost(null);
+      setShowPostPlanner(true);
+      setActiveTab('calendar'); // Switch to calendar tab
+    };
+
+    window.addEventListener('openPostPlannerFromBrainstorm', handleBrainstormEvent);
+
+    return () => {
+      window.removeEventListener('openPostPlannerFromBrainstorm', handleBrainstormEvent);
+    };
+  }, []);
+
   // Trigger refresh of Instagram preview
   const handlePostUpdate = () => {
     setRefreshTrigger(prev => prev + 1);
