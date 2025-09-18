@@ -11,7 +11,7 @@ import { contentCategories, contentTypes, mockBrainstormIdeas } from "../data/mo
 import { useToast } from "../hooks/use-toast";
 import axios from "axios";
 
-const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthlyData, setMonthlyData, onPostUpdate, editingPost }) => {
+const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthlyData, setMonthlyData, onPostUpdate, editingPost, brainstormData }) => {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     type: "",
