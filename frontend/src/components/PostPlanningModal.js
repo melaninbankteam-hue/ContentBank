@@ -926,16 +926,35 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
               </Button>
             )}
           </div>
-          <div className="flex gap-4">
-            <Button variant="outline" onClick={onClose} className="border-[#bb9477] text-[#472816]">
+          {/* Save Options */}
+          <div className="flex gap-3 pt-4">
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="draft-mode"
+                checked={isDraft}
+                onChange={(e) => setIsDraft(e.target.checked)}
+                className="rounded border-[#bb9477]/50"
+              />
+              <label htmlFor="draft-mode" className="text-sm text-[#3f2d1d]">
+                Save as Draft (won't appear in Calendar or Preview)
+              </label>
+            </div>
+            <div className="flex-1" />
+            <Button
+              variant="outline"
+              onClick={onClose}
+              className="border-[#bb9477]/50 text-[#3f2d1d] hover:bg-[#bb9477]/10"
+            >
               Cancel
             </Button>
-            <Button 
-              onClick={handleSavePost} 
+
+            <Button
+              onClick={handleSavePost}
               className="bg-[#472816] hover:bg-[#3f2d1d] text-[#fffaf1]"
               disabled={uploading}
             >
-              {uploading ? "Uploading..." : editingPost ? "Update Post" : "Save Post"}
+              {uploading ? "Saving..." : isDraft ? "Save Draft" : "Schedule Post"}
             </Button>
           </div>
         </div>
