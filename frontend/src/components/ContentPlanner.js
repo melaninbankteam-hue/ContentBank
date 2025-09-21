@@ -58,7 +58,7 @@ const ContentPlanner = ({ user, onLogout }) => {
     // Listen for brainstorm idea events
     const handleBrainstormEvent = (event) => {
       setBrainstormData(event.detail);
-      setSelectedDate(new Date()); // Use today's date as default
+      setSelectedDate(new Date().getDate()); // Use today's date number, not Date object
       setEditingPost(null);
       setShowPostPlanner(true);
       setActiveTab('calendar'); // Switch to calendar tab
