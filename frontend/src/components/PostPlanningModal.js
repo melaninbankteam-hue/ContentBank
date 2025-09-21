@@ -76,7 +76,9 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
       setCarouselImages(editingPost.carouselImages || []);
     } else if (isOpen && brainstormData) {
       // Pre-fill with brainstorm data
-      const defaultDate = selectedDate ? `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(selectedDate).padStart(2, '0')}` : "";
+      const defaultDate = selectedDate ? 
+        `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate ? selectedDate.getDate() : selectedDate).padStart(2, '0')}` : 
+        "";
       setFormData(prev => ({
         ...prev,
         topic: brainstormData.text || "",
