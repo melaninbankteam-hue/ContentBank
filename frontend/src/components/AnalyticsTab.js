@@ -5,6 +5,7 @@ import { Badge } from "./ui/badge";
 import { Users, Eye, MessageCircle, TrendingUp, Share, Mail, Target, BarChart3, MousePointer } from "lucide-react";
 
 const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
+  const saveTimeoutRef = useRef(null);
   const currentData = monthlyData[monthKey] || {};
   const analytics = currentData.analytics || {};
   
