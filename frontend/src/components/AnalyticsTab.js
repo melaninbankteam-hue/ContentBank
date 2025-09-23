@@ -68,7 +68,7 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
     setMetrics(combinedMetrics);
   }, [monthKey]); // Only depend on monthKey, not all the analytics data
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = useCallback((field, value) => {
     // Update state immediately for responsive typing
     setMetrics(prev => ({
       ...prev,
@@ -95,7 +95,7 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
       };
       setMonthlyData(updatedMonthlyData);
     }, 1000); // Save after 1 second of inactivity
-  };
+  }, [monthKey, metrics, monthlyData, currentData, analytics, setMonthlyData]);
 
   // Melanin Bank brown color variations for each card
   const cardStyles = [
