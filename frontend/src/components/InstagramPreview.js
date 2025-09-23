@@ -123,6 +123,28 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
     }
   };
 
+  // Handle story click functionality
+  const handleStoryClick = (storyIndex) => {
+    const story = stories[storyIndex];
+    if (!story) return;
+    
+    // Dispatch event to open post editor with this story's data
+    const editEvent = new CustomEvent('openPostEditorFromPreview', { 
+      detail: { 
+        post: story, 
+        date: story.dateKey,
+        scheduledDate: story.scheduledDate 
+      } 
+    });
+    window.dispatchEvent(editEvent);
+    
+    toast({
+      title: "Opening Story Editor",
+      description: "Loading story for editing...",
+      duration: 2000,
+    });
+  };
+
   const toggleSwapMode = () => {
     setSwapMode(!swapMode);
     setSelectedForSwap(null);
