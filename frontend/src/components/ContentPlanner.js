@@ -64,10 +64,24 @@ const ContentPlanner = ({ user, onLogout }) => {
       setActiveTab('calendar'); // Switch to calendar tab
     };
 
+    // Listen for post edit events from Instagram preview
+    const handlePostEditEvent = (event) => {
+      const { post, date, scheduledDate } = event.detail;
+      setBrainstormData(null);
+      // Convert scheduledDate string to date number for selectedDate
+      const dateObj = scheduledDate ? new Date(scheduledDate) : new Date(date);
+      setSelectedDate(dateObj.getDate());
+      setEditingPost(post);
+      setShowPostPlanner(true);
+      setActiveTab('calendar'); // Switch to calendar tab
+    };
+
     window.addEventListener('openPostPlannerFromBrainstorm', handleBrainstormEvent);
+    window.addEventListener('openPostEditorFromPreview', handlePostEditEvent);
 
     return () => {
       window.removeEventListener('openPostPlannerFromBrainstorm', handleBrainstormEvent);
+      window.removeEventListener('openPostEditorFromPreview', handlePostEditEvent);
     };
   }, []);
 
