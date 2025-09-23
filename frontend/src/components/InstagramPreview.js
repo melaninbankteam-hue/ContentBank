@@ -225,7 +225,10 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
             <div className="flex gap-2 overflow-x-auto pb-2">
               {stories.slice(0, 10).map((story, index) => (
                 <div key={index} className="flex-shrink-0">
-                  <div className="w-16 h-28 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl p-0.5 cursor-pointer hover:scale-105 transition-transform">
+                  <div 
+                    className="w-16 h-28 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl p-0.5 cursor-pointer hover:scale-105 transition-transform"
+                    onClick={() => handleStoryClick(index)}
+                  >
                     <div className="w-full h-full bg-white rounded-xl flex items-center justify-center overflow-hidden">
                       {story.previewImage ? (
                         <img 
