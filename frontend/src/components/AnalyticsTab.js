@@ -69,34 +69,25 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
     setMetrics(combinedMetrics);
   }, [monthKey]); // Only depend on monthKey, not all the analytics data
 
-  const handleInputChange = useCallback((field, value) => {
+  const handleInputChange = (field, value) => {
     // Update state immediately for responsive typing
     setMetrics(prev => ({
       ...prev,
       [field]: value
     }));
     
-    // Debounce the localStorage save to avoid performance issues
-    clearTimeout(window.analyticsSaveTimeout);
-    window.analyticsSaveTimeout = setTimeout(() => {
+    // Clear previous timeout
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+    
+    // Set new timeout for saving
+    saveTimeoutRef.current = setTimeout(() => {
+      // Save to localStorage
       const newMetrics = { ...metrics, [field]: value };
       localStorage.setItem(`analytics_${monthKey}`, JSON.stringify(newMetrics));
-      
-      // Also update monthly data after a delay
-      const updatedMonthlyData = {
-        ...monthlyData,
-        [monthKey]: {
-          ...currentData,
-          analytics: {
-            ...analytics,
-            ...newMetrics,
-            lastUpdated: new Date().toISOString()
-          }
-        }
-      };
-      setMonthlyData(updatedMonthlyData);
-    }, 1000); // Save after 1 second of inactivity
-  }, [monthKey, metrics, monthlyData, currentData, analytics, setMonthlyData]);
+    }, 500); // Reduced to 500ms for faster saving
+  };
 
   // Melanin Bank brown color variations for each card
   const cardStyles = [
