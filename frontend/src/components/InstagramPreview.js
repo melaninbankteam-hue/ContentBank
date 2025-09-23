@@ -95,6 +95,9 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
       return;
     }
 
+    // Swap mode functionality continues...
+  };
+
   // Handle story click functionality
   const handleStoryClick = (storyIndex) => {
     const story = stories[storyIndex];
