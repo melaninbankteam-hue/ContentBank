@@ -68,36 +68,33 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
     setMetrics(combinedMetrics);
   }, [monthKey]); // Only depend on monthKey, not all the analytics data
 
-  // Separate useEffect for auto-saving to monthly data
-  useEffect(() => {
-    // Only save if metrics have actual values to avoid infinite loops
-    const hasValues = Object.values(metrics).some(value => value !== "");
-    if (hasValues) {
+  const handleInputChange = (field, value) => {
+    // Update state immediately for responsive typing
+    setMetrics(prev => ({
+      ...prev,
+      [field]: value
+    }));
+    
+    // Debounce the localStorage save to avoid performance issues
+    clearTimeout(window.analyticsSaveTimeout);
+    window.analyticsSaveTimeout = setTimeout(() => {
+      const newMetrics = { ...metrics, [field]: value };
+      localStorage.setItem(`analytics_${monthKey}`, JSON.stringify(newMetrics));
+      
+      // Also update monthly data after a delay
       const updatedMonthlyData = {
         ...monthlyData,
         [monthKey]: {
           ...currentData,
           analytics: {
             ...analytics,
-            ...metrics,
+            ...newMetrics,
             lastUpdated: new Date().toISOString()
           }
         }
       };
       setMonthlyData(updatedMonthlyData);
-    }
-  }, [metrics]); // Only depend on metrics to avoid circular dependencies
-
-  const handleInputChange = (field, value) => {
-    setMetrics(prev => {
-      const newMetrics = {
-        ...prev,
-        [field]: value
-      };
-      // Save to localStorage immediately for persistence
-      localStorage.setItem(`analytics_${monthKey}`, JSON.stringify(newMetrics));
-      return newMetrics;
-    });
+    }, 1000); // Save after 1 second of inactivity
   };
 
   // Melanin Bank brown color variations for each card
