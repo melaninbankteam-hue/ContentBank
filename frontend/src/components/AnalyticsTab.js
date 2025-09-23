@@ -142,8 +142,10 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
           
           <div className="bg-white/90 rounded p-3">
             <Input
+              key={`analytics-${field}`}
+              id={`analytics-${field}`}
               type="number"
-              value={value}
+              value={value || ""}
               onChange={(e) => handleInputChange(field, e.target.value)}
               placeholder="Enter value"
               className="border-[#bb9477]/50 focus:border-[#472816] w-full text-[#3f2d1d]"
