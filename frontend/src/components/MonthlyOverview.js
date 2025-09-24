@@ -427,6 +427,281 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
         </CardContent>
       </Card>
 
+      {/* Posting Plan */}
+      <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
+        <CardHeader className="bg-gradient-to-r from-[#472816] to-[#3f2d1d] text-[#fffaf1] rounded-t-lg">
+          <CardTitle className="flex items-center gap-2">
+            <Edit3 className="w-5 h-5" />
+            Posting Plan
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-6">
+          {/* Total Goals */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div>
+              <label className="block text-sm font-medium text-[#472816] mb-2">
+                Total Feed Posts This Month
+              </label>
+              <Input
+                type="number"
+                value={postingPlan.totalFeedPosts}
+                onChange={(e) => updatePostingPlan('totalFeedPosts', e.target.value)}
+                placeholder="e.g., 20"
+                className="border-[#bb9477]/50 focus:border-[#472816]"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-[#472816] mb-2">
+                Total Stories This Month
+              </label>
+              <Input
+                type="number"
+                value={postingPlan.totalStories}
+                onChange={(e) => updatePostingPlan('totalStories', e.target.value)}
+                placeholder="e.g., 60"
+                className="border-[#bb9477]/50 focus:border-[#472816]"
+              />
+            </div>
+          </div>
+
+          {/* Content Formats */}
+          <div className="space-y-6">
+            <h3 className="text-lg font-semibold text-[#472816] border-b border-[#bb9477]/30 pb-2">
+              Content Formats & Types
+            </h3>
+
+            {/* Static Photos */}
+            <div className="bg-[#bb9477]/5 rounded-lg p-4 border border-[#bb9477]/20">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    checked={postingPlan.formats.staticPhotos.enabled}
+                    onChange={(e) => updateFormatEnabled('staticPhotos', e.target.checked)}
+                    className="rounded border-[#bb9477] text-[#472816]"
+                  />
+                  <h4 className="font-semibold text-[#472816]">Static Photos</h4>
+                </div>
+                {postingPlan.formats.staticPhotos.enabled && (
+                  <Input
+                    type="number"
+                    value={postingPlan.formats.staticPhotos.count}
+                    onChange={(e) => updateFormatCount('staticPhotos', e.target.value)}
+                    placeholder="Count"
+                    className="w-20 h-8 text-sm border-[#bb9477]/50"
+                  />
+                )}
+              </div>
+              
+              {postingPlan.formats.staticPhotos.enabled && (
+                <>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {[
+                      { key: 'lifestyle', label: 'Lifestyle' },
+                      { key: 'product', label: 'Product' },
+                      { key: 'behindScenes', label: 'Behind-the-scenes' }
+                    ].map(({ key, label }) => (
+                      <label key={key} className="flex items-center gap-1 text-sm">
+                        <input
+                          type="checkbox"
+                          checked={postingPlan.formats.staticPhotos.subcategories[key]}
+                          onChange={(e) => updateSubcategory('staticPhotos', key, e.target.checked)}
+                          className="rounded text-[#472816]"
+                        />
+                        <span className="text-[#3f2d1d]">{label}</span>
+                      </label>
+                    ))}
+                  </div>
+                  <Textarea
+                    value={postingPlan.formats.staticPhotos.notes}
+                    onChange={(e) => updateFormatNotes('staticPhotos', e.target.value)}
+                    placeholder="Notes & ideas for static photos..."
+                    className="text-sm border-[#bb9477]/50 focus:border-[#472816] resize-none"
+                    rows={2}
+                  />
+                </>
+              )}
+            </div>
+
+            {/* Carousels */}
+            <div className="bg-[#bb9477]/5 rounded-lg p-4 border border-[#bb9477]/20">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    checked={postingPlan.formats.carousels.enabled}
+                    onChange={(e) => updateFormatEnabled('carousels', e.target.checked)}
+                    className="rounded border-[#bb9477] text-[#472816]"
+                  />
+                  <h4 className="font-semibold text-[#472816]">Carousels</h4>
+                </div>
+                {postingPlan.formats.carousels.enabled && (
+                  <Input
+                    type="number"
+                    value={postingPlan.formats.carousels.count}
+                    onChange={(e) => updateFormatCount('carousels', e.target.value)}
+                    placeholder="Count"
+                    className="w-20 h-8 text-sm border-[#bb9477]/50"
+                  />
+                )}
+              </div>
+              
+              {postingPlan.formats.carousels.enabled && (
+                <>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {[
+                      { key: 'educational', label: 'Educational' },
+                      { key: 'stepByStep', label: 'Step-by-step' },
+                      { key: 'storytelling', label: 'Storytelling' }
+                    ].map(({ key, label }) => (
+                      <label key={key} className="flex items-center gap-1 text-sm">
+                        <input
+                          type="checkbox"
+                          checked={postingPlan.formats.carousels.subcategories[key]}
+                          onChange={(e) => updateSubcategory('carousels', key, e.target.checked)}
+                          className="rounded text-[#472816]"
+                        />
+                        <span className="text-[#3f2d1d]">{label}</span>
+                      </label>
+                    ))}
+                  </div>
+                  <Textarea
+                    value={postingPlan.formats.carousels.notes}
+                    onChange={(e) => updateFormatNotes('carousels', e.target.value)}
+                    placeholder="Notes & ideas for carousels..."
+                    className="text-sm border-[#bb9477]/50 focus:border-[#472816] resize-none"
+                    rows={2}
+                  />
+                </>
+              )}
+            </div>
+
+            {/* Graphics/Infographics */}
+            <div className="bg-[#bb9477]/5 rounded-lg p-4 border border-[#bb9477]/20">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    checked={postingPlan.formats.graphics.enabled}
+                    onChange={(e) => updateFormatEnabled('graphics', e.target.checked)}
+                    className="rounded border-[#bb9477] text-[#472816]"
+                  />
+                  <h4 className="font-semibold text-[#472816]">Graphics / Infographics</h4>
+                </div>
+                {postingPlan.formats.graphics.enabled && (
+                  <Input
+                    type="number"
+                    value={postingPlan.formats.graphics.count}
+                    onChange={(e) => updateFormatCount('graphics', e.target.value)}
+                    placeholder="Count"
+                    className="w-20 h-8 text-sm border-[#bb9477]/50"
+                  />
+                )}
+              </div>
+              
+              {postingPlan.formats.graphics.enabled && (
+                <>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {[
+                      { key: 'quotes', label: 'Quotes' },
+                      { key: 'tips', label: 'Tips' },
+                      { key: 'announcements', label: 'Announcements' },
+                      { key: 'stats', label: 'Stats' }
+                    ].map(({ key, label }) => (
+                      <label key={key} className="flex items-center gap-1 text-sm">
+                        <input
+                          type="checkbox"
+                          checked={postingPlan.formats.graphics.subcategories[key]}
+                          onChange={(e) => updateSubcategory('graphics', key, e.target.checked)}
+                          className="rounded text-[#472816]"
+                        />
+                        <span className="text-[#3f2d1d]">{label}</span>
+                      </label>
+                    ))}
+                  </div>
+                  <Textarea
+                    value={postingPlan.formats.graphics.notes}
+                    onChange={(e) => updateFormatNotes('graphics', e.target.value)}
+                    placeholder="Notes & ideas for graphics/infographics..."
+                    className="text-sm border-[#bb9477]/50 focus:border-[#472816] resize-none"
+                    rows={2}
+                  />
+                </>
+              )}
+            </div>
+
+            {/* Reels */}
+            <div className="bg-[#bb9477]/5 rounded-lg p-4 border border-[#bb9477]/20">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    checked={postingPlan.formats.reels.enabled}
+                    onChange={(e) => updateFormatEnabled('reels', e.target.checked)}
+                    className="rounded border-[#bb9477] text-[#472816]"
+                  />
+                  <h4 className="font-semibold text-[#472816]">Reels (Short-Form Video)</h4>
+                </div>
+                {postingPlan.formats.reels.enabled && (
+                  <Input
+                    type="number"
+                    value={postingPlan.formats.reels.count}
+                    onChange={(e) => updateFormatCount('reels', e.target.value)}
+                    placeholder="Count"
+                    className="w-20 h-8 text-sm border-[#bb9477]/50"
+                  />
+                )}
+              </div>
+              
+              {postingPlan.formats.reels.enabled && (
+                <>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {[
+                      { key: 'talkingToCamera', label: 'Talking to Camera' },
+                      { key: 'voiceover', label: 'Voiceover' },
+                      { key: 'bRoll', label: 'B-Roll Style' },
+                      { key: 'trendingAudio', label: 'Trending Audio / Lip-Syncs' }
+                    ].map(({ key, label }) => (
+                      <label key={key} className="flex items-center gap-1 text-sm">
+                        <input
+                          type="checkbox"
+                          checked={postingPlan.formats.reels.subcategories[key]}
+                          onChange={(e) => updateSubcategory('reels', key, e.target.checked)}
+                          className="rounded text-[#472816]"
+                        />
+                        <span className="text-[#3f2d1d]">{label}</span>
+                      </label>
+                    ))}
+                  </div>
+                  <Textarea
+                    value={postingPlan.formats.reels.notes}
+                    onChange={(e) => updateFormatNotes('reels', e.target.value)}
+                    placeholder="Notes & ideas for reels..."
+                    className="text-sm border-[#bb9477]/50 focus:border-[#472816] resize-none"
+                    rows={2}
+                  />
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Total Counter */}
+          <div className="mt-6 bg-gradient-to-r from-[#bb9477]/20 to-[#472816]/20 rounded-lg p-4 border-2 border-[#bb9477]/30">
+            <div className="text-center">
+              <h3 className="text-lg font-semibold text-[#472816] mb-1">
+                Total Planned Posts
+              </h3>
+              <div className="text-3xl font-bold text-[#472816]">
+                {calculateTotalPosts()}
+              </div>
+              <p className="text-sm text-[#3f2d1d]/60">
+                posts planned from selected formats
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Planning Sections */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
