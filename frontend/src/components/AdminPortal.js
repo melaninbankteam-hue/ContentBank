@@ -393,6 +393,29 @@ const AdminPortal = () => {
                             <UserX className="w-4 h-4 mr-1" />
                             Deny
                           </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => deleteUser(user.id)}
+                            className="border-red-500 text-red-500 hover:bg-red-50"
+                          >
+                            <Trash2 className="w-4 h-4 mr-1" />
+                            Delete
+                          </Button>
+                        </div>
+                      )}
+                      
+                      {user.approval_status !== 'pending' && (
+                        <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => deleteUser(user.id)}
+                            className="border-red-500 text-red-500 hover:bg-red-50"
+                          >
+                            <Trash2 className="w-4 h-4 mr-1" />
+                            Delete
+                          </Button>
                         </div>
                       )}
                     </div>
