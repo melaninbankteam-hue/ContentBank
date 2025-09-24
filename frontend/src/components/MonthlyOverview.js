@@ -213,10 +213,28 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
                   <div className="text-xl font-semibold text-[#3f2d1d] mb-4">
                     {getBreathInstruction()}
                   </div>
-                  <div className="flex justify-center items-center gap-4 text-sm text-[#3f2d1d]">
+                  <div className="flex justify-center items-center gap-4 text-sm text-[#3f2d1d] mb-4">
                     <span>Cycle: {cycleCount}</span>
                     <span>•</span>
                     <span>Time: {Math.floor(timeRemaining / 60)}:{(timeRemaining % 60).toString().padStart(2, '0')}</span>
+                  </div>
+                  
+                  {/* Display affirmations during session */}
+                  {customAffirmations && (
+                    <div className="bg-[#bb9477]/10 rounded-lg p-3 mt-4">
+                      <p className="text-xs text-[#472816] font-medium mb-2">Your Affirmations:</p>
+                      <div className="text-sm italic text-[#3f2d1d] leading-relaxed">
+                        {customAffirmations.split('\n').map((line, index) => (
+                          line.trim() && (
+                            <p key={index} className="mb-1">"{line.trim()}"</p>
+                          )
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  <div className="text-xs text-[#3f2d1d]/60 mt-3">
+                    💫 Gently tap your collarbone or wrist while repeating your affirmations
                   </div>
                 </div>
                 <Button
