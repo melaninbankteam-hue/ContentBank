@@ -107,6 +107,19 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
     }
   }, [isOpen, selectedDate, currentMonth, editingPost, brainstormData]);
 
+  // Clear category when content type changes to ensure valid category selection
+  useEffect(() => {
+    if (formData.type && formData.category) {
+      const availableCategories = getCategories(formData.type);
+      if (!availableCategories.includes(formData.category)) {
+        setFormData(prev => ({
+          ...prev,
+          category: ""
+        }));
+      }
+    }
+  }, [formData.type]);
+
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
       ...prev,
