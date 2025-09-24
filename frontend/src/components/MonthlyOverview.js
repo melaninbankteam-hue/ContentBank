@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Badge } from "./ui/badge";
-import { Plus, X, Edit3 } from "lucide-react";
+import { Plus, X, Edit3, Sparkles, Play, Pause, RotateCcw } from "lucide-react";
 import { defaultContentPillars, mockMonthlyData } from "../data/mock";
 
 const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
