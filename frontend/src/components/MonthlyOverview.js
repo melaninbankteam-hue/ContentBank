@@ -66,6 +66,68 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
     updateField('contentPillars', updatedPillars);
   };
 
+  // Breathwork functions
+  const startBreathwork = () => {
+    setBreathworkActive(true);
+    setBreathPhase('inhale');
+    setBreathCount(4);
+    setCycleCount(0);
+    setTimeRemaining(180);
+  };
+
+  const stopBreathwork = () => {
+    setBreathworkActive(false);
+    setBreathPhase('inhale');
+    setBreathCount(4);
+    setCycleCount(0);
+    setTimeRemaining(180);
+  };
+
+  useEffect(() => {
+    if (!breathworkActive) return;
+
+    const interval = setInterval(() => {
+      setTimeRemaining(prev => {
+        if (prev <= 1) {
+          setBreathworkActive(false);
+          return 180;
+        }
+        return prev - 1;
+      });
+
+      setBreathCount(prev => {
+        if (prev <= 1) {
+          // Move to next phase
+          setBreathPhase(currentPhase => {
+            switch (currentPhase) {
+              case 'inhale': return 'hold1';
+              case 'hold1': return 'exhale';
+              case 'exhale': return 'hold2';
+              case 'hold2': 
+                setCycleCount(c => c + 1);
+                return 'inhale';
+              default: return 'inhale';
+            }
+          });
+          return 4;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [breathworkActive]);
+
+  const getBreathInstruction = () => {
+    switch (breathPhase) {
+      case 'inhale': return 'Breathe In';
+      case 'hold1': return 'Hold';
+      case 'exhale': return 'Breathe Out';
+      case 'hold2': return 'Hold';
+      default: return 'Breathe In';
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Content Pillars */}
