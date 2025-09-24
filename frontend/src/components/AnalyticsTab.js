@@ -4,6 +4,63 @@ import { Input } from "./ui/input";
 import { Badge } from "./ui/badge";
 import { Users, Eye, MessageCircle, TrendingUp, Share, Mail, Target, BarChart3, MousePointer } from "lucide-react";
 
+// Move MetricCard outside to prevent re-creation on each render
+const MetricCard = React.memo(({ title, icon: Icon, value, field, previousValue, showGrowth = false, colorIndex, onInputChange }) => {
+  const cardStyle = cardStyles[colorIndex];
+  
+  return (
+    <Card className="border-[#bb9477]/30 shadow-lg bg-gradient-to-br text-[#fffaf1]" style={{ background: `linear-gradient(to bottom right, ${cardStyle.from}, ${cardStyle.to})` }}>
+      <CardContent className="p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <p className="text-[#fffaf1]/80 text-sm font-medium">{title}</p>
+            <p className="text-3xl font-bold">{value ? (parseInt(value) || 0).toLocaleString() : '0'}</p>
+          </div>
+          <Icon className="w-8 h-8 text-[#fffaf1]/80" />
+        </div>
+        
+        {showGrowth && previousValue !== undefined && previousValue !== "" && (
+          <div className="mb-4">
+            <Badge 
+              variant="secondary" 
+              className="text-xs px-2 py-1 bg-white/20 text-white border-white/30"
+            >
+              <TrendingUp className="w-3 h-3 mr-1" />
+              {Math.abs(((value - previousValue) / previousValue * 100) || 0).toFixed(1)}%
+            </Badge>
+          </div>
+        )}
+        
+        <div className="bg-white/90 rounded p-3">
+          <input
+            type="number"
+            value={value || ""}
+            onChange={(e) => onInputChange(field, e.target.value)}
+            placeholder="Enter value"
+            className="w-full p-2 border border-[#bb9477]/50 rounded focus:border-[#472816] focus:outline-none text-[#3f2d1d]"
+          />
+        </div>
+      </CardContent>
+    </Card>
+  );
+});
+
+// Define card styles outside component
+const cardStyles = [
+  // Row 1
+  { from: '#5D4037', to: '#6D4C41' }, // Followers - Deep brown
+  { from: '#8D6E63', to: '#A1887F' }, // Total Views - Medium brown  
+  { from: '#8A6F5E', to: '#9E7B68' }, // Non-Follower Views - Warm brown
+  // Row 2
+  { from: '#7B5E57', to: '#8D6E63' }, // Reach - Rich brown
+  { from: '#6F4E3F', to: '#7D5A4B' }, // Profile Visits - Dark brown
+  { from: '#9B7B6C', to: '#A68B7B' }, // Website Clicks - Light brown
+  // Row 3
+  { from: '#6B4F44', to: '#785A4F' }, // Email Subscribers - Mocha brown
+  { from: '#8B6F5E', to: '#96806F' }, // DM Messages - Coffee brown
+  { from: '#7F6B5A', to: '#8A7665' }  // Total Interactions - Caramel brown
+];
+
 const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
   const saveTimeoutRef = useRef(null);
   const currentData = monthlyData[monthKey] || {};
