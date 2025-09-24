@@ -161,6 +161,7 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
           previousValue={previousMetrics.followers}
           showGrowth={true}
           colorIndex={0}
+          onInputChange={handleInputChange}
         />
         
         <MetricCard
@@ -171,6 +172,7 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
           previousValue={previousMetrics.totalViews}
           showGrowth={true}
           colorIndex={1}
+          onInputChange={handleInputChange}
         />
         
         <MetricCard
@@ -181,6 +183,7 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
           previousValue={previousMetrics.nonFollowerViews}
           showGrowth={false}
           colorIndex={2}
+          onInputChange={handleInputChange}
         />
         
         <MetricCard
@@ -191,6 +194,7 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
           previousValue={previousMetrics.reach}
           showGrowth={true}
           colorIndex={3}
+          onInputChange={handleInputChange}
         />
         
         <MetricCard
@@ -201,6 +205,7 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
           previousValue={previousMetrics.profileVisits}
           showGrowth={false}
           colorIndex={4}
+          onInputChange={handleInputChange}
         />
         
         <MetricCard
@@ -211,6 +216,7 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
           previousValue={previousMetrics.websiteClicks}
           showGrowth={false}
           colorIndex={5}
+          onInputChange={handleInputChange}
         />
         
         <MetricCard
@@ -221,6 +227,7 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
           previousValue={previousMetrics.emailSubscribers}
           showGrowth={false}
           colorIndex={6}
+          onInputChange={handleInputChange}
         />
         
         <MetricCard
@@ -231,6 +238,7 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
           previousValue={previousMetrics.dmMessages}
           showGrowth={false}
           colorIndex={7}
+          onInputChange={handleInputChange}
         />
         
         <MetricCard
@@ -241,6 +249,7 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
           previousValue={previousMetrics.totalInteractions}
           showGrowth={true}
           colorIndex={8}
+          onInputChange={handleInputChange}
         />
       </div>
 
