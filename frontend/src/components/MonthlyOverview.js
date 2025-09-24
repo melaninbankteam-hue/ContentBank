@@ -88,6 +88,7 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
     if (!breathworkActive) return;
 
     const interval = setInterval(() => {
+      // Countdown overall timer
       setTimeRemaining(prev => {
         if (prev <= 1) {
           setBreathworkActive(false);
@@ -96,21 +97,22 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
         return prev - 1;
       });
 
+      // Handle breath phase timing (4 seconds per phase)
       setBreathCount(prev => {
         if (prev <= 1) {
-          // Move to next phase
+          // Move to next phase after 4 seconds
           setBreathPhase(currentPhase => {
             switch (currentPhase) {
               case 'inhale': return 'hold1';
               case 'hold1': return 'exhale';
               case 'exhale': return 'hold2';
               case 'hold2': 
-                setCycleCount(c => c + 1);
+                setCycleCount(c => c + 1); // Complete cycle (16 seconds total)
                 return 'inhale';
               default: return 'inhale';
             }
           });
-          return 4;
+          return 4; // Reset to 4 seconds for next phase
         }
         return prev - 1;
       });
