@@ -1015,16 +1015,16 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
                       <div className="flex items-center gap-2">
                         <input
                           type="checkbox"
-                          checked={postingPlan.storyFormats[key].enabled}
+                          checked={postingPlan.storyFormats?.[key]?.enabled || false}
                           onChange={(e) => updateStoryFormatEnabled(key, e.target.checked)}
                           className="rounded border-[#bb9477] text-[#472816]"
                         />
                         <h4 className="font-medium text-[#472816] text-sm">{label}</h4>
                       </div>
-                      {postingPlan.storyFormats[key].enabled && (
+                      {postingPlan.storyFormats?.[key]?.enabled && (
                         <Input
                           type="number"
-                          value={postingPlan.storyFormats[key].count}
+                          value={postingPlan.storyFormats?.[key]?.count || ""}
                           onChange={(e) => updateStoryFormatCount(key, e.target.value)}
                           placeholder="Count"
                           className="w-16 h-7 text-xs border-[#bb9477]/50"
