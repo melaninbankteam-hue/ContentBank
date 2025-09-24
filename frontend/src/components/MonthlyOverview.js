@@ -963,6 +963,76 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
             ))}
           </div>
 
+          {/* Stories Section */}
+          <div className="mt-8 space-y-6">
+            <div className="border-t border-[#bb9477]/30 pt-6">
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-[#472816] mb-2">
+                  Total Stories This Month
+                </label>
+                <Input
+                  type="number"
+                  value={postingPlan.totalStories}
+                  onChange={(e) => updatePostingPlan('totalStories', e.target.value)}
+                  placeholder="e.g., 60"
+                  className="border-[#bb9477]/50 focus:border-[#472816] max-w-xs"
+                />
+              </div>
+
+              <h3 className="text-lg font-semibold text-[#472816] border-b border-[#bb9477]/30 pb-2 mb-4">
+                Story Content Formats
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {[
+                  { key: 'faq', label: 'FAQ' },
+                  { key: 'tips', label: 'Tips' },
+                  { key: 'promo', label: 'Promo' },
+                  { key: 'leadMagnet', label: 'Lead Magnet/Freebie' },
+                  { key: 'poll', label: 'Poll' },
+                  { key: 'behindScenes', label: 'Behind the Scenes' },
+                  { key: 'dayInLife', label: 'Day in the Life Moments' },
+                  { key: 'repost', label: 'Repost' },
+                  { key: 'memesEntertainment', label: 'Memes/Entertainment' },
+                  { key: 'connection', label: 'Connection' }
+                ].map(({ key, label }) => (
+                  <div key={key} className="bg-[#bb9477]/5 rounded-lg p-3 border border-[#bb9477]/20">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={postingPlan.storyFormats[key].enabled}
+                          onChange={(e) => updateStoryFormatEnabled(key, e.target.checked)}
+                          className="rounded border-[#bb9477] text-[#472816]"
+                        />
+                        <h4 className="font-medium text-[#472816] text-sm">{label}</h4>
+                      </div>
+                      {postingPlan.storyFormats[key].enabled && (
+                        <Input
+                          type="number"
+                          value={postingPlan.storyFormats[key].count}
+                          onChange={(e) => updateStoryFormatCount(key, e.target.value)}
+                          placeholder="Count"
+                          className="w-16 h-7 text-xs border-[#bb9477]/50"
+                        />
+                      )}
+                    </div>
+                    
+                    {postingPlan.storyFormats[key].enabled && (
+                      <Textarea
+                        value={postingPlan.storyFormats[key].notes}
+                        onChange={(e) => updateStoryFormatNotes(key, e.target.value)}
+                        placeholder={`Notes for ${label.toLowerCase()}...`}
+                        className="text-xs border-[#bb9477]/50 focus:border-[#472816] resize-none"
+                        rows={2}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
           {/* Total Counter */}
           <div className="mt-6 bg-gradient-to-r from-[#bb9477]/20 to-[#472816]/20 rounded-lg p-4 border-2 border-[#bb9477]/30">
             <div className="text-center">
