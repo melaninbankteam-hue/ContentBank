@@ -1032,9 +1032,9 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
                       )}
                     </div>
                     
-                    {postingPlan.storyFormats[key].enabled && (
+                    {postingPlan.storyFormats?.[key]?.enabled && (
                       <Textarea
-                        value={postingPlan.storyFormats[key].notes}
+                        value={postingPlan.storyFormats?.[key]?.notes || ""}
                         onChange={(e) => updateStoryFormatNotes(key, e.target.value)}
                         placeholder={`Notes for ${label.toLowerCase()}...`}
                         className="text-xs border-[#bb9477]/50 focus:border-[#472816] resize-none"
