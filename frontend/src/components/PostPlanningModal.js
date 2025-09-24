@@ -11,6 +11,14 @@ import { contentCategories, contentTypes, mockBrainstormIdeas } from "../data/mo
 import { useToast } from "../hooks/use-toast";
 import axios from "axios";
 
+// Dynamic categories based on content type
+const getCategories = (contentType) => {
+  if (contentType === 'Story') {
+    return ["FAQ", "Tips", "Promo", "Lead Magnet/Freebie", "Poll", "Behind the Scenes", "Day in the Life", "Repost", "Memes/Entertainment", "Connection"];
+  }
+  return contentCategories;
+};
+
 const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthlyData, setMonthlyData, onPostUpdate, editingPost, brainstormData }) => {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
