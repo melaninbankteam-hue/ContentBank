@@ -674,7 +674,64 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
 
             {/* Media Upload Section */}
             <div className="space-y-4">
-              {formData.type === 'Carousel' ? (
+              {formData.type === 'Story' ? (
+                /* Story Multiple Upload (Up to 5) */
+                <div className="bg-[#bb9477]/5 rounded-lg p-4 border border-[#bb9477]/20">
+                  <h4 className="text-sm font-semibold text-[#472816] mb-3 flex items-center gap-2">
+                    <ImageIcon className="w-4 h-4" />
+                    Story Content (Up to 5 items)
+                  </h4>
+                  <div className="border-2 border-dashed border-[#bb9477]/50 rounded-lg p-4 text-center">
+                    <input
+                      type="file"
+                      id="story-upload"
+                      className="hidden"
+                      accept="image/*,video/*"
+                      multiple
+                      onChange={handleStoryContentUpload}
+                      disabled={uploading || storyContent.length >= 5}
+                    />
+                    <label htmlFor="story-upload" className="cursor-pointer">
+                      {storyContent.length > 0 ? (
+                        <div>
+                          <div className="flex gap-2 flex-wrap mb-4">
+                            {storyContent.map((item, index) => (
+                              <div key={index} className="relative w-20 h-32">
+                                {item.url.includes('video') ? (
+                                  <video src={item.url} className="w-full h-full object-cover rounded" preload="metadata" />
+                                ) : (
+                                  <img src={item.url} alt={`Story ${index + 1}`} className="w-full h-full object-cover rounded" />
+                                )}
+                                <button
+                                  onClick={() => removeStoryContent(index)}
+                                  className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs"
+                                >
+                                  ×
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                          {storyContent.length < 5 && (
+                            <p className="text-sm text-[#3f2d1d]">
+                              Click to add more ({storyContent.length}/5)
+                            </p>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="py-8">
+                          <Upload className="w-8 h-8 mx-auto text-[#bb9477] mb-2" />
+                          <p className="text-sm text-[#3f2d1d]">
+                            {uploading ? "Uploading..." : "Click to upload story content"}
+                          </p>
+                          <p className="text-xs text-[#3f2d1d]/60 mt-1">
+                            Select up to 5 images/videos for your story
+                          </p>
+                        </div>
+                      )}
+                    </label>
+                  </div>
+                </div>
+              ) : formData.type === 'Carousel' ? (
                 /* Carousel Multiple Upload */
                 <div className="bg-[#bb9477]/5 rounded-lg p-4 border border-[#bb9477]/20">
                   <h4 className="text-sm font-semibold text-[#472816] mb-3 flex items-center gap-2">
