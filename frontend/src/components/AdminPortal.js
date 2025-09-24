@@ -314,12 +314,48 @@ const AdminPortal = () => {
 
           <TabsContent value="members">
             <Card className="border-[#bb9477]/30">
-              <CardHeader>
-                <CardTitle className="text-[#472816]">Member Management</CardTitle>
+              <CardHeader className="bg-gradient-to-r from-[#bb9477] to-[#472816] text-[#fffaf1] rounded-t-lg">
+                <div className="flex items-center justify-between">
+                  <CardTitle>Member Management</CardTitle>
+                  <div className="flex gap-2">
+                    <Button 
+                      variant="secondary" 
+                      size="sm" 
+                      onClick={() => setActiveFilter('all')}
+                      className={`${activeFilter === 'all' ? 'bg-white text-[#472816]' : 'bg-[#bb9477]/20 text-white'}`}
+                    >
+                      All ({users.length})
+                    </Button>
+                    <Button 
+                      variant="secondary" 
+                      size="sm" 
+                      onClick={() => setActiveFilter('pending')}
+                      className={`${activeFilter === 'pending' ? 'bg-white text-[#472816]' : 'bg-[#bb9477]/20 text-white'}`}
+                    >
+                      Pending ({stats.pendingMembers})
+                    </Button>
+                    <Button 
+                      variant="secondary" 
+                      size="sm" 
+                      onClick={() => setActiveFilter('approved')}
+                      className={`${activeFilter === 'approved' ? 'bg-white text-[#472816]' : 'bg-[#bb9477]/20 text-white'}`}
+                    >
+                      Approved ({stats.approvedMembers})
+                    </Button>
+                    <Button 
+                      variant="secondary" 
+                      size="sm" 
+                      onClick={() => setActiveFilter('denied')}
+                      className={`${activeFilter === 'denied' ? 'bg-white text-[#472816]' : 'bg-[#bb9477]/20 text-white'}`}
+                    >
+                      Denied ({stats.deniedMembers})
+                    </Button>
+                  </div>
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {users.map((user) => (
+                  {getFilteredUsers().map((user) => (
                     <div key={user.id} className="flex items-center justify-between p-4 border border-[#bb9477]/20 rounded-lg">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
