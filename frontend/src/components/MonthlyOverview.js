@@ -440,8 +440,8 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
           </CardTitle>
         </CardHeader>
         <CardContent className="p-6">
-          {/* Total Goals */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          {/* Total Goals for Feed Posts Only */}
+          <div className="mb-6">
             <div>
               <label className="block text-sm font-medium text-[#472816] mb-2">
                 Total Feed Posts This Month
@@ -451,19 +451,7 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
                 value={postingPlan.totalFeedPosts}
                 onChange={(e) => updatePostingPlan('totalFeedPosts', e.target.value)}
                 placeholder="e.g., 20"
-                className="border-[#bb9477]/50 focus:border-[#472816]"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-[#472816] mb-2">
-                Total Stories This Month
-              </label>
-              <Input
-                type="number"
-                value={postingPlan.totalStories}
-                onChange={(e) => updatePostingPlan('totalStories', e.target.value)}
-                placeholder="e.g., 60"
-                className="border-[#bb9477]/50 focus:border-[#472816]"
+                className="border-[#bb9477]/50 focus:border-[#472816] max-w-xs"
               />
             </div>
           </div>
