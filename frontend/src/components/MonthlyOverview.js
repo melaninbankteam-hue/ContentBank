@@ -167,12 +167,29 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
             
             {/* Affirmations */}
             <div className="bg-white/60 rounded-lg p-4 border border-[#bb9477]/30">
-              <div className="italic text-[#472816] text-sm space-y-1 text-center">
+              <h4 className="font-semibold text-[#472816] mb-3 text-center">Suggested Affirmations:</h4>
+              <div className="italic text-[#472816] text-sm space-y-1 text-center mb-4">
                 <p>"My content makes me bank."</p>
                 <p>"I know exactly what I need to post to attract my dream clients."</p>
                 <p>"It's safe for me to be seen and have a successful business."</p>
                 <p>"It's fun and easy for me to plan my content."</p>
                 <p>"Everything I desire is unfolding for me in divine timing."</p>
+              </div>
+              
+              <div className="border-t border-[#bb9477]/30 pt-4">
+                <label className="block text-sm font-medium text-[#472816] mb-2">
+                  Add Your Own Affirmations:
+                </label>
+                <Textarea
+                  value={customAffirmations}
+                  onChange={(e) => setCustomAffirmations(e.target.value)}
+                  placeholder="Write your personal affirmations here... (e.g., 'I attract my ideal clients effortlessly', 'My content creates abundance')"
+                  className="border-[#bb9477]/50 focus:border-[#472816] resize-none"
+                  rows={3}
+                />
+                <p className="text-xs text-[#3f2d1d]/60 mt-1">
+                  These will be displayed during your breathwork session for you to repeat.
+                </p>
               </div>
             </div>
 
