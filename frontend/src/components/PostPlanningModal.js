@@ -29,6 +29,7 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
   const [uploading, setUploading] = useState(false);
   const [carouselImages, setCarouselImages] = useState([]);
   const [isDraft, setIsDraft] = useState(false);
+  const [storyContent, setStoryContent] = useState([]);
 
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
