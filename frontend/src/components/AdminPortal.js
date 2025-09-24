@@ -31,6 +31,7 @@ const AdminPortal = () => {
     approvedMembers: 0,
     deniedMembers: 0
   });
+  const [activeFilter, setActiveFilter] = useState('all'); // New filter state
 
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
