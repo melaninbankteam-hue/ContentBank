@@ -63,6 +63,85 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
     }));
   };
 
+  // Posting plan functions
+  const updatePostingPlan = (field, value) => {
+    const newPlan = { ...postingPlan, [field]: value };
+    setPostingPlan(newPlan);
+    updateField('postingPlan', newPlan);
+  };
+
+  const updateFormatEnabled = (formatKey, enabled) => {
+    const newPlan = {
+      ...postingPlan,
+      formats: {
+        ...postingPlan.formats,
+        [formatKey]: {
+          ...postingPlan.formats[formatKey],
+          enabled: enabled
+        }
+      }
+    };
+    setPostingPlan(newPlan);
+    updateField('postingPlan', newPlan);
+  };
+
+  const updateFormatCount = (formatKey, count) => {
+    const newPlan = {
+      ...postingPlan,
+      formats: {
+        ...postingPlan.formats,
+        [formatKey]: {
+          ...postingPlan.formats[formatKey],
+          count: count
+        }
+      }
+    };
+    setPostingPlan(newPlan);
+    updateField('postingPlan', newPlan);
+  };
+
+  const updateFormatNotes = (formatKey, notes) => {
+    const newPlan = {
+      ...postingPlan,
+      formats: {
+        ...postingPlan.formats,
+        [formatKey]: {
+          ...postingPlan.formats[formatKey],
+          notes: notes
+        }
+      }
+    };
+    setPostingPlan(newPlan);
+    updateField('postingPlan', newPlan);
+  };
+
+  const updateSubcategory = (formatKey, subcategoryKey, enabled) => {
+    const newPlan = {
+      ...postingPlan,
+      formats: {
+        ...postingPlan.formats,
+        [formatKey]: {
+          ...postingPlan.formats[formatKey],
+          subcategories: {
+            ...postingPlan.formats[formatKey].subcategories,
+            [subcategoryKey]: enabled
+          }
+        }
+      }
+    };
+    setPostingPlan(newPlan);
+    updateField('postingPlan', newPlan);
+  };
+
+  const calculateTotalPosts = () => {
+    return Object.values(postingPlan.formats).reduce((total, format) => {
+      if (format.enabled && format.count) {
+        return total + (parseInt(format.count) || 0);
+      }
+      return total;
+    }, 0);
+  };
+
   const addContentPillar = () => {
     if (newPillar.trim()) {
       const updatedPillars = [...contentPillars, newPillar.trim()];
