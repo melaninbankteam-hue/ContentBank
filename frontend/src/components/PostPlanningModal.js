@@ -300,15 +300,75 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
     setUploading(false);
   };
 
-  const removeCarouselItem = async (index) => {
-    const itemToRemove = carouselImages[index];
+  const handleStoryContentUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
+    // Check if adding these files would exceed 5 total
+    if (storyContent.length + files.length > 5) {
+      toast({
+        title: "Too Many Files",
+        description: `Stories can only have up to 5 pieces of content. Currently have ${storyContent.length}.`,
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setUploading(true);
+    const uploadedItems = [];
+
+    for (const file of files) {
+      const validImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+      const validVideoTypes = ['video/mp4', 'video/quicktime', 'video/avi', 'video/mov'];
+      const allValidTypes = [...validImageTypes, ...validVideoTypes];
+      
+      if (!allValidTypes.includes(file.type)) {
+        toast({
+          title: "Invalid File Type",
+          description: `File ${file.name} is not supported.`,
+          variant: "destructive"
+        });
+        continue;
+      }
+
+      // Validate file size
+      const maxSize = validVideoTypes.includes(file.type) ? 50 * 1024 * 1024 : 10 * 1024 * 1024;
+      if (file.size > maxSize) {
+        const maxSizeText = validVideoTypes.includes(file.type) ? "50MB" : "10MB";
+        toast({
+          title: "File Too Large", 
+          description: `File ${file.name} exceeds ${maxSizeText} limit.`,
+          variant: "destructive"
+        });
+        continue;
+      }
+
+      const uploadResult = await uploadToCloudinary(file);
+      if (uploadResult) {
+        uploadedItems.push(uploadResult);
+      }
+    }
+
+    if (uploadedItems.length > 0) {
+      setStoryContent(prev => [...prev, ...uploadedItems]);
+      toast({
+        title: "Story Content Uploaded",
+        description: `${uploadedItems.length} items added to your story.`,
+      });
+    }
+
+    setUploading(false);
+  };
+
+  const removeStoryContent = async (index) => {
+    const itemToRemove = storyContent[index];
     if (itemToRemove.public_id) {
       await deleteFromCloudinary(itemToRemove.public_id);
     }
-    setCarouselImages(prev => prev.filter((_, i) => i !== index));
+    setStoryContent(prev => prev.filter((_, i) => i !== index));
     toast({
       title: "Item Removed",
-      description: "Carousel item has been deleted.",
+      description: "Story content has been deleted.",
     });
   };
 
