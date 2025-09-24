@@ -15,7 +15,8 @@ import {
   Mail,
   Cloud,
   Shield,
-  Globe
+  Globe,
+  Trash2
 } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 import axios from 'axios';
