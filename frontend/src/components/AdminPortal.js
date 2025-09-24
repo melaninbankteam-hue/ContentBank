@@ -168,6 +168,34 @@ const AdminPortal = () => {
     }
   };
 
+  // Delete user function
+  const deleteUser = async (userId) => {
+    if (!window.confirm('Are you sure you want to permanently delete this user request?')) {
+      return;
+    }
+    
+    try {
+      const token = localStorage.getItem('token');
+      await axios.delete(`${BACKEND_URL}/api/admin/users/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      toast({
+        title: "User Deleted",
+        description: "User request has been permanently deleted.",
+      });
+      
+      fetchUsers(); // Refresh the list
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete user",
+        variant: "destructive"
+      });
+    }
+  };
+
   const formatLastActivity = (timestamp) => {
     if (!timestamp) return 'Never';
     const date = new Date(timestamp);
