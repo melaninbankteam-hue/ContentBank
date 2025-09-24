@@ -167,6 +167,60 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
     }, 0);
   };
 
+  const updateStoryFormatEnabled = (formatKey, enabled) => {
+    const newPlan = {
+      ...postingPlan,
+      storyFormats: {
+        ...postingPlan.storyFormats,
+        [formatKey]: {
+          ...postingPlan.storyFormats[formatKey],
+          enabled: enabled
+        }
+      }
+    };
+    setPostingPlan(newPlan);
+    updateField('postingPlan', newPlan);
+  };
+
+  const updateStoryFormatCount = (formatKey, count) => {
+    const newPlan = {
+      ...postingPlan,
+      storyFormats: {
+        ...postingPlan.storyFormats,
+        [formatKey]: {
+          ...postingPlan.storyFormats[formatKey],
+          count: count
+        }
+      }
+    };
+    setPostingPlan(newPlan);
+    updateField('postingPlan', newPlan);
+  };
+
+  const updateStoryFormatNotes = (formatKey, notes) => {
+    const newPlan = {
+      ...postingPlan,
+      storyFormats: {
+        ...postingPlan.storyFormats,
+        [formatKey]: {
+          ...postingPlan.storyFormats[formatKey],
+          notes: notes
+        }
+      }
+    };
+    setPostingPlan(newPlan);
+    updateField('postingPlan', newPlan);
+  };
+
+  const calculateTotalStories = () => {
+    return Object.values(postingPlan.storyFormats).reduce((total, format) => {
+      if (format.enabled && format.count) {
+        return total + (parseInt(format.count) || 0);
+      }
+      return total;
+    }, 0);
+  };
+
   const addContentPillar = () => {
     if (newPillar.trim()) {
       const updatedPillars = [...contentPillars, newPillar.trim()];
