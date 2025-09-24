@@ -64,9 +64,9 @@ const AdminPortal = () => {
       console.log('Pending users:', userData.filter(u => u.approval_status === 'pending'));
       setUsers(userData);
       
-      // Calculate stats
+      // Calculate stats - Total members should only include approved/active members
       const stats = {
-        totalMembers: userData.length,
+        totalMembers: userData.filter(u => u.approval_status === 'approved' && u.is_active !== false).length,
         pendingMembers: userData.filter(u => u.approval_status === 'pending').length,
         approvedMembers: userData.filter(u => u.approval_status === 'approved').length,
         deniedMembers: userData.filter(u => u.approval_status === 'denied').length
