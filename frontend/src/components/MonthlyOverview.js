@@ -33,13 +33,24 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
       }, notes: "" },
       graphics: { enabled: false, count: "", subcategories: { quotes: false, tips: false, announcements: false, stats: false }, notes: "" },
       reels: { enabled: false, count: "", subcategories: { talkingToCamera: false, voiceover: false, bRoll: false, trendingAudio: false }, notes: "" },
-      stories: { enabled: false, count: "", subcategories: { dailyUpdates: false, polls: false, quizzes: false, behindScenes: false }, notes: "" },
       lives: { enabled: false, count: "", subcategories: { qna: false, interviews: false, workshops: false }, notes: "" },
       signatureSeries: { enabled: false, count: "", subcategories: { weeklySeries: false, podcastClips: false }, notes: "" },
       memes: { enabled: false, count: "", notes: "" },
       ugc: { enabled: false, count: "", subcategories: { clientResults: false, reviews: false }, notes: "" },
       collaborations: { enabled: false, count: "", subcategories: { coCreated: false, collabs: false }, notes: "" },
       ads: { enabled: false, count: "", notes: "" }
+    },
+    storyFormats: {
+      faq: { enabled: false, count: "", notes: "" },
+      tips: { enabled: false, count: "", notes: "" },
+      promo: { enabled: false, count: "", notes: "" },
+      leadMagnet: { enabled: false, count: "", notes: "" },
+      poll: { enabled: false, count: "", notes: "" },
+      behindScenes: { enabled: false, count: "", notes: "" },
+      dayInLife: { enabled: false, count: "", notes: "" },
+      repost: { enabled: false, count: "", notes: "" },
+      memesEntertainment: { enabled: false, count: "", notes: "" },
+      connection: { enabled: false, count: "", notes: "" }
     }
   });
 
