@@ -750,60 +750,6 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
               )}
             </div>
 
-            {/* Stories */}
-            <div className="bg-[#bb9477]/5 rounded-lg p-4 border border-[#bb9477]/20">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-3">
-                  <input
-                    type="checkbox"
-                    checked={postingPlan.formats.stories.enabled}
-                    onChange={(e) => updateFormatEnabled('stories', e.target.checked)}
-                    className="rounded border-[#bb9477] text-[#472816]"
-                  />
-                  <h4 className="font-semibold text-[#472816]">Stories</h4>
-                </div>
-                {postingPlan.formats.stories.enabled && (
-                  <Input
-                    type="number"
-                    value={postingPlan.formats.stories.count}
-                    onChange={(e) => updateFormatCount('stories', e.target.value)}
-                    placeholder="Count"
-                    className="w-20 h-8 text-sm border-[#bb9477]/50"
-                  />
-                )}
-              </div>
-              
-              {postingPlan.formats.stories.enabled && (
-                <>
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {[
-                      { key: 'dailyUpdates', label: 'Daily updates' },
-                      { key: 'polls', label: 'Polls' },
-                      { key: 'quizzes', label: 'Quizzes' },
-                      { key: 'behindScenes', label: 'Behind-the-scenes' }
-                    ].map(({ key, label }) => (
-                      <label key={key} className="flex items-center gap-1 text-sm">
-                        <input
-                          type="checkbox"
-                          checked={postingPlan.formats.stories.subcategories[key]}
-                          onChange={(e) => updateSubcategory('stories', key, e.target.checked)}
-                          className="rounded text-[#472816]"
-                        />
-                        <span className="text-[#3f2d1d]">{label}</span>
-                      </label>
-                    ))}
-                  </div>
-                  <Textarea
-                    value={postingPlan.formats.stories.notes}
-                    onChange={(e) => updateFormatNotes('stories', e.target.value)}
-                    placeholder="Notes & ideas for stories..."
-                    className="text-sm border-[#bb9477]/50 focus:border-[#472816] resize-none"
-                    rows={2}
-                  />
-                </>
-              )}
-            </div>
-
             {/* Lives */}
             <div className="bg-[#bb9477]/5 rounded-lg p-4 border border-[#bb9477]/20">
               <div className="flex items-center justify-between mb-3">
