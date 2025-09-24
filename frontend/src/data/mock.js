@@ -73,7 +73,11 @@ export const mockMonthlyData = {
   metrics: "Reach: 50K+, Engagement Rate: 4%+, Course Sales: 20 units",
   events: "Instagram Live Q&A - Jan 20th, Course Launch - Jan 25th",
   notes: "Focus on educational content this month",
-  revenueGoals: "$15,000 course revenue, $2,000 affiliate income"
+  revenueGoals: "$15,000 course revenue, $2,000 affiliate income",
+  marketingPlan: "Focus on Instagram Reels and Stories, collaborate with 3 micro-influencers, run targeted ads for course launch",
+  salesPlan: "Launch early bird pricing for new course, create urgency with limited-time bonuses, follow up with warm leads via email",
+  contentStrategyLink: "https://www.notion.so/content-strategy-2025",
+  offerFocus: "Free: Ultimate Course Creation Checklist, Paid: Digital Course Mastery Program ($497)"
 };
 
 export const mockAnalytics = {
