@@ -19,6 +19,25 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
   const [cycleCount, setCycleCount] = useState(0);
   const [timeRemaining, setTimeRemaining] = useState(180); // 3 minutes
   const [customAffirmations, setCustomAffirmations] = useState("");
+  
+  // Posting plan state
+  const [postingPlan, setPostingPlan] = useState({
+    totalFeedPosts: "",
+    totalStories: "",
+    formats: {
+      staticPhotos: { enabled: false, count: "", subcategories: { lifestyle: false, product: false, behindScenes: false }, notes: "" },
+      carousels: { enabled: false, count: "", subcategories: { educational: false, stepByStep: false, storytelling: false }, notes: "" },
+      graphics: { enabled: false, count: "", subcategories: { quotes: false, tips: false, announcements: false, stats: false }, notes: "" },
+      reels: { enabled: false, count: "", subcategories: { talkingToCamera: false, voiceover: false, bRoll: false, trendingAudio: false }, notes: "" },
+      stories: { enabled: false, count: "", subcategories: { dailyUpdates: false, polls: false, quizzes: false, behindScenes: false }, notes: "" },
+      lives: { enabled: false, count: "", subcategories: { qna: false, interviews: false, workshops: false }, notes: "" },
+      signatureSeries: { enabled: false, count: "", subcategories: { weeklySeries: false, podcastClips: false }, notes: "" },
+      memes: { enabled: false, count: "", notes: "" },
+      ugc: { enabled: false, count: "", subcategories: { clientResults: false, reviews: false }, notes: "" },
+      collaborations: { enabled: false, count: "", subcategories: { coCreated: false, collabs: false }, notes: "" },
+      ads: { enabled: false, count: "", notes: "" }
+    }
+  });
 
   const currentData = monthlyData[monthKey] || {
     goals: mockMonthlyData.goals,
