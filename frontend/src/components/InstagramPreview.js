@@ -15,44 +15,72 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
 
   // Get all posts from current month and sort chronologically (oldest first)
   const getAllPostsFromMonth = useCallback(() => {
-    const monthKey = `${currentMonth.getFullYear()}-${currentMonth.getMonth()}`;
-    const monthData = monthlyData[monthKey];
+    const monthKey = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}`;
+    const monthData = monthlyData[monthKey] || {};
+    const posts = monthData.posts || {};
+    const drafts = monthData.drafts || {};
     const allPosts = [];
     const allStories = [];
-    
-    if (monthData && monthData.posts) {
-      Object.entries(monthData.posts).forEach(([dateKey, dayPosts]) => {
-        dayPosts.forEach(post => {
-          if (!post.isDraft) { // Only show scheduled posts
-            const postData = {
-              ...post,
-              dateKey,
-              originalDate: dateKey,
-              // Priority: reel cover > main image for preview (as requested)
-              previewImage: post.reelCover?.url || post.image?.url,
-              // Use scheduled date/time for sorting, fallback to dateKey
-              sortDate: new Date(post.scheduledDate || dateKey + 'T' + (post.scheduledTime || '09:00'))
-            };
-            
-            if (post.type === 'Story') {
-              allStories.push(postData);
-            } else if ((post.type === 'Post' || post.type === 'Reel' || post.type === 'Carousel') && 
-                       (post.image?.url || post.reelCover?.url)) {
-              allPosts.push(postData);
-            }
-          }
-        });
+
+    // Get scheduled posts
+    Object.entries(posts).forEach(([dateKey, datePosts]) => {
+      datePosts.forEach(post => {
+        const sortDate = new Date(`${post.scheduledDate || dateKey}T${post.scheduledTime || '09:00'}`);
+        const postData = {
+          ...post,
+          dateKey,
+          sortDate: sortDate.getTime(),
+          previewImage: post.reelCover?.url || post.image?.url || post.storyContent?.[0]?.url || '/api/placeholder/150/150',
+          isDraft: false
+        };
+        
+        if (post.type === 'Story') {
+          allStories.push(postData);
+        } else {
+          allPosts.push(postData);
+        }
       });
-    }
-    
+    });
+
+    // Get draft posts  
+    Object.entries(drafts).forEach(([dateKey, draftPosts]) => {
+      draftPosts.forEach(post => {
+        const sortDate = new Date(`${post.scheduledDate || dateKey}T${post.scheduledTime || '09:00'}`);
+        const postData = {
+          ...post,
+          dateKey,
+          sortDate: sortDate.getTime(),
+          previewImage: post.reelCover?.url || post.image?.url || post.storyContent?.[0]?.url || '/api/placeholder/150/150',
+          isDraft: true
+        };
+        
+        if (post.type === 'Story') {
+          allStories.push(postData);
+        } else {
+          allPosts.push(postData);
+        }
+      });
+    });
+
+    // Apply view filter
+    const filterPosts = (posts) => {
+      switch (viewFilter) {
+        case 'scheduled':
+          return posts.filter(post => !post.isDraft);
+        case 'draft':
+          return posts.filter(post => post.isDraft);
+        default:
+          return posts;
+      }
+    };
+
     // Sort by scheduled date/time in reverse chronological order (newest first)
-    // Fill grid left-to-right, top-to-bottom, with newest posts at top-left
-    const sortedPosts = allPosts.sort((a, b) => b.sortDate - a.sortDate);
-    const sortedStories = allStories.sort((a, b) => b.sortDate - a.sortDate);
+    const sortedPosts = filterPosts(allPosts).sort((a, b) => b.sortDate - a.sortDate);
+    const sortedStories = filterPosts(allStories).sort((a, b) => b.sortDate - a.sortDate);
     
     setStories(sortedStories);
     return sortedPosts;
-  }, [monthlyData, currentMonth]);
+  }, [monthlyData, currentMonth, viewFilter]);
 
   // Update posts when month data changes or triggerRefresh is called
   useEffect(() => {
