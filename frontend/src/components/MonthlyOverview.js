@@ -1034,34 +1034,34 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
           </div>
 
           {/* Total Counter */}
-          <div className="mt-6 bg-gradient-to-r from-[#bb9477]/20 to-[#472816]/20 rounded-lg p-4 border-2 border-[#bb9477]/30">
+          <div className="mt-6 bg-gradient-to-r from-[#bb9477] to-[#472816] rounded-lg p-4 border-2 border-[#bb9477]/30 text-white">
             <div className="text-center">
-              <h3 className="text-lg font-semibold text-[#472816] mb-3">
+              <h3 className="text-lg font-semibold text-white mb-3">
                 Total Planned Content
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-white/60 rounded-lg p-3">
-                  <div className="text-2xl font-bold text-[#472816]">
+                <div className="bg-white/20 rounded-lg p-3">
+                  <div className="text-2xl font-bold text-white">
                     {calculateTotalPosts()}
                   </div>
-                  <p className="text-sm text-[#3f2d1d]/80 font-medium">
+                  <p className="text-sm text-white/80 font-medium">
                     Feed Posts
                   </p>
                 </div>
-                <div className="bg-white/60 rounded-lg p-3">
-                  <div className="text-2xl font-bold text-[#472816]">
+                <div className="bg-white/20 rounded-lg p-3">
+                  <div className="text-2xl font-bold text-white">
                     {calculateTotalStories()}
                   </div>
-                  <p className="text-sm text-[#3f2d1d]/80 font-medium">
+                  <p className="text-sm text-white/80 font-medium">
                     Story Posts
                   </p>
                 </div>
               </div>
-              <div className="mt-3 pt-3 border-t border-[#bb9477]/30">
-                <div className="text-3xl font-bold text-[#472816]">
+              <div className="mt-3 pt-3 border-t border-white/30">
+                <div className="text-3xl font-bold text-white">
                   {calculateTotalPosts() + calculateTotalStories()}
                 </div>
-                <p className="text-sm text-[#3f2d1d]/60">
+                <p className="text-sm text-white/60">
                   total planned content pieces
                 </p>
               </div>
