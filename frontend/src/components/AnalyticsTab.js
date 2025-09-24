@@ -149,49 +149,6 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
   // Melanin Bank brown color variations for each card - MOVED TO TOP
   // Card styles moved outside component
 
-  const MetricCard = ({ title, icon: Icon, value, field, previousValue, showGrowth = false, colorIndex }) => {
-    const growth = calculateGrowth(value, previousValue);
-    const cardStyle = cardStyles[colorIndex];
-    
-    return (
-      <Card className="border-[#bb9477]/30 shadow-lg bg-gradient-to-br text-[#fffaf1]" style={{ background: `linear-gradient(to bottom right, ${cardStyle.from}, ${cardStyle.to})` }}>
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <p className="text-[#fffaf1]/80 text-sm font-medium">{title}</p>
-              <p className="text-3xl font-bold">{value ? (parseInt(value) || 0).toLocaleString() : '0'}</p>
-            </div>
-            <Icon className="w-8 h-8 text-[#fffaf1]/80" />
-          </div>
-          
-          {showGrowth && previousValue !== undefined && previousValue !== "" && (
-            <div className="mb-4">
-              <Badge 
-                variant="secondary" 
-                className="text-xs px-2 py-1 bg-white/20 text-white border-white/30"
-              >
-                <TrendingUp className="w-3 h-3 mr-1" />
-                {growth.percentage}%
-              </Badge>
-            </div>
-          )}
-          
-          <div className="bg-white/90 rounded p-3">
-            <Input
-              key={`analytics-${field}`}
-              id={`analytics-${field}`}
-              type="number"
-              value={value || ""}
-              onChange={(e) => handleInputChange(field, e.target.value)}
-              placeholder="Enter value"
-              className="border-[#bb9477]/50 focus:border-[#472816] w-full text-[#3f2d1d]"
-            />
-          </div>
-        </CardContent>
-      </Card>
-    );
-  };
-
   return (
     <div className="space-y-6">
       {/* Analytics Metrics Grid - 3x3 with Melanin Bank brown variations */}
