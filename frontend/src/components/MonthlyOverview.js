@@ -51,6 +51,16 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
 
   useEffect(() => {
     setContentPillars(currentData.contentPillars || [...defaultContentPillars]);
+    
+    // Load posting plan data
+    if (currentData.postingPlan) {
+      setPostingPlan(currentData.postingPlan);
+    }
+    
+    // Load custom affirmations if saved
+    if (currentData.customAffirmations) {
+      setCustomAffirmations(currentData.customAffirmations);
+    }
   }, [monthKey]);
 
   const updateField = (field, value) => {
