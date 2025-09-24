@@ -683,6 +683,272 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
                 </>
               )}
             </div>
+
+            {/* Stories */}
+            <div className="bg-[#bb9477]/5 rounded-lg p-4 border border-[#bb9477]/20">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    checked={postingPlan.formats.stories.enabled}
+                    onChange={(e) => updateFormatEnabled('stories', e.target.checked)}
+                    className="rounded border-[#bb9477] text-[#472816]"
+                  />
+                  <h4 className="font-semibold text-[#472816]">Stories</h4>
+                </div>
+                {postingPlan.formats.stories.enabled && (
+                  <Input
+                    type="number"
+                    value={postingPlan.formats.stories.count}
+                    onChange={(e) => updateFormatCount('stories', e.target.value)}
+                    placeholder="Count"
+                    className="w-20 h-8 text-sm border-[#bb9477]/50"
+                  />
+                )}
+              </div>
+              
+              {postingPlan.formats.stories.enabled && (
+                <>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {[
+                      { key: 'dailyUpdates', label: 'Daily updates' },
+                      { key: 'polls', label: 'Polls' },
+                      { key: 'quizzes', label: 'Quizzes' },
+                      { key: 'behindScenes', label: 'Behind-the-scenes' }
+                    ].map(({ key, label }) => (
+                      <label key={key} className="flex items-center gap-1 text-sm">
+                        <input
+                          type="checkbox"
+                          checked={postingPlan.formats.stories.subcategories[key]}
+                          onChange={(e) => updateSubcategory('stories', key, e.target.checked)}
+                          className="rounded text-[#472816]"
+                        />
+                        <span className="text-[#3f2d1d]">{label}</span>
+                      </label>
+                    ))}
+                  </div>
+                  <Textarea
+                    value={postingPlan.formats.stories.notes}
+                    onChange={(e) => updateFormatNotes('stories', e.target.value)}
+                    placeholder="Notes & ideas for stories..."
+                    className="text-sm border-[#bb9477]/50 focus:border-[#472816] resize-none"
+                    rows={2}
+                  />
+                </>
+              )}
+            </div>
+
+            {/* Lives */}
+            <div className="bg-[#bb9477]/5 rounded-lg p-4 border border-[#bb9477]/20">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    checked={postingPlan.formats.lives.enabled}
+                    onChange={(e) => updateFormatEnabled('lives', e.target.checked)}
+                    className="rounded border-[#bb9477] text-[#472816]"
+                  />
+                  <h4 className="font-semibold text-[#472816]">Lives</h4>
+                </div>
+                {postingPlan.formats.lives.enabled && (
+                  <Input
+                    type="number"
+                    value={postingPlan.formats.lives.count}
+                    onChange={(e) => updateFormatCount('lives', e.target.value)}
+                    placeholder="Count"
+                    className="w-20 h-8 text-sm border-[#bb9477]/50"
+                  />
+                )}
+              </div>
+              
+              {postingPlan.formats.lives.enabled && (
+                <>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {[
+                      { key: 'qna', label: 'Q&A' },
+                      { key: 'interviews', label: 'Interviews' },
+                      { key: 'workshops', label: 'Workshops' }
+                    ].map(({ key, label }) => (
+                      <label key={key} className="flex items-center gap-1 text-sm">
+                        <input
+                          type="checkbox"
+                          checked={postingPlan.formats.lives.subcategories[key]}
+                          onChange={(e) => updateSubcategory('lives', key, e.target.checked)}
+                          className="rounded text-[#472816]"
+                        />
+                        <span className="text-[#3f2d1d]">{label}</span>
+                      </label>
+                    ))}
+                  </div>
+                  <Textarea
+                    value={postingPlan.formats.lives.notes}
+                    onChange={(e) => updateFormatNotes('lives', e.target.value)}
+                    placeholder="Notes & ideas for lives..."
+                    className="text-sm border-[#bb9477]/50 focus:border-[#472816] resize-none"
+                    rows={2}
+                  />
+                </>
+              )}
+            </div>
+
+            {/* Signature Series */}
+            <div className="bg-[#bb9477]/5 rounded-lg p-4 border border-[#bb9477]/20">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    checked={postingPlan.formats.signatureSeries.enabled}
+                    onChange={(e) => updateFormatEnabled('signatureSeries', e.target.checked)}
+                    className="rounded border-[#bb9477] text-[#472816]"
+                  />
+                  <h4 className="font-semibold text-[#472816]">Signature Series</h4>
+                </div>
+                {postingPlan.formats.signatureSeries.enabled && (
+                  <Input
+                    type="number"
+                    value={postingPlan.formats.signatureSeries.count}
+                    onChange={(e) => updateFormatCount('signatureSeries', e.target.value)}
+                    placeholder="Count"
+                    className="w-20 h-8 text-sm border-[#bb9477]/50"
+                  />
+                )}
+              </div>
+              
+              {postingPlan.formats.signatureSeries.enabled && (
+                <>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {[
+                      { key: 'weeklySeries', label: 'Weekly series' },
+                      { key: 'podcastClips', label: 'Podcast clips' }
+                    ].map(({ key, label }) => (
+                      <label key={key} className="flex items-center gap-1 text-sm">
+                        <input
+                          type="checkbox"
+                          checked={postingPlan.formats.signatureSeries.subcategories[key]}
+                          onChange={(e) => updateSubcategory('signatureSeries', key, e.target.checked)}
+                          className="rounded text-[#472816]"
+                        />
+                        <span className="text-[#3f2d1d]">{label}</span>
+                      </label>
+                    ))}
+                  </div>
+                  <Textarea
+                    value={postingPlan.formats.signatureSeries.notes}
+                    onChange={(e) => updateFormatNotes('signatureSeries', e.target.value)}
+                    placeholder="Notes & ideas for signature series..."
+                    className="text-sm border-[#bb9477]/50 focus:border-[#472816] resize-none"
+                    rows={2}
+                  />
+                </>
+              )}
+            </div>
+
+            {/* Remaining formats without subcategories */}
+            {[
+              { key: 'memes', label: 'Memes / Relatable Content' },
+              { key: 'ads', label: 'Ads / Promo Graphics' }
+            ].map(({ key, label }) => (
+              <div key={key} className="bg-[#bb9477]/5 rounded-lg p-4 border border-[#bb9477]/20">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      checked={postingPlan.formats[key].enabled}
+                      onChange={(e) => updateFormatEnabled(key, e.target.checked)}
+                      className="rounded border-[#bb9477] text-[#472816]"
+                    />
+                    <h4 className="font-semibold text-[#472816]">{label}</h4>
+                  </div>
+                  {postingPlan.formats[key].enabled && (
+                    <Input
+                      type="number"
+                      value={postingPlan.formats[key].count}
+                      onChange={(e) => updateFormatCount(key, e.target.value)}
+                      placeholder="Count"
+                      className="w-20 h-8 text-sm border-[#bb9477]/50"
+                    />
+                  )}
+                </div>
+                
+                {postingPlan.formats[key].enabled && (
+                  <Textarea
+                    value={postingPlan.formats[key].notes}
+                    onChange={(e) => updateFormatNotes(key, e.target.value)}
+                    placeholder={`Notes & ideas for ${label.toLowerCase()}...`}
+                    className="text-sm border-[#bb9477]/50 focus:border-[#472816] resize-none"
+                    rows={2}
+                  />
+                )}
+              </div>
+            ))}
+
+            {/* UGC and Collaborations with subcategories */}
+            {[
+              { 
+                key: 'ugc', 
+                label: 'UGC / Testimonials', 
+                subcategories: [
+                  { key: 'clientResults', label: 'Client results' },
+                  { key: 'reviews', label: 'Reviews' }
+                ]
+              },
+              { 
+                key: 'collaborations', 
+                label: 'Collaborations', 
+                subcategories: [
+                  { key: 'coCreated', label: 'Co-created posts' },
+                  { key: 'collabs', label: 'Collabs with other accounts' }
+                ]
+              }
+            ].map(({ key, label, subcategories }) => (
+              <div key={key} className="bg-[#bb9477]/5 rounded-lg p-4 border border-[#bb9477]/20">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      checked={postingPlan.formats[key].enabled}
+                      onChange={(e) => updateFormatEnabled(key, e.target.checked)}
+                      className="rounded border-[#bb9477] text-[#472816]"
+                    />
+                    <h4 className="font-semibold text-[#472816]">{label}</h4>
+                  </div>
+                  {postingPlan.formats[key].enabled && (
+                    <Input
+                      type="number"
+                      value={postingPlan.formats[key].count}
+                      onChange={(e) => updateFormatCount(key, e.target.value)}
+                      placeholder="Count"
+                      className="w-20 h-8 text-sm border-[#bb9477]/50"
+                    />
+                  )}
+                </div>
+                
+                {postingPlan.formats[key].enabled && (
+                  <>
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {subcategories.map(({ key: subKey, label: subLabel }) => (
+                        <label key={subKey} className="flex items-center gap-1 text-sm">
+                          <input
+                            type="checkbox"
+                            checked={postingPlan.formats[key].subcategories[subKey]}
+                            onChange={(e) => updateSubcategory(key, subKey, e.target.checked)}
+                            className="rounded text-[#472816]"
+                          />
+                          <span className="text-[#3f2d1d]">{subLabel}</span>
+                        </label>
+                      ))}
+                    </div>
+                    <Textarea
+                      value={postingPlan.formats[key].notes}
+                      onChange={(e) => updateFormatNotes(key, e.target.value)}
+                      placeholder={`Notes & ideas for ${label.toLowerCase()}...`}
+                      className="text-sm border-[#bb9477]/50 focus:border-[#472816] resize-none"
+                      rows={2}
+                    />
+                  </>
+                )}
+              </div>
+            ))}
           </div>
 
           {/* Total Counter */}
