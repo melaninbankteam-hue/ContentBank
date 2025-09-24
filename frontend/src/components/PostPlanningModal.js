@@ -372,6 +372,18 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
     });
   };
 
+  const removeCarouselItem = async (index) => {
+    const itemToRemove = carouselImages[index];
+    if (itemToRemove.public_id) {
+      await deleteFromCloudinary(itemToRemove.public_id);
+    }
+    setCarouselImages(prev => prev.filter((_, i) => i !== index));
+    toast({
+      title: "Item Removed",
+      description: "Carousel item has been deleted.",
+    });
+  };
+
   const handleSavePost = () => {
     if (!formData.type || !formData.category) {
       toast({
