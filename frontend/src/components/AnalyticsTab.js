@@ -146,21 +146,8 @@ const AnalyticsTab = ({ monthKey, monthlyData, setMonthlyData }) => {
     }, 500); // Reduced to 500ms for faster saving
   };
 
-  // Melanin Bank brown color variations for each card
-  const cardStyles = [
-    // Row 1
-    { from: '#5D4037', to: '#6D4C41' }, // Followers - Deep brown
-    { from: '#8D6E63', to: '#A1887F' }, // Total Views - Medium brown  
-    { from: '#8A6F5E', to: '#9E7B68' }, // Non-Follower Views - Warm brown
-    // Row 2
-    { from: '#7B5E57', to: '#8D6E63' }, // Reach - Rich brown
-    { from: '#6F4E3F', to: '#7D5A4B' }, // Profile Visits - Dark brown
-    { from: '#9B7B6C', to: '#A68B7B' }, // Website Clicks - Light brown
-    // Row 3
-    { from: '#6B4F44', to: '#785A4F' }, // Email Subscribers - Mocha brown
-    { from: '#7A5D52', to: '#8A6B60' }, // DM Messages - Coffee brown
-    { from: '#8B6F5E', to: '#9D7B6A' }  // Total Interactions - Caramel brown
-  ];
+  // Melanin Bank brown color variations for each card - MOVED TO TOP
+  // Card styles moved outside component
 
   const MetricCard = ({ title, icon: Icon, value, field, previousValue, showGrowth = false, colorIndex }) => {
     const growth = calculateGrowth(value, previousValue);
