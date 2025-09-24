@@ -130,6 +130,89 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
 
   return (
     <div className="space-y-6">
+      {/* Content Regulation Section */}
+      <Card className="border-[#bb9477]/30 shadow-lg bg-gradient-to-br from-[#bb9477]/10 to-[#472816]/10">
+        <CardHeader className="bg-gradient-to-r from-[#bb9477] to-[#472816] text-[#fffaf1] rounded-t-lg">
+          <CardTitle className="flex items-center gap-2">
+            <Sparkles className="w-5 h-5" />
+            Content Regulation
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-6">
+          <div className="space-y-4">
+            <div className="text-center">
+              <h3 className="text-lg font-bold text-[#472816] mb-2">
+                "Regulate before you create"
+              </h3>
+              <div className="text-[#3f2d1d] space-y-3 max-w-2xl mx-auto">
+                <p>
+                  Remember — a grounded nervous system is the key to creating aligned content, 
+                  breaking through success blocks, and putting out the energy your dream audience 
+                  is waiting to connect with.
+                </p>
+                <p>
+                  Before you start planning, take a moment to reset. Do a quick 3-minute breathwork 
+                  exercise to regulate and activate your energy so you can show up fully aligned.
+                </p>
+                <p>
+                  Tap the button below to begin your breathwork session. While you breathe, gently 
+                  tap your collarbone or wrist and repeat these affirmations (or add your own to 
+                  anchor the energy you want to create):
+                </p>
+              </div>
+            </div>
+            
+            {/* Affirmations */}
+            <div className="bg-white/60 rounded-lg p-4 border border-[#bb9477]/30">
+              <div className="italic text-[#472816] text-sm space-y-1 text-center">
+                <p>"My content makes me bank."</p>
+                <p>"I know exactly what I need to post to attract my dream clients."</p>
+                <p>"It's safe for me to be seen and have a successful business."</p>
+                <p>"It's fun and easy for me to plan my content."</p>
+                <p>"Everything I desire is unfolding for me in divine timing."</p>
+              </div>
+            </div>
+
+            {/* Breathwork Session */}
+            {!breathworkActive ? (
+              <div className="text-center">
+                <Button
+                  onClick={startBreathwork}
+                  className="bg-gradient-to-r from-[#bb9477] to-[#472816] hover:from-[#a67c5a] hover:to-[#3f2d1d] text-white text-lg px-8 py-3 rounded-full shadow-lg transform transition hover:scale-105"
+                >
+                  <Play className="w-5 h-5 mr-2" />
+                  Begin 3-Minute Breathwork Session
+                </Button>
+              </div>
+            ) : (
+              <div className="text-center space-y-4">
+                <div className="bg-white/80 rounded-lg p-6 border-2 border-[#bb9477]">
+                  <div className="text-6xl font-bold text-[#472816] mb-2">
+                    {breathCount}
+                  </div>
+                  <div className="text-xl font-semibold text-[#3f2d1d] mb-4">
+                    {getBreathInstruction()}
+                  </div>
+                  <div className="flex justify-center items-center gap-4 text-sm text-[#3f2d1d]">
+                    <span>Cycle: {cycleCount}</span>
+                    <span>•</span>
+                    <span>Time: {Math.floor(timeRemaining / 60)}:{(timeRemaining % 60).toString().padStart(2, '0')}</span>
+                  </div>
+                </div>
+                <Button
+                  onClick={stopBreathwork}
+                  variant="outline"
+                  className="border-[#bb9477] text-[#472816] hover:bg-[#bb9477]/10"
+                >
+                  <Pause className="w-4 h-4 mr-2" />
+                  End Session
+                </Button>
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Content Pillars */}
       <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
         <CardHeader className="bg-gradient-to-r from-[#472816] to-[#3f2d1d] text-[#fffaf1] rounded-t-lg">
