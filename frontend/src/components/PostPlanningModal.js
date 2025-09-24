@@ -496,7 +496,7 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
-                    {contentCategories.map(category => (
+                    {getCategories(formData.type).map(category => (
                       <SelectItem key={category} value={category}>{category}</SelectItem>
                     ))}
                   </SelectContent>
