@@ -26,7 +26,11 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
     totalStories: "",
     formats: {
       staticPhotos: { enabled: false, count: "", subcategories: { lifestyle: false, product: false, behindScenes: false }, notes: "" },
-      carousels: { enabled: false, count: "", subcategories: { educational: false, stepByStep: false, storytelling: false }, notes: "" },
+      carousels: { enabled: false, count: "", subcategories: { 
+        educational: false, storytelling: false, photoDump: false, tipsList: false, 
+        processBts: false, caseStudy: false, mythVsTruth: false, quoteStack: false,
+        infographic: false, promoLaunch: false, comparison: false, visionBoard: false 
+      }, notes: "" },
       graphics: { enabled: false, count: "", subcategories: { quotes: false, tips: false, announcements: false, stats: false }, notes: "" },
       reels: { enabled: false, count: "", subcategories: { talkingToCamera: false, voiceover: false, bRoll: false, trendingAudio: false }, notes: "" },
       stories: { enabled: false, count: "", subcategories: { dailyUpdates: false, polls: false, quizzes: false, behindScenes: false }, notes: "" },
