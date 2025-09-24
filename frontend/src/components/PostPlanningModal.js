@@ -433,6 +433,7 @@ const PostPlanningModal = ({ isOpen, onClose, selectedDate, currentMonth, monthl
         ...formData,
         isDraft: isDraft,
         carouselImages: formData.type === 'Carousel' ? carouselImages : undefined,
+        storyContent: formData.type === 'Story' ? storyContent : undefined,
         createdAt: new Date().toISOString()
       };
       
