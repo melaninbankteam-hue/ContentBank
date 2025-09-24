@@ -289,11 +289,41 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
 
       {/* Main Feed Preview */}
       <Card className="border-[#bb9477]/30 shadow-lg bg-white max-w-4xl mx-auto">
-        <CardHeader className="bg-gradient-to-r from-[#472816] to-[#3f2d1d] text-[#fffaf1] rounded-t-lg">
+        <CardHeader className="bg-gradient-to-r from-[#bb9477] to-[#472816] text-[#fffaf1] rounded-t-lg">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-xl md:text-2xl">
-              Instagram Feed Preview - {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+            <CardTitle className="flex items-center gap-2">
+              <Instagram className="w-5 h-5" />
+              Instagram Feed Preview ({posts.length}/30)
             </CardTitle>
+            
+            {/* View Filter Buttons */}
+            <div className="flex gap-2">
+              <Button
+                variant={viewFilter === 'all' ? 'secondary' : 'ghost'}
+                size="sm"
+                onClick={() => setViewFilter('all')}
+                className={`text-xs ${viewFilter === 'all' ? 'bg-white text-[#472816]' : 'text-white hover:bg-white/20'}`}
+              >
+                All Posts
+              </Button>
+              <Button
+                variant={viewFilter === 'scheduled' ? 'secondary' : 'ghost'}
+                size="sm"
+                onClick={() => setViewFilter('scheduled')}
+                className={`text-xs ${viewFilter === 'scheduled' ? 'bg-white text-[#472816]' : 'text-white hover:bg-white/20'}`}
+              >
+                Scheduled
+              </Button>
+              <Button
+                variant={viewFilter === 'draft' ? 'secondary' : 'ghost'}
+                size="sm"
+                onClick={() => setViewFilter('draft')}
+                className={`text-xs ${viewFilter === 'draft' ? 'bg-white text-[#472816]' : 'text-white hover:bg-white/20'}`}
+              >
+                Drafts
+              </Button>
+            </div>
+            
             <div className="flex gap-2">
               <Button
                 variant={swapMode ? "default" : "secondary"}
