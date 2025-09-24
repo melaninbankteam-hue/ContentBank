@@ -14,10 +14,11 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
   
   // Breathwork session state
   const [breathworkActive, setBreathworkActive] = useState(false);
-  const [breathPhase, setBreathPhase] = useState('inhale'); // inhale, hold, exhale, hold2
+  const [breathPhase, setBreathPhase] = useState('inhale'); // inhale, hold1, exhale, hold2
   const [breathCount, setBreathCount] = useState(4);
   const [cycleCount, setCycleCount] = useState(0);
   const [timeRemaining, setTimeRemaining] = useState(180); // 3 minutes
+  const [customAffirmations, setCustomAffirmations] = useState("");
 
   const currentData = monthlyData[monthKey] || {
     goals: mockMonthlyData.goals,
