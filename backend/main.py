@@ -257,6 +257,52 @@ async def deny_user(user_id: str, current_user: dict = Depends(get_current_user)
             detail="Failed to deny user"
         )
 
+@api_router.delete("/admin/users/{user_id}", response_model=dict)
+async def delete_user(user_id: str, current_user: dict = Depends(get_current_user)):
+    # Check admin permissions
+    if not current_user.get("is_admin", False):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin access required"
+        )
+    
+    # Get user to delete
+    user = await find_user_by_id(user_id)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    
+    # Prevent admin from deleting themselves
+    if user_id == current_user["user_id"]:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Cannot delete your own admin account"
+        )
+    
+    # Delete user from database
+    try:
+        from database import db
+        result = await db.users.delete_one({"id": user_id})
+        
+        if result.deleted_count > 0:
+            return {
+                "message": "User deleted successfully",
+                "deleted_user": user["email"]
+            }
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Failed to delete user"
+            )
+    except Exception as e:
+        logger.error(f"Error deleting user: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to delete user"
+        )
+
 @api_router.patch("/admin/users/{user_id}/suspend", response_model=dict)
 async def suspend_user(user_id: str, current_user: dict = Depends(get_current_user)):
     # Check if user is admin
