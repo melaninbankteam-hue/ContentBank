@@ -345,19 +345,15 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
                     {/* Hover overlay with post info */}
                     <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 rounded flex items-center justify-center opacity-0 group-hover:opacity-100">
                       <div className="text-white text-center p-2">
-                        <div className="flex items-center gap-4 text-sm font-medium mb-2">
-                          <div className="flex items-center gap-1">
-                            <Heart className="w-4 h-4 fill-white" />
-                            <span>234</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <MessageCircle className="w-4 h-4 fill-white" />
-                            <span>12</span>
-                          </div>
-                        </div>
                         <div className="text-xs bg-black bg-opacity-50 rounded px-2 py-1">
-                          📅 {post.scheduledDate ? new Date(post.scheduledDate).toLocaleDateString() : 'Not scheduled'}
-                          {post.scheduledTime && <div>⏰ {post.scheduledTime}</div>}
+                          {post.isDraft ? (
+                            <span className="text-yellow-300 font-medium">📝 DRAFT</span>
+                          ) : (
+                            <>
+                              📅 {post.scheduledDate ? new Date(post.scheduledDate).toLocaleDateString() : 'Not scheduled'}
+                              {post.scheduledTime && <div>⏰ {post.scheduledTime}</div>}
+                            </>
+                          )}
                         </div>
                       </div>
                     </div>
