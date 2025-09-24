@@ -67,9 +67,23 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
   useEffect(() => {
     setContentPillars(currentData.contentPillars || [...defaultContentPillars]);
     
-    // Load posting plan data
+    // Load posting plan data with proper defaults
     if (currentData.postingPlan) {
-      setPostingPlan(currentData.postingPlan);
+      setPostingPlan({
+        ...currentData.postingPlan,
+        storyFormats: currentData.postingPlan.storyFormats || {
+          faq: { enabled: false, count: "", notes: "" },
+          tips: { enabled: false, count: "", notes: "" },
+          promo: { enabled: false, count: "", notes: "" },
+          leadMagnet: { enabled: false, count: "", notes: "" },
+          poll: { enabled: false, count: "", notes: "" },
+          behindScenes: { enabled: false, count: "", notes: "" },
+          dayInLife: { enabled: false, count: "", notes: "" },
+          repost: { enabled: false, count: "", notes: "" },
+          memesEntertainment: { enabled: false, count: "", notes: "" },
+          connection: { enabled: false, count: "", notes: "" }
+        }
+      });
     }
     
     // Load custom affirmations if saved
