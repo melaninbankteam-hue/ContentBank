@@ -35,6 +35,20 @@ const AdminPortal = () => {
 
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
+  // Filter users based on active filter
+  const getFilteredUsers = () => {
+    switch (activeFilter) {
+      case 'pending':
+        return users.filter(u => u.approval_status === 'pending');
+      case 'approved':
+        return users.filter(u => u.approval_status === 'approved');
+      case 'denied':
+        return users.filter(u => u.approval_status === 'denied');
+      default:
+        return users;
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
     checkHealthStatus();
