@@ -264,7 +264,7 @@ const AdminPortal = () => {
             </CardContent>
           </Card>
           
-          <Card className="border-[#bb9477]/30">
+          <Card className="border-[#bb9477]/30 cursor-pointer hover:bg-[#bb9477]/5 transition-colors" onClick={() => setActiveFilter('pending')}>
             <CardContent className="p-4">
               <div className="flex items-center gap-2">
                 <Clock className="w-5 h-5 text-yellow-600" />
@@ -276,7 +276,7 @@ const AdminPortal = () => {
             </CardContent>
           </Card>
           
-          <Card className="border-[#bb9477]/30">
+          <Card className="border-[#bb9477]/30 cursor-pointer hover:bg-[#bb9477]/5 transition-colors" onClick={() => setActiveFilter('approved')}>
             <CardContent className="p-4">
               <div className="flex items-center gap-2">
                 <UserCheck className="w-5 h-5 text-green-600" />
@@ -288,7 +288,7 @@ const AdminPortal = () => {
             </CardContent>
           </Card>
           
-          <Card className="border-[#bb9477]/30">
+          <Card className="border-[#bb9477]/30 cursor-pointer hover:bg-[#bb9477]/5 transition-colors" onClick={() => setActiveFilter('denied')}>
             <CardContent className="p-4">
               <div className="flex items-center gap-2">
                 <UserX className="w-5 h-5 text-red-600" />
