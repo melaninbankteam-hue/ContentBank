@@ -552,20 +552,29 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
               
               {postingPlan.formats.carousels.enabled && (
                 <>
-                  <div className="flex flex-wrap gap-2 mb-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
                     {[
-                      { key: 'educational', label: 'Educational' },
-                      { key: 'stepByStep', label: 'Step-by-step' },
-                      { key: 'storytelling', label: 'Storytelling' }
+                      { key: 'educational', label: 'Educational / How-To – step-by-step guides, frameworks, tutorials' },
+                      { key: 'storytelling', label: 'Storytelling / Journey – personal story, client case studies, before/after' },
+                      { key: 'photoDump', label: 'Photo Dump / Lifestyle – casual behind-the-scenes, event recaps, authentic moments' },
+                      { key: 'tipsList', label: 'Tips / Lists – "5 Ways To…", "3 Mistakes To Avoid", quick hacks' },
+                      { key: 'processBts', label: 'Process / Behind-the-Scenes – how you work, creative process, product creation' },
+                      { key: 'caseStudy', label: 'Case Study / Proof – results, testimonials, transformations' },
+                      { key: 'mythVsTruth', label: 'Myth vs. Truth – debunking industry misconceptions' },
+                      { key: 'quoteStack', label: 'Quote Stack – multiple motivational or thought-leader quotes in one swipe' },
+                      { key: 'infographic', label: 'Infographic / Data – stats, charts, visual breakdowns' },
+                      { key: 'promoLaunch', label: 'Promo / Launch – highlight your offer, event, or announcement in swipes' },
+                      { key: 'comparison', label: 'Comparison / Before & After – side-by-sides or "then vs. now" moments' },
+                      { key: 'visionBoard', label: 'Vision / Manifestation Boards – inspiration carousels to attract dream clients' }
                     ].map(({ key, label }) => (
-                      <label key={key} className="flex items-center gap-1 text-sm">
+                      <label key={key} className="flex items-start gap-2 text-xs">
                         <input
                           type="checkbox"
                           checked={postingPlan.formats.carousels.subcategories[key]}
                           onChange={(e) => updateSubcategory('carousels', key, e.target.checked)}
-                          className="rounded text-[#472816]"
+                          className="rounded text-[#472816] mt-1 flex-shrink-0"
                         />
-                        <span className="text-[#3f2d1d]">{label}</span>
+                        <span className="text-[#3f2d1d] leading-tight">{label}</span>
                       </label>
                     ))}
                   </div>
