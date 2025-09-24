@@ -182,12 +182,13 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
   };
 
   const updateStoryFormatEnabled = (formatKey, enabled) => {
+    const currentFormats = postingPlan.storyFormats || {};
     const newPlan = {
       ...postingPlan,
       storyFormats: {
-        ...postingPlan.storyFormats,
+        ...currentFormats,
         [formatKey]: {
-          ...postingPlan.storyFormats[formatKey],
+          ...(currentFormats[formatKey] || {}),
           enabled: enabled
         }
       }
@@ -197,12 +198,13 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
   };
 
   const updateStoryFormatCount = (formatKey, count) => {
+    const currentFormats = postingPlan.storyFormats || {};
     const newPlan = {
       ...postingPlan,
       storyFormats: {
-        ...postingPlan.storyFormats,
+        ...currentFormats,
         [formatKey]: {
-          ...postingPlan.storyFormats[formatKey],
+          ...(currentFormats[formatKey] || {}),
           count: count
         }
       }
@@ -212,12 +214,13 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
   };
 
   const updateStoryFormatNotes = (formatKey, notes) => {
+    const currentFormats = postingPlan.storyFormats || {};
     const newPlan = {
       ...postingPlan,
       storyFormats: {
-        ...postingPlan.storyFormats,
+        ...currentFormats,
         [formatKey]: {
-          ...postingPlan.storyFormats[formatKey],
+          ...(currentFormats[formatKey] || {}),
           notes: notes
         }
       }
@@ -227,8 +230,9 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
   };
 
   const calculateTotalStories = () => {
+    if (!postingPlan.storyFormats) return 0;
     return Object.values(postingPlan.storyFormats).reduce((total, format) => {
-      if (format.enabled && format.count) {
+      if (format?.enabled && format?.count) {
         return total + (parseInt(format.count) || 0);
       }
       return total;
