@@ -1155,6 +1155,66 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
             />
           </CardContent>
         </Card>
+
+        <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
+          <CardHeader className="bg-[#bb9477] text-[#3f2d1d] rounded-t-lg">
+            <CardTitle className="text-base md:text-lg">Marketing Plan</CardTitle>
+          </CardHeader>
+          <CardContent className="p-4 md:p-6">
+            <Textarea
+              value={currentData.marketingPlan}
+              onChange={(e) => updateField('marketingPlan', e.target.value)}
+              placeholder="Outline your marketing strategies and tactics for this month..."
+              className="min-h-24 md:min-h-32 border-[#bb9477]/50 focus:border-[#472816] resize-none text-sm"
+            />
+          </CardContent>
+        </Card>
+
+        <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
+          <CardHeader className="bg-[#bb9477] text-[#3f2d1d] rounded-t-lg">
+            <CardTitle className="text-base md:text-lg">Sales Plan</CardTitle>
+          </CardHeader>
+          <CardContent className="p-4 md:p-6">
+            <Textarea
+              value={currentData.salesPlan}
+              onChange={(e) => updateField('salesPlan', e.target.value)}
+              placeholder="Detail your sales objectives and action steps..."
+              className="min-h-24 md:min-h-32 border-[#bb9477]/50 focus:border-[#472816] resize-none text-sm"
+            />
+          </CardContent>
+        </Card>
+
+        <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
+          <CardHeader className="bg-[#bb9477] text-[#3f2d1d] rounded-t-lg">
+            <CardTitle className="text-base md:text-lg">Content Strategy Planner Link</CardTitle>
+          </CardHeader>
+          <CardContent className="p-4 md:p-6">
+            <Input
+              value={currentData.contentStrategyLink}
+              onChange={(e) => updateField('contentStrategyLink', e.target.value)}
+              placeholder="https://your-content-strategy-guide.com"
+              className="border-[#bb9477]/50 focus:border-[#472816] text-sm"
+              type="url"
+            />
+            <p className="text-xs text-[#3f2d1d]/60 mt-2">
+              Link to your content strategy guide or document
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
+          <CardHeader className="bg-[#bb9477] text-[#3f2d1d] rounded-t-lg">
+            <CardTitle className="text-base md:text-lg">Free and Paid Offer Focus</CardTitle>
+          </CardHeader>
+          <CardContent className="p-4 md:p-6">
+            <Textarea
+              value={currentData.offerFocus}
+              onChange={(e) => updateField('offerFocus', e.target.value)}
+              placeholder="What free lead magnets and paid offers will you promote this month?"
+              className="min-h-24 md:min-h-32 border-[#bb9477]/50 focus:border-[#472816] resize-none text-sm"
+            />
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
