@@ -998,7 +998,7 @@ const MonthlyOverview = ({ monthKey, monthlyData, setMonthlyData }) => {
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {[
+                {postingPlan.storyFormats && [
                   { key: 'faq', label: 'FAQ' },
                   { key: 'tips', label: 'Tips' },
                   { key: 'promo', label: 'Promo' },
