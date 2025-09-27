@@ -125,6 +125,7 @@ const ContentCalendar = ({ currentMonth, monthlyData, setMonthlyData, onPostUpda
     // Empty cells for days before the first day of the month
     for (let i = 0; i < firstDay; i++) {
       days.push(<div key={`empty-${i}`} className="h-32"></div>);
+      )
     }
 
     // Days of the month
