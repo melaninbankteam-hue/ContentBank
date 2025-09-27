@@ -13,53 +13,73 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
   const [stories, setStories] = useState([]);
   const [viewFilter, setViewFilter] = useState('all'); // all, scheduled, draft
 
-  // Get all posts from current month and sort chronologically (oldest first)
+  // Get all posts from current month and sort chronologically
   const getAllPostsFromMonth = useCallback(() => {
-    const monthKey = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}`;
+    console.log('Getting posts for month:', currentMonth);
+    console.log('Monthly data:', monthlyData);
+    
+    const monthKey = `${currentMonth.getFullYear()}-${currentMonth.getMonth()}`;
+    console.log('Month key:', monthKey);
+    
     const monthData = monthlyData[monthKey] || {};
+    console.log('Month data:', monthData);
+    
     const posts = monthData.posts || {};
     const drafts = monthData.drafts || {};
+    console.log('Posts:', posts);
+    console.log('Drafts:', drafts);
+    
     const allPosts = [];
     const allStories = [];
 
     // Get scheduled posts
     Object.entries(posts).forEach(([dateKey, datePosts]) => {
-      datePosts.forEach(post => {
-        const sortDate = new Date(`${post.scheduledDate || dateKey}T${post.scheduledTime || '09:00'}`);
-        const postData = {
-          ...post,
-          dateKey,
-          sortDate: sortDate.getTime(),
-          previewImage: post.reelCover?.url || post.image?.url || post.storyContent?.[0]?.url || '/api/placeholder/150/150',
-          isDraft: false
-        };
-        
-        if (post.type === 'Story') {
-          allStories.push(postData);
-        } else {
-          allPosts.push(postData);
-        }
-      });
+      console.log(`Processing date ${dateKey}:`, datePosts);
+      
+      if (Array.isArray(datePosts)) {
+        datePosts.forEach((post, index) => {
+          const sortDate = new Date(`${post.scheduledDate || dateKey}T${post.scheduledTime || '09:00'}`);
+          const postData = {
+            ...post,
+            dateKey,
+            sortDate: sortDate.getTime(),
+            previewImage: post.reelCover?.url || post.image?.url || `https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=400&fit=crop&crop=center`,
+            isDraft: false,
+            displayId: `${dateKey}-${index}`
+          };
+          
+          console.log('Created post data:', postData);
+          
+          if (post.type === 'Story') {
+            allStories.push(postData);
+          } else {
+            allPosts.push(postData);
+          }
+        });
+      }
     });
 
     // Get draft posts  
     Object.entries(drafts).forEach(([dateKey, draftPosts]) => {
-      draftPosts.forEach(post => {
-        const sortDate = new Date(`${post.scheduledDate || dateKey}T${post.scheduledTime || '09:00'}`);
-        const postData = {
-          ...post,
-          dateKey,
-          sortDate: sortDate.getTime(),
-          previewImage: post.reelCover?.url || post.image?.url || post.storyContent?.[0]?.url || '/api/placeholder/150/150',
-          isDraft: true
-        };
-        
-        if (post.type === 'Story') {
-          allStories.push(postData);
-        } else {
-          allPosts.push(postData);
-        }
-      });
+      if (Array.isArray(draftPosts)) {
+        draftPosts.forEach((post, index) => {
+          const sortDate = new Date(`${post.scheduledDate || dateKey}T${post.scheduledTime || '09:00'}`);
+          const postData = {
+            ...post,
+            dateKey,
+            sortDate: sortDate.getTime(),
+            previewImage: post.reelCover?.url || post.image?.url || `https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=400&fit=crop&crop=center`,
+            isDraft: true,
+            displayId: `draft-${dateKey}-${index}`
+          };
+          
+          if (post.type === 'Story') {
+            allStories.push(postData);
+          } else {
+            allPosts.push(postData);
+          }
+        });
+      }
     });
 
     // Apply view filter
@@ -74,9 +94,12 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
       }
     };
 
-    // Sort by scheduled date/time in reverse chronological order (newest first)
+    // Sort by scheduled date/time - newest first (reverse chronological)
     const sortedPosts = filterPosts(allPosts).sort((a, b) => b.sortDate - a.sortDate);
     const sortedStories = filterPosts(allStories).sort((a, b) => b.sortDate - a.sortDate);
+    
+    console.log('Final sorted posts:', sortedPosts);
+    console.log('Final sorted stories:', sortedStories);
     
     setStories(sortedStories);
     return sortedPosts;
@@ -84,15 +107,10 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
 
   // Update posts when month data changes or triggerRefresh is called
   useEffect(() => {
+    console.log('Effect triggered - updating posts');
     const sortedPosts = getAllPostsFromMonth();
     setPosts(sortedPosts);
   }, [getAllPostsFromMonth, triggerRefresh]);
-
-  // Auto-refresh effect - listen for content changes
-  useEffect(() => {
-    const sortedPosts = getAllPostsFromMonth();
-    setPosts(sortedPosts);
-  }, [monthlyData, currentMonth, getAllPostsFromMonth]);
 
   // Create grid posts array (30 slots)
   const gridPosts = [...posts];
@@ -188,7 +206,7 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
   const updatePostPositions = (newPosts) => {
     // This would update the preview positions in the backend/localStorage
     // For now, we just update the local state
-    // In a full implementation, you'd sync this with your data source
+    console.log('Updating post positions:', newPosts);
   };
 
   const updateCalendarWithNewOrder = (reorderedPosts) => {
@@ -239,35 +257,65 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
     });
   };
 
+  // Calculate stats
+  const scheduledPosts = posts.filter(p => !p.isDraft);
+  const draftPosts = posts.filter(p => p.isDraft);
+  const reelCount = posts.filter(p => p.type === 'Reel').length;
+  const carouselCount = posts.filter(p => p.type === 'Carousel').length;
+  const availableSlots = 30 - posts.length;
+
   return (
     <div className="space-y-6">
+      {/* Preview Statistics */}
+      <Card className="border-[#bb9477]/30 shadow-lg bg-white/90 backdrop-blur-sm">
+        <CardContent className="p-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            <div>
+              <div className="text-2xl font-bold text-[#472816]">{scheduledPosts.length}</div>
+              <div className="text-sm text-[#3f2d1d]">Scheduled Posts</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-[#bb9477]">{reelCount}</div>
+              <div className="text-sm text-[#3f2d1d]">Reels</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-[#3f2d1d]">{carouselCount}</div>
+              <div className="text-sm text-[#3f2d1d]">Carousels</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-green-600">{availableSlots}</div>
+              <div className="text-sm text-[#3f2d1d]">Available Spots</div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Story Preview Section */}
       <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
         <CardHeader className="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-t-lg">
           <CardTitle className="flex items-center gap-2">
             <div className="w-4 h-4 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500"></div>
-            Story Preview ({stories.length}/30)
+            Story Preview ({stories.length})
           </CardTitle>
         </CardHeader>
         <CardContent className="p-4">
           {stories.length > 0 ? (
             <div className="flex gap-2 overflow-x-auto pb-2">
               {stories.slice(0, 10).map((story, index) => (
-                <div key={index} className="flex-shrink-0">
+                <div key={story.displayId || index} className="flex-shrink-0">
                   <div 
                     className="w-16 h-28 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl p-0.5 cursor-pointer hover:scale-105 transition-transform"
                     onClick={() => handleStoryClick(index)}
                   >
                     <div className="w-full h-full bg-white rounded-xl flex items-center justify-center overflow-hidden">
-                      {story.previewImage ? (
-                        <img 
-                          src={story.previewImage} 
-                          alt={story.topic || `Story ${index + 1}`}
-                          className="w-full h-full object-cover rounded-lg"
-                        />
-                      ) : (
-                        <span className="text-xs text-[#3f2d1d] font-medium">Story {index + 1}</span>
-                      )}
+                      <img 
+                        src={story.previewImage} 
+                        alt={story.topic || `Story ${index + 1}`}
+                        className="w-full h-full object-cover rounded-lg"
+                        onError={(e) => {
+                          e.target.src = `https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=400&fit=crop&crop=center`;
+                        }}
+                      />
                     </div>
                   </div>
                 </div>
@@ -356,11 +404,21 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
             <p>Grid shows posts with newest in top-left, oldest in bottom-right</p>
           </div>
 
+          {/* Debug Info */}
+          {posts.length === 0 && (
+            <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <p className="text-sm text-yellow-800 mb-2">🔍 Debug Info:</p>
+              <p className="text-xs text-yellow-700">Month Key: {`${currentMonth.getFullYear()}-${currentMonth.getMonth()}`}</p>
+              <p className="text-xs text-yellow-700">Available months: {Object.keys(monthlyData).join(', ')}</p>
+              <p className="text-xs text-yellow-700">Current month data: {JSON.stringify(monthlyData[`${currentMonth.getFullYear()}-${currentMonth.getMonth()}`] || {}, null, 2)}</p>
+            </div>
+          )}
+
           {/* Instagram Grid */}
           <div className="grid grid-cols-3 gap-1 md:gap-2 max-w-lg mx-auto">
             {gridPosts.map((post, index) => (
               <div 
-                key={index} 
+                key={post ? post.displayId : `empty-${index}`} 
                 className="aspect-square relative"
               >
                 {post ? (
@@ -384,6 +442,9 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
                         src={post.previewImage} 
                         alt={post.topic || `Post ${index + 1}`}
                         className="w-full h-full object-cover rounded"
+                        onError={(e) => {
+                          e.target.src = `https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=400&fit=crop&crop=center`;
+                        }}
                       />
                     )}
                     
@@ -413,6 +474,7 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
                               {post.scheduledTime && <div>⏰ {post.scheduledTime}</div>}
                             </>
                           )}
+                          {post.topic && <div className="mt-1 text-xs">{post.topic}</div>}
                         </div>
                       </div>
                     </div>
@@ -437,6 +499,7 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
                         </Badge>
                       </div>
                     )}
+                    
                     {/* Swap indicator */}
                     {swapMode && (
                       <div className="absolute top-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -457,6 +520,11 @@ const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRe
 
           <div className="mt-4 text-center text-xs text-[#3f2d1d]/60">
             <p>Showing {posts.length} of 30 posts</p>
+            {posts.length === 0 && (
+              <p className="mt-2 text-[#bb9477]">
+                📝 Create some posts in the Calendar tab to see them here!
+              </p>
+            )}
           </div>
         </CardContent>
       </Card>
