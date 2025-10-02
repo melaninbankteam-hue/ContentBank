@@ -1,1 +1,467 @@
-import { MoveHorizontal as More-limited","message":"You have hit the rate limit. Please upgrade to keep chatting.","providerLimitHit":false,"isRetryable":true}
+import React, { useState, useEffect, useCallback } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+import { MoreHorizontal, Heart, MessageCircle, Send, Bookmark, Upload, RotateCcw, ArrowUpDown, Clock, Instagram } from "lucide-react";
+import { useToast } from "../hooks/use-toast";
+
+const InstagramPreview = ({ monthlyData, currentMonth, setMonthlyData, triggerRefresh }) => {
+  const { toast } = useToast();
+  const [posts, setPosts] = useState([]);
+  const [selectedForSwap, setSelectedForSwap] = useState(null);
+  const [swapMode, setSwapMode] = useState(false);
+  const [stories, setStories] = useState([]);
+  const [viewFilter, setViewFilter] = useState('all'); // all, scheduled, draft
+
+  // Get all posts from current month and sort chronologically (oldest first)
+  const getAllPostsFromMonth = useCallback(() => {
+    const monthKey = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}`;
+    const monthData = monthlyData[monthKey] || {};
+    const posts = monthData.posts || {};
+    const drafts = monthData.drafts || {};
+    const allPosts = [];
+    const allStories = [];
+
+    // Get scheduled posts
+    Object.entries(posts).forEach(([dateKey, datePosts]) => {
+      datePosts.forEach(post => {
+        const sortDate = new Date(`${post.scheduledDate || dateKey}T${post.scheduledTime || '09:00'}`);
+        const postData = {
+          ...post,
+          dateKey,
+          sortDate: sortDate.getTime(),
+          previewImage: post.reelCover?.url || post.image?.url || post.storyContent?.[0]?.url || '/api/placeholder/150/150',
+          isDraft: false
+        };
+        
+        if (post.type === 'Story') {
+          allStories.push(postData);
+        } else {
+          allPosts.push(postData);
+        }
+      });
+    });
+
+    // Get draft posts  
+    Object.entries(drafts).forEach(([dateKey, draftPosts]) => {
+      draftPosts.forEach(post => {
+        const sortDate = new Date(`${post.scheduledDate || dateKey}T${post.scheduledTime || '09:00'}`);
+        const postData = {
+          ...post,
+          dateKey,
+          sortDate: sortDate.getTime(),
+          previewImage: post.reelCover?.url || post.image?.url || post.storyContent?.[0]?.url || '/api/placeholder/150/150',
+          isDraft: true
+        };
+        
+        if (post.type === 'Story') {
+          allStories.push(postData);
+        } else {
+          allPosts.push(postData);
+        }
+      });
+    });
+
+    // Apply view filter
+    const filterPosts = (posts) => {
+      switch (viewFilter) {
+        case 'scheduled':
+          return posts.filter(post => !post.isDraft);
+        case 'draft':
+          return posts.filter(post => post.isDraft);
+        default:
+          return posts;
+      }
+    };
+
+    // Sort by scheduled date/time in reverse chronological order (newest first)
+    const sortedPosts = filterPosts(allPosts).sort((a, b) => b.sortDate - a.sortDate);
+    const sortedStories = filterPosts(allStories).sort((a, b) => b.sortDate - a.sortDate);
+    
+    setStories(sortedStories);
+    return sortedPosts;
+  }, [monthlyData, currentMonth, viewFilter]);
+
+  // Update posts when month data changes or triggerRefresh is called
+  useEffect(() => {
+    const sortedPosts = getAllPostsFromMonth();
+    setPosts(sortedPosts);
+  }, [getAllPostsFromMonth, triggerRefresh]);
+
+  // Auto-refresh effect - listen for content changes
+  useEffect(() => {
+    const sortedPosts = getAllPostsFromMonth();
+    setPosts(sortedPosts);
+  }, [monthlyData, currentMonth, getAllPostsFromMonth]);
+
+  // Create grid posts array (30 slots)
+  const gridPosts = [...posts];
+  while (gridPosts.length < 30) {
+    gridPosts.push(null);
+  }
+
+  // Handle post click functionality
+  const handlePostClick = (clickedIndex) => {
+    const post = posts[clickedIndex];
+    if (!post) return;
+    
+    if (!swapMode) {
+      // Dispatch event to open post editor with this post's data
+      const editEvent = new CustomEvent('openPostEditorFromPreview', { 
+        detail: { 
+          post: post, 
+          date: post.dateKey,
+          scheduledDate: post.scheduledDate 
+        } 
+      });
+      window.dispatchEvent(editEvent);
+      
+      toast({
+        title: "Opening Post Editor",
+        description: "Loading post for editing...",
+        duration: 2000,
+      });
+      return;
+    }
+
+    // Swap mode functionality
+    if (selectedForSwap === null) {
+      setSelectedForSwap(clickedIndex);
+      toast({
+        title: "Post Selected",
+        description: "Click another post to swap positions",
+      });
+    } else if (selectedForSwap === clickedIndex) {
+      setSelectedForSwap(null);
+      toast({
+        title: "Selection Cancelled",
+        description: "Swap mode cancelled",
+      });
+    } else {
+      // Perform swap
+      const newPosts = [...posts];
+      [newPosts[selectedForSwap], newPosts[clickedIndex]] = [newPosts[clickedIndex], newPosts[selectedForSwap]];
+      setPosts(newPosts);
+      updatePostPositions(newPosts);
+      setSelectedForSwap(null);
+      setSwapMode(false);
+      toast({
+        title: "Posts Swapped!",
+        description: "Post positions have been updated",
+      });
+    }
+  };
+
+  // Handle story click functionality
+  const handleStoryClick = (storyIndex) => {
+    const story = stories[storyIndex];
+    if (!story) return;
+    
+    // Dispatch event to open post editor with this story's data
+    const editEvent = new CustomEvent('openPostEditorFromPreview', { 
+      detail: { 
+        post: story, 
+        date: story.dateKey,
+        scheduledDate: story.scheduledDate 
+      } 
+    });
+    window.dispatchEvent(editEvent);
+    
+    toast({
+      title: "Opening Story Editor",
+      description: "Loading story for editing...",
+      duration: 2000,
+    });
+  };
+
+  const toggleSwapMode = () => {
+    setSwapMode(!swapMode);
+    setSelectedForSwap(null);
+    if (!swapMode) {
+      toast({
+        title: "Swap Mode Enabled",
+        description: "Click posts to swap their positions",
+      });
+    }
+  };
+
+  const updatePostPositions = (newPosts) => {
+    // This would update the preview positions in the backend/localStorage
+    // For now, we just update the local state
+    // In a full implementation, you'd sync this with your data source
+  };
+
+  const updateCalendarWithNewOrder = (reorderedPosts) => {
+    // Generate new dates for the reordered posts
+    const today = new Date();
+    const updatedData = { ...monthlyData };
+    const monthKey = `${currentMonth.getFullYear()}-${currentMonth.getMonth()}`;
+    
+    if (!updatedData[monthKey]) {
+      updatedData[monthKey] = {};
+    }
+    if (!updatedData[monthKey].posts) {
+      updatedData[monthKey].posts = {};
+    }
+
+    // Clear existing posts for this month
+    updatedData[monthKey].posts = {};
+
+    // Reassign dates to posts based on their new order
+    reorderedPosts.forEach((post, index) => {
+      if (post) {
+        const newDate = new Date(today);
+        newDate.setDate(today.getDate() + index);
+        const newDateKey = `${newDate.getFullYear()}-${String(newDate.getMonth() + 1).padStart(2, '0')}-${String(newDate.getDate()).padStart(2, '0')}`;
+        
+        if (!updatedData[monthKey].posts[newDateKey]) {
+          updatedData[monthKey].posts[newDateKey] = [];
+        }
+        
+        updatedData[monthKey].posts[newDateKey].push({
+          ...post,
+          scheduledDate: newDateKey
+        });
+      }
+    });
+
+    setMonthlyData(updatedData);
+  };
+
+  const resetToChronological = () => {
+    const chronologicalPosts = getAllPostsFromMonth();
+    setPosts(chronologicalPosts);
+    updateCalendarWithNewOrder(chronologicalPosts);
+    
+    toast({
+      title: "Reset Complete!",
+      description: "Posts are now in chronological order.",
+    });
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Story Preview Section */}
+      <Card className="border-[#bb9477]/30 shadow-lg bg-white/80 backdrop-blur-sm">
+        <CardHeader className="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-t-lg">
+          <CardTitle className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500"></div>
+            Story Preview ({stories.length}/30)
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-4">
+          {stories.length > 0 ? (
+            <div className="flex gap-2 overflow-x-auto pb-2">
+              {stories.slice(0, 10).map((story, index) => (
+                <div key={index} className="flex-shrink-0">
+                  <div 
+                    className="w-16 h-28 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl p-0.5 cursor-pointer hover:scale-105 transition-transform"
+                    onClick={() => handleStoryClick(index)}
+                  >
+                    <div className="w-full h-full bg-white rounded-xl flex items-center justify-center overflow-hidden">
+                      {story.previewImage ? (
+                        <img 
+                          src={story.previewImage} 
+                          alt={story.topic || `Story ${index + 1}`}
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                      ) : (
+                        <span className="text-xs text-[#3f2d1d] font-medium">Story {index + 1}</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {stories.length > 10 && (
+                <div className="flex-shrink-0 w-16 h-28 rounded-xl bg-[#bb9477]/20 flex items-center justify-center">
+                  <span className="text-xs text-[#3f2d1d]">+{stories.length - 10}</span>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="text-center py-8 text-[#3f2d1d]/60">
+              <div className="w-16 h-28 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl mx-auto mb-3 opacity-30"></div>
+              <p className="text-sm">No stories scheduled</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Main Feed Preview */}
+      <Card className="border-[#bb9477]/30 shadow-lg bg-white max-w-4xl mx-auto">
+        <CardHeader className="bg-gradient-to-r from-[#bb9477] to-[#472816] text-[#fffaf1] rounded-t-lg">
+          <div className="flex items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <Instagram className="w-5 h-5" />
+              Instagram Feed Preview ({posts.length}/30)
+            </CardTitle>
+            
+            {/* View Filter Buttons */}
+            <div className="flex gap-2">
+              <Button
+                variant={viewFilter === 'all' ? 'secondary' : 'ghost'}
+                size="sm"
+                onClick={() => setViewFilter('all')}
+                className={`text-xs ${viewFilter === 'all' ? 'bg-white text-[#472816]' : 'text-white hover:bg-white/20'}`}
+              >
+                All Posts
+              </Button>
+              <Button
+                variant={viewFilter === 'scheduled' ? 'secondary' : 'ghost'}
+                size="sm"
+                onClick={() => setViewFilter('scheduled')}
+                className={`text-xs ${viewFilter === 'scheduled' ? 'bg-white text-[#472816]' : 'text-white hover:bg-white/20'}`}
+              >
+                Scheduled
+              </Button>
+              <Button
+                variant={viewFilter === 'draft' ? 'secondary' : 'ghost'}
+                size="sm"
+                onClick={() => setViewFilter('draft')}
+                className={`text-xs ${viewFilter === 'draft' ? 'bg-white text-[#472816]' : 'text-white hover:bg-white/20'}`}
+              >
+                Drafts
+              </Button>
+            </div>
+            
+            <div className="flex gap-2">
+              <Button
+                variant={swapMode ? "default" : "secondary"}
+                size="sm"
+                onClick={toggleSwapMode}
+                className={swapMode ? 
+                  "bg-[#472816] text-[#fffaf1] hover:bg-[#3f2d1d]" : 
+                  "bg-[#bb9477] text-[#3f2d1d] hover:bg-[#fffaf1]"
+                }
+              >
+                <ArrowUpDown className="w-3 h-3 mr-1" />
+                {swapMode ? 'Exit Swap' : 'Swap Mode'}
+              </Button>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={resetToChronological}
+                className="bg-[#bb9477] text-[#3f2d1d] hover:bg-[#fffaf1]"
+              >
+                <RotateCcw className="w-3 h-3 mr-1" />
+                Reset Order
+              </Button>
+            </div>
+          </div>
+        </CardHeader>
+        
+        <CardContent className="p-6 md:p-8">
+          <div className="mb-4 text-center text-sm text-[#3f2d1d]/70">
+            <p className="mb-2">📱 {swapMode ? 'Click posts to swap their positions' : 'Click posts to edit them (opens in Calendar tab)'}</p>
+            <p>Grid shows posts with newest in top-left, oldest in bottom-right</p>
+          </div>
+
+          {/* Instagram Grid */}
+          <div className="grid grid-cols-3 gap-1 md:gap-2 max-w-lg mx-auto">
+            {gridPosts.map((post, index) => (
+              <div 
+                key={index} 
+                className="aspect-square relative"
+              >
+                {post ? (
+                  <div 
+                    className={`group relative w-full h-full ${
+                      swapMode ? 'cursor-pointer' : 'cursor-pointer'
+                    } ${
+                      selectedForSwap === index ? 'ring-4 ring-[#bb9477] ring-opacity-70' : ''
+                    }`}
+                    onClick={() => handlePostClick(index)}
+                  >
+                    {post.previewImage && (post.previewImage.includes('video') || post.previewImage.includes('.mp4') || post.previewImage.includes('.mov')) ? (
+                      <video
+                        src={post.previewImage}
+                        className="w-full h-full object-cover rounded"
+                        preload="metadata"
+                        muted
+                      />
+                    ) : (
+                      <img 
+                        src={post.previewImage} 
+                        alt={post.topic || `Post ${index + 1}`}
+                        className="w-full h-full object-cover rounded"
+                      />
+                    )}
+                    
+                    {/* Clock icon for scheduled posts */}
+                    {post.scheduledDate && post.scheduledTime && !post.isDraft && (
+                      <div className="absolute top-1 left-1 bg-black bg-opacity-60 rounded-full p-1">
+                        <Clock className="w-3 h-3 text-white" />
+                      </div>
+                    )}
+                    
+                    {/* Draft indicator */}
+                    {post.isDraft && (
+                      <div className="absolute top-1 left-1 bg-yellow-500 bg-opacity-80 rounded px-2 py-1">
+                        <span className="text-xs font-medium text-white">DRAFT</span>
+                      </div>
+                    )}
+                    
+                    {/* Hover overlay with post info */}
+                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 rounded flex items-center justify-center opacity-0 group-hover:opacity-100">
+                      <div className="text-white text-center p-2">
+                        <div className="text-xs bg-black bg-opacity-50 rounded px-2 py-1">
+                          {post.isDraft ? (
+                            <span className="text-yellow-300 font-medium">📝 DRAFT</span>
+                          ) : (
+                            <>
+                              📅 {post.scheduledDate ? new Date(post.scheduledDate).toLocaleDateString() : 'Not scheduled'}
+                              {post.scheduledTime && <div>⏰ {post.scheduledTime}</div>}
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Post type indicator */}
+                    {post.type === 'Carousel' && (
+                      <div className="absolute top-1 right-1">
+                        <div className="bg-black bg-opacity-60 rounded px-1 py-0.5">
+                          <div className="flex gap-0.5">
+                            <div className="w-1 h-1 bg-white rounded-full"></div>
+                            <div className="w-1 h-1 bg-white rounded-full"></div>
+                            <div className="w-1 h-1 bg-white rounded-full opacity-50"></div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {post.type === 'Reel' && (
+                      <div className="absolute top-1 right-1">
+                        <Badge variant="secondary" className="bg-black bg-opacity-60 text-white text-xs px-1 py-0">
+                          ▶
+                        </Badge>
+                      </div>
+                    )}
+                    {/* Swap indicator */}
+                    {swapMode && (
+                      <div className="absolute top-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="bg-white/80 rounded p-1">
+                          <ArrowUpDown className="w-3 h-3 text-[#472816]" />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="w-full h-full bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center rounded hover:border-[#bb9477] transition-colors">
+                    <Upload className="w-4 h-4 text-gray-400" />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-4 text-center text-xs text-[#3f2d1d]/60">
+            <p>Showing {posts.length} of 30 posts</p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default InstagramPreview;
